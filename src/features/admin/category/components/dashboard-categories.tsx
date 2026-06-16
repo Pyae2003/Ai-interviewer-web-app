@@ -1,13 +1,10 @@
-import CategoriesHeader from "@/components/categoriesHeader";
 import { getAllCategories } from "../query/get-categories";
 import CategoriesList from "./categories-list";
-
 const DashboardCategories = async () => {
   const categories = await getAllCategories();
 
   return (
     <section className="space-y-6">
-      <CategoriesHeader/>
       {categories.length === 0 ? (
         <div className="rounded-2xl border bg-white p-10 text-center shadow-sm">
           <h3 className="text-lg font-semibold text-zinc-900">
@@ -21,7 +18,7 @@ const DashboardCategories = async () => {
       ) : (
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 mx-auto max-w-7xl px-4 py-3">
           {categories.map((category) => (
-            <CategoriesList key={category.id} category={category} />
+              <CategoriesList key={category.id} category={category} />
           ))}
         </div>
       )}

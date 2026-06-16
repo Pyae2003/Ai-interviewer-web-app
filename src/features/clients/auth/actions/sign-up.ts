@@ -24,7 +24,7 @@ export const signUpUser = actionClient
     try {
       // 1. Call auth provider
       const result = await auth.api.signUpEmail({
-        body: { name, email, password },
+        body: { name, email, password ,role : "USER"},
       });
 
       // 2. Validate response
@@ -32,7 +32,6 @@ export const signUpUser = actionClient
         throw new AppError("Failed to create user account", "USER_CREATE_FAILED");
       }
 
-     console.log(result)
       // 3. Success response
       return {
         success: true,

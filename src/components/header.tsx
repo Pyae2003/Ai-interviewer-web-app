@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { useTheme } from "next-themes";
@@ -15,17 +14,23 @@ import {
   BookOpen,
 } from "lucide-react";
 
+
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { loginPath } from "@/constants/route";
-import { Session } from "better-auth";
-import { LogoutButton } from "./logout";
+import UserProfile from "./user-profile";
 
-type HeaderProp = {
-  session?: Session;
-};
+export interface ClientHeaderProp {
+  path: string;
+  partName?: string;
+  action?: React.ReactNode;
+  user?: {
+    id: string;
+    email: string;
+    name: string;
+  };
+}
 
-export default function Header({ session }: HeaderProp) {
+export default function Header({ user, path, action }: ClientHeaderProp) {
   const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -40,13 +45,13 @@ export default function Header({ session }: HeaderProp) {
       {/* OUTER BOX */}
       <div className="mx-auto max-w-7xl px-4 py-3">
         {/* INNER BOX CONTAINER */}
-        <div className="flex items-center justify-between rounded-2xl border border-black/10 bg-gradient-to-r from-sky-100 via-white to-yellow-100 px-4 py-3 shadow-sm">
+        <div className="flex items-center justify-between rounded-2xl border border-black/10 bg-linear-to-r from-sky-100 via-white to-yellow-100 px-4 py-3 shadow-sm">
           {/* LEFT: BRAND BOX */}
           <Link
             href="/"
             className="flex items-center gap-3 rounded-xl bg-white px-3 py-2 shadow-sm border border-black/10"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-yellow-300 text-black shadow-md">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-yellow-300 text-black shadow-md">
               <Bot size={18} />
             </div>
 
@@ -88,14 +93,11 @@ export default function Header({ session }: HeaderProp) {
             </button>
 
             {/* CTA BUTTON */}
-            {session ? (
-              <LogoutButton />
+            {user ? (
+              <UserProfile {...user} />
             ) : (
-              <Link href={loginPath} className="hidden sm:block">
-                <Button className="rounded-xl bg-gradient-to-r from-sky-400 to-yellow-300 text-black font-semibold shadow-md hover:shadow-lg transition">
-                  <Sparkles className="mr-2" size={16} />
-                  Login
-                </Button>
+              <Link href={path} className="hidden sm:block">
+                {action}
               </Link>
             )}
 
@@ -107,9 +109,9 @@ export default function Header({ session }: HeaderProp) {
                 </button>
               </SheetTrigger>
 
-              <SheetContent side="right" className="w-[300px] bg-white">
+              <SheetContent side="right" className="w-75 bg-white">
                 {/* MOBILE HEADER BOX */}
-                <div className="mb-6 rounded-xl border border-black/10 bg-gradient-to-r from-sky-100 to-yellow-100 p-4">
+                <div className="mb-6 rounded-xl border border-black/10 bg-linear-to-r from-sky-100 to-yellow-100 p-4">
                   <div className="flex items-center gap-2">
                     <Bot />
                     <span className="font-bold">AI Interviewer</span>
@@ -118,6 +120,23 @@ export default function Header({ session }: HeaderProp) {
                     Prepare smarter. Interview better.
                   </p>
                 </div>
+                {user && (
+                  <div className="mb-4 rounded-xl border bg-white p-4">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-yellow-300 font-semibold text-black">
+                        {user.name?.charAt(0).toUpperCase()}
+                      </div>
+
+                      <div>
+                        <p className="font-medium">{user.name}</p>
+
+                        <p className="text-xs text-muted-foreground">
+                          {user.email}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* MOBILE NAV BOX */}
                 <div className="flex flex-col gap-2">
@@ -138,7 +157,7 @@ export default function Header({ session }: HeaderProp) {
                 </div>
 
                 {/* MOBILE CTA BOX */}
-                <div className="mt-6 rounded-xl border border-black/10 bg-gradient-to-r from-yellow-200 to-sky-200 p-4">
+                <div className="mt-6 rounded-xl border border-black/10 bg-linear-to-r from-yellow-200 to-sky-200 p-4">
                   <Link href="/signup" onClick={() => setOpen(false)}>
                     <Button className="w-full bg-black text-white rounded-xl">
                       <Sparkles className="mr-2" size={16} />

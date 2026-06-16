@@ -1,15 +1,14 @@
-
 import { Category } from "@/generated/prisma/client";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { Briefcase, FileQuestion, Mic, Pencil, Trash2 } from "lucide-react";
+import { Briefcase, FileQuestion, Mic, Pencil } from "lucide-react";
 import Link from "next/link";
-import { updateCategoryPath } from "@/constants/route";
+import { questionDashboardWithCategoryNamePath, updateCategoryPath } from "@/constants/route";
 import { deleteCategory } from "../actions/delete-single-categorie";
-import DeleteCategoryButton from "./detete-category-button";
+import DeleteButton from "@/components/delete-button";
 
 type CategoriesProp = {
   category: Category;
@@ -68,19 +67,21 @@ const CategoriesList = ({ category }: CategoriesProp) => {
         </div>
 
         {/* Footer */}
-        <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-            <Button
-              variant="outline"
-              size="sm"
-              className="flex-1 border-sky-200 hover:bg-sky-50"
-            >
-              <Pencil className="mr-2 h-4 w-4" />
-          <Link href={updateCategoryPath(category.id)}>
-
-                Edit
-              </Link>
-            </Button>
-         <DeleteCategoryButton categoryId={category.id}/>
+        <div className="mt-5 flex flex-col gap-2 sm:flex-row ">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1 border-sky-200 hover:bg-sky-50"
+          >
+            <Pencil className="mr-2 h-4 w-4" />
+            <Link href={updateCategoryPath(category.id)}>Edit</Link>
+          </Button>
+          <DeleteButton id={category.id} onDelete={deleteCategory} />
+          <Button asChild variant="default" size="sm" className="flex-1">
+            <Link href={questionDashboardWithCategoryNamePath(category.id)}>
+              View QuestionsList
+            </Link>
+          </Button>
         </div>
       </CardContent>
     </Card>

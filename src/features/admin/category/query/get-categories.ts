@@ -16,7 +16,12 @@ export const getAllCategories = async () => {
         isActive: true,
         sortOrder: true,
         createdAt: true,
-        updatedAt : true
+        updatedAt: true,
+        _count: {
+          select: {
+            questions: true,
+          },
+        },
       },
       orderBy: {
         sortOrder: "asc",
@@ -30,7 +35,7 @@ export const getAllCategories = async () => {
     throw new AppError(
       "Failed to fetch categories",
       "CATEGORY_FETCH_FAILED",
-      500
+      500,
     );
   }
 };

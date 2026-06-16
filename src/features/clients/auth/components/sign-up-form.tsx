@@ -84,10 +84,10 @@ export function SignUpForm() {
     } else if (hasErrored) {
       toast.error("Signup failed", { position: "top-center" });
     }
-  }, [hasSucceeded, hasErrored, result]);
+  }, [hasSucceeded, hasErrored, result,form,router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 via-white to-yellow-100 px-4 py-10">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 via-white to-yellow-100 px-4 py-10">
       {/* OUTER FRAME */}
       <div className="w-full max-w-2xl">
         {/* TOP BRAND BOX */}

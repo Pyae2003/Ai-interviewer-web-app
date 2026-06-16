@@ -12,7 +12,7 @@ export const getSession = async () => {
       headers: h,
     });
 
-    console.log("session:", session);
+    // console.log("session:", session);
 
     return session;
   } catch (error) {
