@@ -7,7 +7,7 @@ import { auth } from "@/lib/auth";
 import { AppError } from "@/middleware";
 
 import { loginSchema } from "../schema/login-schema";
-import { dashboardPath } from "@/constants/route";
+import { UserRole } from "@/generated/prisma/enums";
 
 type LoginResponse = {
   success: boolean;
@@ -22,20 +22,39 @@ type LoginResponse = {
 export const loginUser = actionClient
   .inputSchema(loginSchema)
   .action(async ({ parsedInput }): Promise<LoginResponse> => {
-    const { email, password ,rememberMe} = parsedInput;
+    const { email, password, rememberMe } = parsedInput;
 
     try {
+      const requestHeaders = await headers();
+
       const result = await auth.api.signInEmail({
         body: {
           email,
           password,
           rememberMe,
         },
-        headers: await headers(),
+        headers: requestHeaders,
       });
 
       if (!result?.user) {
-        throw new AppError("Invalid email or password", "LOGIN_FAILED", 401);
+        throw new AppError(
+          "Invalid email or password",
+          "LOGIN_FAILED",
+          401,
+        );
+      }
+
+      // Block admin accounts from user login
+      if (result.user.role === UserRole.admin) {
+        await auth.api.signOut({
+          headers: requestHeaders,
+        });
+
+        throw new AppError(
+          "Invalid email or password",
+          "LOGIN_FAILED",
+          401,
+        );
       }
 
       return {
@@ -48,8 +67,15 @@ export const loginUser = actionClient
         },
       };
     } catch (error) {
-      console.error("LOGIN_ERROR", error);
+      console.error("[USER_LOGIN_ERROR]", {
+        email,
+        timestamp: new Date().toISOString(),
+      });
 
-      throw new AppError("Invalid email or password", "LOGIN_FAILED", 401);
+      throw new AppError(
+        "Invalid email or password",
+        "LOGIN_FAILED",
+        401,
+      );
     }
   });

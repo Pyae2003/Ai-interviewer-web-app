@@ -58,7 +58,8 @@ export const ModelName = {
   Category: 'Category',
   Question: 'Question',
   Interview: 'Interview',
-  InterviewAnswer: 'InterviewAnswer'
+  InterviewAnswer: 'InterviewAnswer',
+  InterviewQuestion: 'InterviewQuestion'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -83,9 +84,14 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
-  role: 'role',
+  lastLoginMethod: 'lastLoginMethod',
+  lastLogin: 'lastLogin',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  role: 'role',
+  banned: 'banned',
+  banReason: 'banReason',
+  banExpires: 'banExpires'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -99,7 +105,8 @@ export const SessionScalarFieldEnum = {
   updatedAt: 'updatedAt',
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
-  userId: 'userId'
+  userId: 'userId',
+  impersonatedBy: 'impersonatedBy'
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
@@ -176,12 +183,30 @@ export const InterviewAnswerScalarFieldEnum = {
   id: 'id',
   interviewId: 'interviewId',
   questionId: 'questionId',
+  interviewQuestionId: 'interviewQuestionId',
   answer: 'answer',
   feedback: 'feedback',
+  idealAnswer: 'idealAnswer',
+  strengths: 'strengths',
+  weaknesses: 'weaknesses',
+  isCorrect: 'isCorrect',
   score: 'score'
 } as const
 
 export type InterviewAnswerScalarFieldEnum = (typeof InterviewAnswerScalarFieldEnum)[keyof typeof InterviewAnswerScalarFieldEnum]
+
+
+export const InterviewQuestionScalarFieldEnum = {
+  id: 'id',
+  interviewId: 'interviewId',
+  questionId: 'questionId',
+  orderIndex: 'orderIndex',
+  questionText: 'questionText',
+  difficulty: 'difficulty',
+  createdAt: 'createdAt'
+} as const
+
+export type InterviewQuestionScalarFieldEnum = (typeof InterviewQuestionScalarFieldEnum)[keyof typeof InterviewQuestionScalarFieldEnum]
 
 
 export const SortOrder = {

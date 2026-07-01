@@ -38,8 +38,13 @@ export type InterviewAnswerMinAggregateOutputType = {
   id: string | null
   interviewId: string | null
   questionId: string | null
+  interviewQuestionId: string | null
   answer: string | null
   feedback: string | null
+  idealAnswer: string | null
+  strengths: string | null
+  weaknesses: string | null
+  isCorrect: boolean | null
   score: number | null
 }
 
@@ -47,8 +52,13 @@ export type InterviewAnswerMaxAggregateOutputType = {
   id: string | null
   interviewId: string | null
   questionId: string | null
+  interviewQuestionId: string | null
   answer: string | null
   feedback: string | null
+  idealAnswer: string | null
+  strengths: string | null
+  weaknesses: string | null
+  isCorrect: boolean | null
   score: number | null
 }
 
@@ -56,8 +66,13 @@ export type InterviewAnswerCountAggregateOutputType = {
   id: number
   interviewId: number
   questionId: number
+  interviewQuestionId: number
   answer: number
   feedback: number
+  idealAnswer: number
+  strengths: number
+  weaknesses: number
+  isCorrect: number
   score: number
   _all: number
 }
@@ -75,8 +90,13 @@ export type InterviewAnswerMinAggregateInputType = {
   id?: true
   interviewId?: true
   questionId?: true
+  interviewQuestionId?: true
   answer?: true
   feedback?: true
+  idealAnswer?: true
+  strengths?: true
+  weaknesses?: true
+  isCorrect?: true
   score?: true
 }
 
@@ -84,8 +104,13 @@ export type InterviewAnswerMaxAggregateInputType = {
   id?: true
   interviewId?: true
   questionId?: true
+  interviewQuestionId?: true
   answer?: true
   feedback?: true
+  idealAnswer?: true
+  strengths?: true
+  weaknesses?: true
+  isCorrect?: true
   score?: true
 }
 
@@ -93,8 +118,13 @@ export type InterviewAnswerCountAggregateInputType = {
   id?: true
   interviewId?: true
   questionId?: true
+  interviewQuestionId?: true
   answer?: true
   feedback?: true
+  idealAnswer?: true
+  strengths?: true
+  weaknesses?: true
+  isCorrect?: true
   score?: true
   _all?: true
 }
@@ -189,8 +219,13 @@ export type InterviewAnswerGroupByOutputType = {
   id: string
   interviewId: string
   questionId: string
+  interviewQuestionId: string
   answer: string
   feedback: string | null
+  idealAnswer: string | null
+  strengths: string | null
+  weaknesses: string | null
+  isCorrect: boolean | null
   score: number | null
   _count: InterviewAnswerCountAggregateOutputType | null
   _avg: InterviewAnswerAvgAggregateOutputType | null
@@ -221,9 +256,15 @@ export type InterviewAnswerWhereInput = {
   id?: Prisma.StringFilter<"InterviewAnswer"> | string
   interviewId?: Prisma.StringFilter<"InterviewAnswer"> | string
   questionId?: Prisma.StringFilter<"InterviewAnswer"> | string
+  interviewQuestionId?: Prisma.StringFilter<"InterviewAnswer"> | string
   answer?: Prisma.StringFilter<"InterviewAnswer"> | string
   feedback?: Prisma.StringNullableFilter<"InterviewAnswer"> | string | null
+  idealAnswer?: Prisma.StringNullableFilter<"InterviewAnswer"> | string | null
+  strengths?: Prisma.StringNullableFilter<"InterviewAnswer"> | string | null
+  weaknesses?: Prisma.StringNullableFilter<"InterviewAnswer"> | string | null
+  isCorrect?: Prisma.BoolNullableFilter<"InterviewAnswer"> | boolean | null
   score?: Prisma.IntNullableFilter<"InterviewAnswer"> | number | null
+  interviewQuestion?: Prisma.XOR<Prisma.InterviewQuestionScalarRelationFilter, Prisma.InterviewQuestionWhereInput>
   interview?: Prisma.XOR<Prisma.InterviewScalarRelationFilter, Prisma.InterviewWhereInput>
   question?: Prisma.XOR<Prisma.QuestionScalarRelationFilter, Prisma.QuestionWhereInput>
 }
@@ -232,15 +273,22 @@ export type InterviewAnswerOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   interviewId?: Prisma.SortOrder
   questionId?: Prisma.SortOrder
+  interviewQuestionId?: Prisma.SortOrder
   answer?: Prisma.SortOrder
   feedback?: Prisma.SortOrderInput | Prisma.SortOrder
+  idealAnswer?: Prisma.SortOrderInput | Prisma.SortOrder
+  strengths?: Prisma.SortOrderInput | Prisma.SortOrder
+  weaknesses?: Prisma.SortOrderInput | Prisma.SortOrder
+  isCorrect?: Prisma.SortOrderInput | Prisma.SortOrder
   score?: Prisma.SortOrderInput | Prisma.SortOrder
+  interviewQuestion?: Prisma.InterviewQuestionOrderByWithRelationInput
   interview?: Prisma.InterviewOrderByWithRelationInput
   question?: Prisma.QuestionOrderByWithRelationInput
 }
 
 export type InterviewAnswerWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  interviewQuestionId?: string
   AND?: Prisma.InterviewAnswerWhereInput | Prisma.InterviewAnswerWhereInput[]
   OR?: Prisma.InterviewAnswerWhereInput[]
   NOT?: Prisma.InterviewAnswerWhereInput | Prisma.InterviewAnswerWhereInput[]
@@ -248,17 +296,27 @@ export type InterviewAnswerWhereUniqueInput = Prisma.AtLeast<{
   questionId?: Prisma.StringFilter<"InterviewAnswer"> | string
   answer?: Prisma.StringFilter<"InterviewAnswer"> | string
   feedback?: Prisma.StringNullableFilter<"InterviewAnswer"> | string | null
+  idealAnswer?: Prisma.StringNullableFilter<"InterviewAnswer"> | string | null
+  strengths?: Prisma.StringNullableFilter<"InterviewAnswer"> | string | null
+  weaknesses?: Prisma.StringNullableFilter<"InterviewAnswer"> | string | null
+  isCorrect?: Prisma.BoolNullableFilter<"InterviewAnswer"> | boolean | null
   score?: Prisma.IntNullableFilter<"InterviewAnswer"> | number | null
+  interviewQuestion?: Prisma.XOR<Prisma.InterviewQuestionScalarRelationFilter, Prisma.InterviewQuestionWhereInput>
   interview?: Prisma.XOR<Prisma.InterviewScalarRelationFilter, Prisma.InterviewWhereInput>
   question?: Prisma.XOR<Prisma.QuestionScalarRelationFilter, Prisma.QuestionWhereInput>
-}, "id">
+}, "id" | "interviewQuestionId">
 
 export type InterviewAnswerOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   interviewId?: Prisma.SortOrder
   questionId?: Prisma.SortOrder
+  interviewQuestionId?: Prisma.SortOrder
   answer?: Prisma.SortOrder
   feedback?: Prisma.SortOrderInput | Prisma.SortOrder
+  idealAnswer?: Prisma.SortOrderInput | Prisma.SortOrder
+  strengths?: Prisma.SortOrderInput | Prisma.SortOrder
+  weaknesses?: Prisma.SortOrderInput | Prisma.SortOrder
+  isCorrect?: Prisma.SortOrderInput | Prisma.SortOrder
   score?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.InterviewAnswerCountOrderByAggregateInput
   _avg?: Prisma.InterviewAnswerAvgOrderByAggregateInput
@@ -274,8 +332,13 @@ export type InterviewAnswerScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"InterviewAnswer"> | string
   interviewId?: Prisma.StringWithAggregatesFilter<"InterviewAnswer"> | string
   questionId?: Prisma.StringWithAggregatesFilter<"InterviewAnswer"> | string
+  interviewQuestionId?: Prisma.StringWithAggregatesFilter<"InterviewAnswer"> | string
   answer?: Prisma.StringWithAggregatesFilter<"InterviewAnswer"> | string
   feedback?: Prisma.StringNullableWithAggregatesFilter<"InterviewAnswer"> | string | null
+  idealAnswer?: Prisma.StringNullableWithAggregatesFilter<"InterviewAnswer"> | string | null
+  strengths?: Prisma.StringNullableWithAggregatesFilter<"InterviewAnswer"> | string | null
+  weaknesses?: Prisma.StringNullableWithAggregatesFilter<"InterviewAnswer"> | string | null
+  isCorrect?: Prisma.BoolNullableWithAggregatesFilter<"InterviewAnswer"> | boolean | null
   score?: Prisma.IntNullableWithAggregatesFilter<"InterviewAnswer"> | number | null
 }
 
@@ -283,7 +346,12 @@ export type InterviewAnswerCreateInput = {
   id?: string
   answer: string
   feedback?: string | null
+  idealAnswer?: string | null
+  strengths?: string | null
+  weaknesses?: string | null
+  isCorrect?: boolean | null
   score?: number | null
+  interviewQuestion: Prisma.InterviewQuestionCreateNestedOneWithoutInterviewAnswerInput
   interview: Prisma.InterviewCreateNestedOneWithoutAnswersInput
   question: Prisma.QuestionCreateNestedOneWithoutInterviewAnswersInput
 }
@@ -292,8 +360,13 @@ export type InterviewAnswerUncheckedCreateInput = {
   id?: string
   interviewId: string
   questionId: string
+  interviewQuestionId: string
   answer: string
   feedback?: string | null
+  idealAnswer?: string | null
+  strengths?: string | null
+  weaknesses?: string | null
+  isCorrect?: boolean | null
   score?: number | null
 }
 
@@ -301,7 +374,12 @@ export type InterviewAnswerUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   answer?: Prisma.StringFieldUpdateOperationsInput | string
   feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idealAnswer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  strengths?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weaknesses?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  interviewQuestion?: Prisma.InterviewQuestionUpdateOneRequiredWithoutInterviewAnswerNestedInput
   interview?: Prisma.InterviewUpdateOneRequiredWithoutAnswersNestedInput
   question?: Prisma.QuestionUpdateOneRequiredWithoutInterviewAnswersNestedInput
 }
@@ -310,8 +388,13 @@ export type InterviewAnswerUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   interviewId?: Prisma.StringFieldUpdateOperationsInput | string
   questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  interviewQuestionId?: Prisma.StringFieldUpdateOperationsInput | string
   answer?: Prisma.StringFieldUpdateOperationsInput | string
   feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idealAnswer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  strengths?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weaknesses?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -319,8 +402,13 @@ export type InterviewAnswerCreateManyInput = {
   id?: string
   interviewId: string
   questionId: string
+  interviewQuestionId: string
   answer: string
   feedback?: string | null
+  idealAnswer?: string | null
+  strengths?: string | null
+  weaknesses?: string | null
+  isCorrect?: boolean | null
   score?: number | null
 }
 
@@ -328,6 +416,10 @@ export type InterviewAnswerUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   answer?: Prisma.StringFieldUpdateOperationsInput | string
   feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idealAnswer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  strengths?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weaknesses?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -335,8 +427,13 @@ export type InterviewAnswerUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   interviewId?: Prisma.StringFieldUpdateOperationsInput | string
   questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  interviewQuestionId?: Prisma.StringFieldUpdateOperationsInput | string
   answer?: Prisma.StringFieldUpdateOperationsInput | string
   feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idealAnswer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  strengths?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weaknesses?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -354,8 +451,13 @@ export type InterviewAnswerCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   interviewId?: Prisma.SortOrder
   questionId?: Prisma.SortOrder
+  interviewQuestionId?: Prisma.SortOrder
   answer?: Prisma.SortOrder
   feedback?: Prisma.SortOrder
+  idealAnswer?: Prisma.SortOrder
+  strengths?: Prisma.SortOrder
+  weaknesses?: Prisma.SortOrder
+  isCorrect?: Prisma.SortOrder
   score?: Prisma.SortOrder
 }
 
@@ -367,8 +469,13 @@ export type InterviewAnswerMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   interviewId?: Prisma.SortOrder
   questionId?: Prisma.SortOrder
+  interviewQuestionId?: Prisma.SortOrder
   answer?: Prisma.SortOrder
   feedback?: Prisma.SortOrder
+  idealAnswer?: Prisma.SortOrder
+  strengths?: Prisma.SortOrder
+  weaknesses?: Prisma.SortOrder
+  isCorrect?: Prisma.SortOrder
   score?: Prisma.SortOrder
 }
 
@@ -376,8 +483,13 @@ export type InterviewAnswerMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   interviewId?: Prisma.SortOrder
   questionId?: Prisma.SortOrder
+  interviewQuestionId?: Prisma.SortOrder
   answer?: Prisma.SortOrder
   feedback?: Prisma.SortOrder
+  idealAnswer?: Prisma.SortOrder
+  strengths?: Prisma.SortOrder
+  weaknesses?: Prisma.SortOrder
+  isCorrect?: Prisma.SortOrder
   score?: Prisma.SortOrder
 }
 
@@ -469,19 +581,71 @@ export type InterviewAnswerUncheckedUpdateManyWithoutInterviewNestedInput = {
   deleteMany?: Prisma.InterviewAnswerScalarWhereInput | Prisma.InterviewAnswerScalarWhereInput[]
 }
 
+export type InterviewAnswerCreateNestedManyWithoutInterviewQuestionInput = {
+  create?: Prisma.XOR<Prisma.InterviewAnswerCreateWithoutInterviewQuestionInput, Prisma.InterviewAnswerUncheckedCreateWithoutInterviewQuestionInput> | Prisma.InterviewAnswerCreateWithoutInterviewQuestionInput[] | Prisma.InterviewAnswerUncheckedCreateWithoutInterviewQuestionInput[]
+  connectOrCreate?: Prisma.InterviewAnswerCreateOrConnectWithoutInterviewQuestionInput | Prisma.InterviewAnswerCreateOrConnectWithoutInterviewQuestionInput[]
+  createMany?: Prisma.InterviewAnswerCreateManyInterviewQuestionInputEnvelope
+  connect?: Prisma.InterviewAnswerWhereUniqueInput | Prisma.InterviewAnswerWhereUniqueInput[]
+}
+
+export type InterviewAnswerUncheckedCreateNestedManyWithoutInterviewQuestionInput = {
+  create?: Prisma.XOR<Prisma.InterviewAnswerCreateWithoutInterviewQuestionInput, Prisma.InterviewAnswerUncheckedCreateWithoutInterviewQuestionInput> | Prisma.InterviewAnswerCreateWithoutInterviewQuestionInput[] | Prisma.InterviewAnswerUncheckedCreateWithoutInterviewQuestionInput[]
+  connectOrCreate?: Prisma.InterviewAnswerCreateOrConnectWithoutInterviewQuestionInput | Prisma.InterviewAnswerCreateOrConnectWithoutInterviewQuestionInput[]
+  createMany?: Prisma.InterviewAnswerCreateManyInterviewQuestionInputEnvelope
+  connect?: Prisma.InterviewAnswerWhereUniqueInput | Prisma.InterviewAnswerWhereUniqueInput[]
+}
+
+export type InterviewAnswerUpdateManyWithoutInterviewQuestionNestedInput = {
+  create?: Prisma.XOR<Prisma.InterviewAnswerCreateWithoutInterviewQuestionInput, Prisma.InterviewAnswerUncheckedCreateWithoutInterviewQuestionInput> | Prisma.InterviewAnswerCreateWithoutInterviewQuestionInput[] | Prisma.InterviewAnswerUncheckedCreateWithoutInterviewQuestionInput[]
+  connectOrCreate?: Prisma.InterviewAnswerCreateOrConnectWithoutInterviewQuestionInput | Prisma.InterviewAnswerCreateOrConnectWithoutInterviewQuestionInput[]
+  upsert?: Prisma.InterviewAnswerUpsertWithWhereUniqueWithoutInterviewQuestionInput | Prisma.InterviewAnswerUpsertWithWhereUniqueWithoutInterviewQuestionInput[]
+  createMany?: Prisma.InterviewAnswerCreateManyInterviewQuestionInputEnvelope
+  set?: Prisma.InterviewAnswerWhereUniqueInput | Prisma.InterviewAnswerWhereUniqueInput[]
+  disconnect?: Prisma.InterviewAnswerWhereUniqueInput | Prisma.InterviewAnswerWhereUniqueInput[]
+  delete?: Prisma.InterviewAnswerWhereUniqueInput | Prisma.InterviewAnswerWhereUniqueInput[]
+  connect?: Prisma.InterviewAnswerWhereUniqueInput | Prisma.InterviewAnswerWhereUniqueInput[]
+  update?: Prisma.InterviewAnswerUpdateWithWhereUniqueWithoutInterviewQuestionInput | Prisma.InterviewAnswerUpdateWithWhereUniqueWithoutInterviewQuestionInput[]
+  updateMany?: Prisma.InterviewAnswerUpdateManyWithWhereWithoutInterviewQuestionInput | Prisma.InterviewAnswerUpdateManyWithWhereWithoutInterviewQuestionInput[]
+  deleteMany?: Prisma.InterviewAnswerScalarWhereInput | Prisma.InterviewAnswerScalarWhereInput[]
+}
+
+export type InterviewAnswerUncheckedUpdateManyWithoutInterviewQuestionNestedInput = {
+  create?: Prisma.XOR<Prisma.InterviewAnswerCreateWithoutInterviewQuestionInput, Prisma.InterviewAnswerUncheckedCreateWithoutInterviewQuestionInput> | Prisma.InterviewAnswerCreateWithoutInterviewQuestionInput[] | Prisma.InterviewAnswerUncheckedCreateWithoutInterviewQuestionInput[]
+  connectOrCreate?: Prisma.InterviewAnswerCreateOrConnectWithoutInterviewQuestionInput | Prisma.InterviewAnswerCreateOrConnectWithoutInterviewQuestionInput[]
+  upsert?: Prisma.InterviewAnswerUpsertWithWhereUniqueWithoutInterviewQuestionInput | Prisma.InterviewAnswerUpsertWithWhereUniqueWithoutInterviewQuestionInput[]
+  createMany?: Prisma.InterviewAnswerCreateManyInterviewQuestionInputEnvelope
+  set?: Prisma.InterviewAnswerWhereUniqueInput | Prisma.InterviewAnswerWhereUniqueInput[]
+  disconnect?: Prisma.InterviewAnswerWhereUniqueInput | Prisma.InterviewAnswerWhereUniqueInput[]
+  delete?: Prisma.InterviewAnswerWhereUniqueInput | Prisma.InterviewAnswerWhereUniqueInput[]
+  connect?: Prisma.InterviewAnswerWhereUniqueInput | Prisma.InterviewAnswerWhereUniqueInput[]
+  update?: Prisma.InterviewAnswerUpdateWithWhereUniqueWithoutInterviewQuestionInput | Prisma.InterviewAnswerUpdateWithWhereUniqueWithoutInterviewQuestionInput[]
+  updateMany?: Prisma.InterviewAnswerUpdateManyWithWhereWithoutInterviewQuestionInput | Prisma.InterviewAnswerUpdateManyWithWhereWithoutInterviewQuestionInput[]
+  deleteMany?: Prisma.InterviewAnswerScalarWhereInput | Prisma.InterviewAnswerScalarWhereInput[]
+}
+
 export type InterviewAnswerCreateWithoutQuestionInput = {
   id?: string
   answer: string
   feedback?: string | null
+  idealAnswer?: string | null
+  strengths?: string | null
+  weaknesses?: string | null
+  isCorrect?: boolean | null
   score?: number | null
+  interviewQuestion: Prisma.InterviewQuestionCreateNestedOneWithoutInterviewAnswerInput
   interview: Prisma.InterviewCreateNestedOneWithoutAnswersInput
 }
 
 export type InterviewAnswerUncheckedCreateWithoutQuestionInput = {
   id?: string
   interviewId: string
+  interviewQuestionId: string
   answer: string
   feedback?: string | null
+  idealAnswer?: string | null
+  strengths?: string | null
+  weaknesses?: string | null
+  isCorrect?: boolean | null
   score?: number | null
 }
 
@@ -518,8 +682,13 @@ export type InterviewAnswerScalarWhereInput = {
   id?: Prisma.StringFilter<"InterviewAnswer"> | string
   interviewId?: Prisma.StringFilter<"InterviewAnswer"> | string
   questionId?: Prisma.StringFilter<"InterviewAnswer"> | string
+  interviewQuestionId?: Prisma.StringFilter<"InterviewAnswer"> | string
   answer?: Prisma.StringFilter<"InterviewAnswer"> | string
   feedback?: Prisma.StringNullableFilter<"InterviewAnswer"> | string | null
+  idealAnswer?: Prisma.StringNullableFilter<"InterviewAnswer"> | string | null
+  strengths?: Prisma.StringNullableFilter<"InterviewAnswer"> | string | null
+  weaknesses?: Prisma.StringNullableFilter<"InterviewAnswer"> | string | null
+  isCorrect?: Prisma.BoolNullableFilter<"InterviewAnswer"> | boolean | null
   score?: Prisma.IntNullableFilter<"InterviewAnswer"> | number | null
 }
 
@@ -527,15 +696,25 @@ export type InterviewAnswerCreateWithoutInterviewInput = {
   id?: string
   answer: string
   feedback?: string | null
+  idealAnswer?: string | null
+  strengths?: string | null
+  weaknesses?: string | null
+  isCorrect?: boolean | null
   score?: number | null
+  interviewQuestion: Prisma.InterviewQuestionCreateNestedOneWithoutInterviewAnswerInput
   question: Prisma.QuestionCreateNestedOneWithoutInterviewAnswersInput
 }
 
 export type InterviewAnswerUncheckedCreateWithoutInterviewInput = {
   id?: string
   questionId: string
+  interviewQuestionId: string
   answer: string
   feedback?: string | null
+  idealAnswer?: string | null
+  strengths?: string | null
+  weaknesses?: string | null
+  isCorrect?: boolean | null
   score?: number | null
 }
 
@@ -565,11 +744,68 @@ export type InterviewAnswerUpdateManyWithWhereWithoutInterviewInput = {
   data: Prisma.XOR<Prisma.InterviewAnswerUpdateManyMutationInput, Prisma.InterviewAnswerUncheckedUpdateManyWithoutInterviewInput>
 }
 
+export type InterviewAnswerCreateWithoutInterviewQuestionInput = {
+  id?: string
+  answer: string
+  feedback?: string | null
+  idealAnswer?: string | null
+  strengths?: string | null
+  weaknesses?: string | null
+  isCorrect?: boolean | null
+  score?: number | null
+  interview: Prisma.InterviewCreateNestedOneWithoutAnswersInput
+  question: Prisma.QuestionCreateNestedOneWithoutInterviewAnswersInput
+}
+
+export type InterviewAnswerUncheckedCreateWithoutInterviewQuestionInput = {
+  id?: string
+  interviewId: string
+  questionId: string
+  answer: string
+  feedback?: string | null
+  idealAnswer?: string | null
+  strengths?: string | null
+  weaknesses?: string | null
+  isCorrect?: boolean | null
+  score?: number | null
+}
+
+export type InterviewAnswerCreateOrConnectWithoutInterviewQuestionInput = {
+  where: Prisma.InterviewAnswerWhereUniqueInput
+  create: Prisma.XOR<Prisma.InterviewAnswerCreateWithoutInterviewQuestionInput, Prisma.InterviewAnswerUncheckedCreateWithoutInterviewQuestionInput>
+}
+
+export type InterviewAnswerCreateManyInterviewQuestionInputEnvelope = {
+  data: Prisma.InterviewAnswerCreateManyInterviewQuestionInput | Prisma.InterviewAnswerCreateManyInterviewQuestionInput[]
+  skipDuplicates?: boolean
+}
+
+export type InterviewAnswerUpsertWithWhereUniqueWithoutInterviewQuestionInput = {
+  where: Prisma.InterviewAnswerWhereUniqueInput
+  update: Prisma.XOR<Prisma.InterviewAnswerUpdateWithoutInterviewQuestionInput, Prisma.InterviewAnswerUncheckedUpdateWithoutInterviewQuestionInput>
+  create: Prisma.XOR<Prisma.InterviewAnswerCreateWithoutInterviewQuestionInput, Prisma.InterviewAnswerUncheckedCreateWithoutInterviewQuestionInput>
+}
+
+export type InterviewAnswerUpdateWithWhereUniqueWithoutInterviewQuestionInput = {
+  where: Prisma.InterviewAnswerWhereUniqueInput
+  data: Prisma.XOR<Prisma.InterviewAnswerUpdateWithoutInterviewQuestionInput, Prisma.InterviewAnswerUncheckedUpdateWithoutInterviewQuestionInput>
+}
+
+export type InterviewAnswerUpdateManyWithWhereWithoutInterviewQuestionInput = {
+  where: Prisma.InterviewAnswerScalarWhereInput
+  data: Prisma.XOR<Prisma.InterviewAnswerUpdateManyMutationInput, Prisma.InterviewAnswerUncheckedUpdateManyWithoutInterviewQuestionInput>
+}
+
 export type InterviewAnswerCreateManyQuestionInput = {
   id?: string
   interviewId: string
+  interviewQuestionId: string
   answer: string
   feedback?: string | null
+  idealAnswer?: string | null
+  strengths?: string | null
+  weaknesses?: string | null
+  isCorrect?: boolean | null
   score?: number | null
 }
 
@@ -577,31 +813,51 @@ export type InterviewAnswerUpdateWithoutQuestionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   answer?: Prisma.StringFieldUpdateOperationsInput | string
   feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idealAnswer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  strengths?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weaknesses?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  interviewQuestion?: Prisma.InterviewQuestionUpdateOneRequiredWithoutInterviewAnswerNestedInput
   interview?: Prisma.InterviewUpdateOneRequiredWithoutAnswersNestedInput
 }
 
 export type InterviewAnswerUncheckedUpdateWithoutQuestionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   interviewId?: Prisma.StringFieldUpdateOperationsInput | string
+  interviewQuestionId?: Prisma.StringFieldUpdateOperationsInput | string
   answer?: Prisma.StringFieldUpdateOperationsInput | string
   feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idealAnswer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  strengths?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weaknesses?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type InterviewAnswerUncheckedUpdateManyWithoutQuestionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   interviewId?: Prisma.StringFieldUpdateOperationsInput | string
+  interviewQuestionId?: Prisma.StringFieldUpdateOperationsInput | string
   answer?: Prisma.StringFieldUpdateOperationsInput | string
   feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idealAnswer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  strengths?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weaknesses?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type InterviewAnswerCreateManyInterviewInput = {
   id?: string
   questionId: string
+  interviewQuestionId: string
   answer: string
   feedback?: string | null
+  idealAnswer?: string | null
+  strengths?: string | null
+  weaknesses?: string | null
+  isCorrect?: boolean | null
   score?: number | null
 }
 
@@ -609,23 +865,90 @@ export type InterviewAnswerUpdateWithoutInterviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   answer?: Prisma.StringFieldUpdateOperationsInput | string
   feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idealAnswer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  strengths?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weaknesses?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  interviewQuestion?: Prisma.InterviewQuestionUpdateOneRequiredWithoutInterviewAnswerNestedInput
   question?: Prisma.QuestionUpdateOneRequiredWithoutInterviewAnswersNestedInput
 }
 
 export type InterviewAnswerUncheckedUpdateWithoutInterviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  interviewQuestionId?: Prisma.StringFieldUpdateOperationsInput | string
   answer?: Prisma.StringFieldUpdateOperationsInput | string
   feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idealAnswer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  strengths?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weaknesses?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type InterviewAnswerUncheckedUpdateManyWithoutInterviewInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  interviewQuestionId?: Prisma.StringFieldUpdateOperationsInput | string
   answer?: Prisma.StringFieldUpdateOperationsInput | string
   feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idealAnswer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  strengths?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weaknesses?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+}
+
+export type InterviewAnswerCreateManyInterviewQuestionInput = {
+  id?: string
+  interviewId: string
+  questionId: string
+  answer: string
+  feedback?: string | null
+  idealAnswer?: string | null
+  strengths?: string | null
+  weaknesses?: string | null
+  isCorrect?: boolean | null
+  score?: number | null
+}
+
+export type InterviewAnswerUpdateWithoutInterviewQuestionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  answer?: Prisma.StringFieldUpdateOperationsInput | string
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idealAnswer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  strengths?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weaknesses?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  interview?: Prisma.InterviewUpdateOneRequiredWithoutAnswersNestedInput
+  question?: Prisma.QuestionUpdateOneRequiredWithoutInterviewAnswersNestedInput
+}
+
+export type InterviewAnswerUncheckedUpdateWithoutInterviewQuestionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  interviewId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  answer?: Prisma.StringFieldUpdateOperationsInput | string
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idealAnswer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  strengths?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weaknesses?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+}
+
+export type InterviewAnswerUncheckedUpdateManyWithoutInterviewQuestionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  interviewId?: Prisma.StringFieldUpdateOperationsInput | string
+  questionId?: Prisma.StringFieldUpdateOperationsInput | string
+  answer?: Prisma.StringFieldUpdateOperationsInput | string
+  feedback?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  idealAnswer?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  strengths?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  weaknesses?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isCorrect?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
@@ -635,9 +958,15 @@ export type InterviewAnswerSelect<ExtArgs extends runtime.Types.Extensions.Inter
   id?: boolean
   interviewId?: boolean
   questionId?: boolean
+  interviewQuestionId?: boolean
   answer?: boolean
   feedback?: boolean
+  idealAnswer?: boolean
+  strengths?: boolean
+  weaknesses?: boolean
+  isCorrect?: boolean
   score?: boolean
+  interviewQuestion?: boolean | Prisma.InterviewQuestionDefaultArgs<ExtArgs>
   interview?: boolean | Prisma.InterviewDefaultArgs<ExtArgs>
   question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["interviewAnswer"]>
@@ -646,9 +975,15 @@ export type InterviewAnswerSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   id?: boolean
   interviewId?: boolean
   questionId?: boolean
+  interviewQuestionId?: boolean
   answer?: boolean
   feedback?: boolean
+  idealAnswer?: boolean
+  strengths?: boolean
+  weaknesses?: boolean
+  isCorrect?: boolean
   score?: boolean
+  interviewQuestion?: boolean | Prisma.InterviewQuestionDefaultArgs<ExtArgs>
   interview?: boolean | Prisma.InterviewDefaultArgs<ExtArgs>
   question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["interviewAnswer"]>
@@ -657,9 +992,15 @@ export type InterviewAnswerSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   id?: boolean
   interviewId?: boolean
   questionId?: boolean
+  interviewQuestionId?: boolean
   answer?: boolean
   feedback?: boolean
+  idealAnswer?: boolean
+  strengths?: boolean
+  weaknesses?: boolean
+  isCorrect?: boolean
   score?: boolean
+  interviewQuestion?: boolean | Prisma.InterviewQuestionDefaultArgs<ExtArgs>
   interview?: boolean | Prisma.InterviewDefaultArgs<ExtArgs>
   question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["interviewAnswer"]>
@@ -668,21 +1009,29 @@ export type InterviewAnswerSelectScalar = {
   id?: boolean
   interviewId?: boolean
   questionId?: boolean
+  interviewQuestionId?: boolean
   answer?: boolean
   feedback?: boolean
+  idealAnswer?: boolean
+  strengths?: boolean
+  weaknesses?: boolean
+  isCorrect?: boolean
   score?: boolean
 }
 
-export type InterviewAnswerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "interviewId" | "questionId" | "answer" | "feedback" | "score", ExtArgs["result"]["interviewAnswer"]>
+export type InterviewAnswerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "interviewId" | "questionId" | "interviewQuestionId" | "answer" | "feedback" | "idealAnswer" | "strengths" | "weaknesses" | "isCorrect" | "score", ExtArgs["result"]["interviewAnswer"]>
 export type InterviewAnswerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  interviewQuestion?: boolean | Prisma.InterviewQuestionDefaultArgs<ExtArgs>
   interview?: boolean | Prisma.InterviewDefaultArgs<ExtArgs>
   question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
 }
 export type InterviewAnswerIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  interviewQuestion?: boolean | Prisma.InterviewQuestionDefaultArgs<ExtArgs>
   interview?: boolean | Prisma.InterviewDefaultArgs<ExtArgs>
   question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
 }
 export type InterviewAnswerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  interviewQuestion?: boolean | Prisma.InterviewQuestionDefaultArgs<ExtArgs>
   interview?: boolean | Prisma.InterviewDefaultArgs<ExtArgs>
   question?: boolean | Prisma.QuestionDefaultArgs<ExtArgs>
 }
@@ -690,6 +1039,7 @@ export type InterviewAnswerIncludeUpdateManyAndReturn<ExtArgs extends runtime.Ty
 export type $InterviewAnswerPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "InterviewAnswer"
   objects: {
+    interviewQuestion: Prisma.$InterviewQuestionPayload<ExtArgs>
     interview: Prisma.$InterviewPayload<ExtArgs>
     question: Prisma.$QuestionPayload<ExtArgs>
   }
@@ -697,8 +1047,13 @@ export type $InterviewAnswerPayload<ExtArgs extends runtime.Types.Extensions.Int
     id: string
     interviewId: string
     questionId: string
+    interviewQuestionId: string
     answer: string
     feedback: string | null
+    idealAnswer: string | null
+    strengths: string | null
+    weaknesses: string | null
+    isCorrect: boolean | null
     score: number | null
   }, ExtArgs["result"]["interviewAnswer"]>
   composites: {}
@@ -1094,6 +1449,7 @@ readonly fields: InterviewAnswerFieldRefs;
  */
 export interface Prisma__InterviewAnswerClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  interviewQuestion<T extends Prisma.InterviewQuestionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InterviewQuestionDefaultArgs<ExtArgs>>): Prisma.Prisma__InterviewQuestionClient<runtime.Types.Result.GetResult<Prisma.$InterviewQuestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   interview<T extends Prisma.InterviewDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InterviewDefaultArgs<ExtArgs>>): Prisma.Prisma__InterviewClient<runtime.Types.Result.GetResult<Prisma.$InterviewPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   question<T extends Prisma.QuestionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.QuestionDefaultArgs<ExtArgs>>): Prisma.Prisma__QuestionClient<runtime.Types.Result.GetResult<Prisma.$QuestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1128,8 +1484,13 @@ export interface InterviewAnswerFieldRefs {
   readonly id: Prisma.FieldRef<"InterviewAnswer", 'String'>
   readonly interviewId: Prisma.FieldRef<"InterviewAnswer", 'String'>
   readonly questionId: Prisma.FieldRef<"InterviewAnswer", 'String'>
+  readonly interviewQuestionId: Prisma.FieldRef<"InterviewAnswer", 'String'>
   readonly answer: Prisma.FieldRef<"InterviewAnswer", 'String'>
   readonly feedback: Prisma.FieldRef<"InterviewAnswer", 'String'>
+  readonly idealAnswer: Prisma.FieldRef<"InterviewAnswer", 'String'>
+  readonly strengths: Prisma.FieldRef<"InterviewAnswer", 'String'>
+  readonly weaknesses: Prisma.FieldRef<"InterviewAnswer", 'String'>
+  readonly isCorrect: Prisma.FieldRef<"InterviewAnswer", 'Boolean'>
   readonly score: Prisma.FieldRef<"InterviewAnswer", 'Int'>
 }
     

@@ -14,9 +14,13 @@ import {
   BookOpen,
 } from "lucide-react";
 
-
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetTitle,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import UserProfile from "./user-profile";
 
 export interface ClientHeaderProp {
@@ -103,6 +107,7 @@ export default function Header({ user, path, action }: ClientHeaderProp) {
 
             {/* MOBILE MENU */}
             <Sheet open={open} onOpenChange={setOpen}>
+              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               <SheetTrigger asChild className="md:hidden">
                 <button className="flex h-10 w-10 items-center justify-center rounded-xl border border-black/10 bg-white shadow-sm">
                   <Menu />

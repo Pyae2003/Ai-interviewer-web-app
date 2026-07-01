@@ -6,13 +6,13 @@ import { Plus } from "lucide-react";
 
 const page = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-yellow-50">
+    <div>
       <AdminHeader
         path={createCategoryPath}
         action={
           <Button className="bg-gradient-to-r from-sky-500 to-yellow-400 text-black hover:opacity-90">
             <Plus className="mr-2 h-4 w-4" />
-            Create New Category
+            Create Categories
           </Button>
         }
       />

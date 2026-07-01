@@ -11,9 +11,10 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
-enum Role {
-  ADMIN
-  USER
+
+enum UserRole {
+  user
+  admin
 }
 
 model User {
@@ -23,13 +24,19 @@ model User {
   emailVerified Boolean @default(false)
   image         String?
 
-  role      Role      @default(USER)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  sessions  Session[]
-  accounts  Account[]
+  lastLoginMethod String?
+  lastLogin       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  sessions        Session[]
+  accounts        Account[]
 
   interview Interview[]
+
+  role       UserRole? @default(user)
+  banned     Boolean?  @default(false)
+  banReason  String?
+  banExpires DateTime?
 
   @@unique([email])
   @@map("user")
@@ -45,6 +52,8 @@ model Session {
   userAgent String?
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  impersonatedBy String?
 
   @@unique([token])
   @@index([userId])
@@ -90,6 +99,7 @@ enum Difficulty {
 }
 
 enum InterviewStatus {
+  FAILED
   PENDING
   IN_PROGRESS
   COMPLETED
@@ -118,8 +128,9 @@ model Question {
   question   String
   difficulty Difficulty
 
-  createdAt        DateTime          @default(now())
-  interviewAnswers InterviewAnswer[]
+  createdAt         DateTime            @default(now())
+  interviewAnswers  InterviewAnswer[]
+  interviewQuestion InterviewQuestion[]
 }
 
 model Interview {
@@ -132,7 +143,9 @@ model Interview {
   category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   score  Int?
-  status InterviewStatus
+  status InterviewStatus @default(IN_PROGRESS)
+
+  interviewQuestion InterviewQuestion[]
 
   answers InterviewAnswer[]
 
@@ -142,14 +155,40 @@ model Interview {
 model InterviewAnswer {
   id String @id @default(cuid())
 
-  interviewId String
-  questionId  String
-
-  answer   String
-  feedback String?
-
-  score Int?
+  interviewId         String
+  questionId          String
+  interviewQuestionId String            @unique
+  answer              String
+  feedback            String?
+  idealAnswer         String?
+  strengths           String?
+  weaknesses          String?
+  isCorrect           Boolean?
+  score               Int?
+  interviewQuestion   InterviewQuestion @relation(fields: [interviewQuestionId], references: [id], onDelete: Cascade)
 
   interview Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
   question  Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+}
+
+model InterviewQuestion {
+  id String @id @default(cuid())
+
+  interviewId String
+
+  questionId String
+
+  orderIndex Int
+
+  questionText String
+
+  difficulty Difficulty
+
+  interviewAnswer InterviewAnswer[]
+
+  interview Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+
+  question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
 }

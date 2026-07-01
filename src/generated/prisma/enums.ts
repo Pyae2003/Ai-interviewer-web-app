@@ -9,12 +9,12 @@
 * 🟢 You can import this file directly.
 */
 
-export const Role = {
-  ADMIN: 'ADMIN',
-  USER: 'USER'
+export const UserRole = {
+  user: 'user',
+  admin: 'admin'
 } as const
 
-export type Role = (typeof Role)[keyof typeof Role]
+export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
 export const Difficulty = {
@@ -27,6 +27,7 @@ export type Difficulty = (typeof Difficulty)[keyof typeof Difficulty]
 
 
 export const InterviewStatus = {
+  FAILED: 'FAILED',
   PENDING: 'PENDING',
   IN_PROGRESS: 'IN_PROGRESS',
   COMPLETED: 'COMPLETED'

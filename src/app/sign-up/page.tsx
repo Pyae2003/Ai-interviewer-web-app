@@ -6,35 +6,27 @@ import { getSession } from "@/lib/get-Session";
 import { Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 
-const page = async () => {
-  let session = null;
+export default async function Page() {
+  const session = await getSession();
 
-  try {
-    session = await getSession();
-  } catch (error) {
-    console.error("Session error:", error);
-  }
-
-  if (session) {
+  // AUTH GUARD (strict check)
+  if (session?.user?.id) {
     redirect(dashboardPath);
   }
 
   return (
-    <div>
-      <div>
-        <Header
-          path={loginPath}
-          action={
-            <Button className="bg-gradient-to-r from-sky-500 to-yellow-400 text-black hover:opacity-90">
-              <Plus className="mr-2 h-4 w-4" />
-              Login
-            </Button>
-          }
-        />
-        <SignUpPage />
-      </div>
-    </div>
-  );
-};
+    <>
+      <Header
+        path={loginPath}
+        action={
+          <Button className="bg-gradient-to-r from-sky-500 to-yellow-400 text-black hover:opacity-90">
+            <Plus className="mr-2 h-4 w-4" />
+            Login
+          </Button>
+        }
+      />
 
-export default page;
+      <SignUpPage />
+    </>
+  );
+}

@@ -57,3 +57,8 @@ export type Interview = Prisma.InterviewModel
  * 
  */
 export type InterviewAnswer = Prisma.InterviewAnswerModel
+/**
+ * Model InterviewQuestion
+ * 
+ */
+export type InterviewQuestion = Prisma.InterviewQuestionModel

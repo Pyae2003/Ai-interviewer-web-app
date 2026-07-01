@@ -1,15 +1,25 @@
+"use client"
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Briefcase, FileQuestion, Mic } from "lucide-react";
+import { Briefcase, FileQuestion, Loader2, Mic } from "lucide-react";
 import { Category } from "@/features/admin/category/type/category-type";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { startInterview } from "../../interviews/actions/start-interview";
+import { useTransition } from "react";
 
 type CategoriesProp = {
   category: Category;
 };
 
 const CategoriesList = ({ category }: CategoriesProp) => {
+  const [isPending, startTransition] = useTransition();
+
+  const handleStart = async () => {
+    startTransition(async () => {
+      await startInterview(category.id);
+    });
+  };
   return (
     <Card className="group relative overflow-hidden rounded-3xl border border-sky-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-sky-300 hover:shadow-2xl">
       {/* Top Gradient Accent */}
@@ -77,19 +87,23 @@ const CategoriesList = ({ category }: CategoriesProp) => {
             </div>
 
             <Button
-              asChild
               size="sm"
-              className="
-        bg-white
-        text-black
-        hover:bg-zinc-100  hover:shadow-xl
-    hover:opacity-95
-      "
+              type="button"
+              disabled={isPending}
+              onClick={handleStart}
+              className="bg-white text-black hover:bg-zinc-100 hover:shadow-xl hover:opacity-95"
             >
-              <Link href={`/interview/${category.id}`}>
-                <Mic className="mr-2 h-4 w-4" />
-                Start
-              </Link>
+              {isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Starting...
+                </>
+              ) : (
+                <>
+                  <Mic className="mr-2 h-4 w-4" />
+                  Start Interview
+                </>
+              )}
             </Button>
           </div>
         </div>

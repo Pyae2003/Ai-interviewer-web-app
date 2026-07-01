@@ -391,7 +391,8 @@ export const ModelName = {
   Category: 'Category',
   Question: 'Question',
   Interview: 'Interview',
-  InterviewAnswer: 'InterviewAnswer'
+  InterviewAnswer: 'InterviewAnswer',
+  InterviewQuestion: 'InterviewQuestion'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -407,7 +408,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "category" | "question" | "interview" | "interviewAnswer"
+    modelProps: "user" | "session" | "account" | "verification" | "category" | "question" | "interview" | "interviewAnswer" | "interviewQuestion"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1003,6 +1004,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    InterviewQuestion: {
+      payload: Prisma.$InterviewQuestionPayload<ExtArgs>
+      fields: Prisma.InterviewQuestionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InterviewQuestionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterviewQuestionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InterviewQuestionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterviewQuestionPayload>
+        }
+        findFirst: {
+          args: Prisma.InterviewQuestionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterviewQuestionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InterviewQuestionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterviewQuestionPayload>
+        }
+        findMany: {
+          args: Prisma.InterviewQuestionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterviewQuestionPayload>[]
+        }
+        create: {
+          args: Prisma.InterviewQuestionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterviewQuestionPayload>
+        }
+        createMany: {
+          args: Prisma.InterviewQuestionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InterviewQuestionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterviewQuestionPayload>[]
+        }
+        delete: {
+          args: Prisma.InterviewQuestionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterviewQuestionPayload>
+        }
+        update: {
+          args: Prisma.InterviewQuestionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterviewQuestionPayload>
+        }
+        deleteMany: {
+          args: Prisma.InterviewQuestionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InterviewQuestionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InterviewQuestionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterviewQuestionPayload>[]
+        }
+        upsert: {
+          args: Prisma.InterviewQuestionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InterviewQuestionPayload>
+        }
+        aggregate: {
+          args: Prisma.InterviewQuestionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInterviewQuestion>
+        }
+        groupBy: {
+          args: Prisma.InterviewQuestionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InterviewQuestionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InterviewQuestionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InterviewQuestionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1048,9 +1123,14 @@ export const UserScalarFieldEnum = {
   email: 'email',
   emailVerified: 'emailVerified',
   image: 'image',
-  role: 'role',
+  lastLoginMethod: 'lastLoginMethod',
+  lastLogin: 'lastLogin',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  role: 'role',
+  banned: 'banned',
+  banReason: 'banReason',
+  banExpires: 'banExpires'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -1064,7 +1144,8 @@ export const SessionScalarFieldEnum = {
   updatedAt: 'updatedAt',
   ipAddress: 'ipAddress',
   userAgent: 'userAgent',
-  userId: 'userId'
+  userId: 'userId',
+  impersonatedBy: 'impersonatedBy'
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
@@ -1141,12 +1222,30 @@ export const InterviewAnswerScalarFieldEnum = {
   id: 'id',
   interviewId: 'interviewId',
   questionId: 'questionId',
+  interviewQuestionId: 'interviewQuestionId',
   answer: 'answer',
   feedback: 'feedback',
+  idealAnswer: 'idealAnswer',
+  strengths: 'strengths',
+  weaknesses: 'weaknesses',
+  isCorrect: 'isCorrect',
   score: 'score'
 } as const
 
 export type InterviewAnswerScalarFieldEnum = (typeof InterviewAnswerScalarFieldEnum)[keyof typeof InterviewAnswerScalarFieldEnum]
+
+
+export const InterviewQuestionScalarFieldEnum = {
+  id: 'id',
+  interviewId: 'interviewId',
+  questionId: 'questionId',
+  orderIndex: 'orderIndex',
+  questionText: 'questionText',
+  difficulty: 'difficulty',
+  createdAt: 'createdAt'
+} as const
+
+export type InterviewQuestionScalarFieldEnum = (typeof InterviewQuestionScalarFieldEnum)[keyof typeof InterviewQuestionScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1201,20 +1300,6 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
- * Reference to a field of type 'Role'
- */
-export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
-    
-
-
-/**
- * Reference to a field of type 'Role[]'
- */
-export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
-    
-
-
-/**
  * Reference to a field of type 'DateTime'
  */
 export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -1225,6 +1310,20 @@ export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel
  * Reference to a field of type 'DateTime[]'
  */
 export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
+    
+
+
+/**
+ * Reference to a field of type 'UserRole'
+ */
+export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
+    
+
+
+/**
+ * Reference to a field of type 'UserRole[]'
+ */
+export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
     
 
 
@@ -1401,6 +1500,7 @@ export type GlobalOmitConfig = {
   question?: Prisma.QuestionOmit
   interview?: Prisma.InterviewOmit
   interviewAnswer?: Prisma.InterviewAnswerOmit
+  interviewQuestion?: Prisma.InterviewQuestionOmit
 }
 
 /* Types for Logging */
