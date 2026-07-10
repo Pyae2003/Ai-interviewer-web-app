@@ -1,12 +1,12 @@
 "use client";
 
-import { Mic, Bell, Search } from "lucide-react";
+import { Mic} from "lucide-react";
 
 import { motion } from "framer-motion";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { navDataArray } from "@/features/admin/dashboard/query/nav-data";
+export const dynamic = "force-dynamic";
 
 export default function AdminDashboard({
   children,

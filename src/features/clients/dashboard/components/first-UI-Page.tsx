@@ -16,7 +16,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 export default function WelcomeProfilePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-yellow-50">
+    <div className="min-h-screen bg-linear-to-br from-sky-50 via-white to-yellow-50">
       <div className="mx-auto max-w-7xl px-4 py-10">
         {/* Top Action */}
         <div className="mb-8">
@@ -36,7 +36,7 @@ export default function WelcomeProfilePage() {
         <Card className="overflow-hidden border-0 bg-white shadow-xl">
           <CardContent className="relative p-0">
             {/* Background Decoration */}
-            <div className="absolute inset-0 bg-gradient-to-r from-sky-100/60 via-white to-yellow-100/60" />
+            <div className="absolute inset-0 bg-linear-to-r from-sky-100/60 via-white to-yellow-100/60" />
 
             <div className="relative px-8 py-14 md:px-12 md:py-16">
               <div className="max-w-3xl">
@@ -47,7 +47,7 @@ export default function WelcomeProfilePage() {
 
                 <h1 className="mb-4 text-4xl font-extrabold tracking-tight text-zinc-900 md:text-6xl">
                   Master Your
-                  <span className="bg-gradient-to-r from-sky-500 to-yellow-500 bg-clip-text text-transparent">
+                  <span className="bg-linear-to-r from-sky-500 to-yellow-500 bg-clip-text text-transparent">
                     {" "}
                     Interview Skills
                   </span>
@@ -63,7 +63,7 @@ export default function WelcomeProfilePage() {
                   <Button
                     asChild
                     size="lg"
-                    className="rounded-xl bg-gradient-to-r from-sky-500 to-yellow-400 text-black hover:opacity-90"
+                    className="rounded-xl bg-linear-to-r from-sky-500 to-yellow-400 text-black hover:opacity-90"
                   >
                     <Link href="/dashboard">
                       Start Interview
@@ -142,7 +142,7 @@ export default function WelcomeProfilePage() {
         </div>
 
         {/* Welcome Message */}
-        <Card className="mt-10 border-0 bg-gradient-to-r from-sky-100 via-white to-yellow-100 shadow-lg">
+        <Card className="mt-10 border-0 bg-linear-to-r from-sky-100 via-white to-yellow-100 shadow-lg">
           <CardContent className="p-8 text-center">
             <h2 className="mb-3 text-2xl font-bold text-zinc-900">
               Welcome to AI Interviewer

@@ -1,14 +1,17 @@
-import { getAllCategories } from "@/features/admin/category/query/get-categories";
-import ClientCategoriesList from "./categories-list";
-
-
+import { notFound } from "next/navigation";
+import { getAllCategoryGroups } from "@/features/admin/categoryGroup/query/get-all-category-groups";
+import { CategoryHeader } from "./categoy-header";
+import { CategoryGroupList } from "./category-groups-list";
 
 const MainDashboard = async () => {
-  const categories = await getAllCategories();
+  const categoryGroup = await getAllCategoryGroups();  
+  if (!categoryGroup.data) {
+    notFound();
+  }
 
   return (
     <section className="space-y-6">
-      {categories.length === 0 ? (
+      {categoryGroup.data.data.length === 0 ? (
         <div className="rounded-2xl border bg-white p-10 text-center shadow-sm">
           <h3 className="text-lg font-semibold text-zinc-900">
             No Categories Found
@@ -19,15 +22,23 @@ const MainDashboard = async () => {
           </p>
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 mx-auto max-w-7xl px-4 py-3">
-          {categories.map((category) => (
-            <ClientCategoriesList key={category.id} category={category} />
-          ))}
-        </div>
+        <main className="min-h-screen bg-linear-to-br from-slate-50 via-white to-sky-50">
+          <section className="mx-auto max-w-3xl px-6 py-16">
+            <CategoryHeader />
+
+            <div className="mt-12">
+              {categoryGroup.data.data.map((categoryGroupName) => (
+                <CategoryGroupList
+                  key={categoryGroupName.id}
+                  {...categoryGroupName}
+                />
+              ))}
+            </div>
+          </section>
+        </main>
       )}
     </section>
   );
 };
-
 
 export default MainDashboard;

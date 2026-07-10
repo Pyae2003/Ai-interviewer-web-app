@@ -388,6 +388,7 @@ export const ModelName = {
   Session: 'Session',
   Account: 'Account',
   Verification: 'Verification',
+  CategoryGroup: 'CategoryGroup',
   Category: 'Category',
   Question: 'Question',
   Interview: 'Interview',
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "category" | "question" | "interview" | "interviewAnswer" | "interviewQuestion"
+    modelProps: "user" | "session" | "account" | "verification" | "categoryGroup" | "category" | "question" | "interview" | "interviewAnswer" | "interviewQuestion"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -705,6 +706,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.VerificationCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.VerificationCountAggregateOutputType> | number
+        }
+      }
+    }
+    CategoryGroup: {
+      payload: Prisma.$CategoryGroupPayload<ExtArgs>
+      fields: Prisma.CategoryGroupFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CategoryGroupFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryGroupPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CategoryGroupFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryGroupPayload>
+        }
+        findFirst: {
+          args: Prisma.CategoryGroupFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryGroupPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CategoryGroupFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryGroupPayload>
+        }
+        findMany: {
+          args: Prisma.CategoryGroupFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryGroupPayload>[]
+        }
+        create: {
+          args: Prisma.CategoryGroupCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryGroupPayload>
+        }
+        createMany: {
+          args: Prisma.CategoryGroupCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CategoryGroupCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryGroupPayload>[]
+        }
+        delete: {
+          args: Prisma.CategoryGroupDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryGroupPayload>
+        }
+        update: {
+          args: Prisma.CategoryGroupUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryGroupPayload>
+        }
+        deleteMany: {
+          args: Prisma.CategoryGroupDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CategoryGroupUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CategoryGroupUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryGroupPayload>[]
+        }
+        upsert: {
+          args: Prisma.CategoryGroupUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryGroupPayload>
+        }
+        aggregate: {
+          args: Prisma.CategoryGroupAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCategoryGroup>
+        }
+        groupBy: {
+          args: Prisma.CategoryGroupGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CategoryGroupGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CategoryGroupCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CategoryGroupCountAggregateOutputType> | number
         }
       }
     }
@@ -1182,12 +1257,30 @@ export const VerificationScalarFieldEnum = {
 export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
+export const CategoryGroupScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  type: 'type',
+  description: 'description',
+  icon: 'icon',
+  color: 'color',
+  isActive: 'isActive',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CategoryGroupScalarFieldEnum = (typeof CategoryGroupScalarFieldEnum)[keyof typeof CategoryGroupScalarFieldEnum]
+
+
 export const CategoryScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
   isActive: 'isActive',
   sortOrder: 'sortOrder',
+  categoryGroupId: 'categoryGroupId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1324,6 +1417,20 @@ export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
  * Reference to a field of type 'UserRole[]'
  */
 export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CategoryGroupType'
+ */
+export type EnumCategoryGroupTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CategoryGroupType'>
+    
+
+
+/**
+ * Reference to a field of type 'CategoryGroupType[]'
+ */
+export type ListEnumCategoryGroupTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CategoryGroupType[]'>
     
 
 
@@ -1496,6 +1603,7 @@ export type GlobalOmitConfig = {
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
   verification?: Prisma.VerificationOmit
+  categoryGroup?: Prisma.CategoryGroupOmit
   category?: Prisma.CategoryOmit
   question?: Prisma.QuestionOmit
   interview?: Prisma.InterviewOmit

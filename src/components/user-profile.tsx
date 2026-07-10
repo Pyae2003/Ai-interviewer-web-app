@@ -1,3 +1,13 @@
+"use client";
+
+import Link from "next/link";
+import {
+  ChevronDown,
+  LayoutDashboard,
+  Settings,
+  User,
+} from "lucide-react";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,85 +16,122 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogoutButton } from "./logout";
-import { ChevronDown } from "lucide-react";
-import Link from "next/link";
-import { LayoutDashboard, User, Settings, LogOut } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { LogoutButton } from "./logout";
 
-type UserProfileProp = {
+type UserProfileProps = {
   id: string;
   name: string;
   email: string;
 };
-const UserProfile = ({ id, name, email }: UserProfileProp) => {
+
+export default function UserProfile({
+  name,
+  email,
+}: UserProfileProps) {
+  const initial = name?.charAt(0).toUpperCase() ?? "U";
+
   return (
-    <div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            className="hidden sm:flex items-center gap-2 rounded-xl"
-          >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-yellow-300 font-semibold text-black">
-              {name?.charAt(0).toUpperCase() ?? "U"}
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          className="
+            h-auto
+            rounded-xl
+            px-2
+            py-1
+            transition-all
+            hover:bg-muted
+          "
+        >
+          <div className="flex items-center gap-2">
+            {/* Avatar */}
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-sky-500 to-yellow-400 font-semibold text-black shadow">
+              {initial}
             </div>
 
-            <div className="flex flex-col items-start">
-              <span className="max-w-[120px] truncate text-sm font-medium">
+            {/* Desktop */}
+            <div className="hidden sm:flex flex-col items-start">
+              <span className="max-w-35 truncate text-sm font-semibold">
                 {name}
+              </span>
+
+              <span className="max-w-40] truncate text-xs text-muted-foreground">
+                {email}
               </span>
             </div>
 
-            <ChevronDown className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
+            {/* Desktop Arrow */}
+            <ChevronDown className="hidden h-4 w-4 text-muted-foreground sm:block" />
+          </div>
+        </Button>
+      </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" className="w-64">
-          <DropdownMenuLabel>
-            <div className="space-y-1">
-              <p className="font-semibold">{name}</p>
-
-              <p className="text-xs text-muted-foreground">{email}</p>
+      <DropdownMenuContent
+        align="end"
+        sideOffset={8}
+        className="w-64 rounded-xl"
+      >
+        {/* Header */}
+        <DropdownMenuLabel className="pb-3">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-sky-500 to-yellow-400 font-bold text-black">
+              {initial}
             </div>
-          </DropdownMenuLabel>
 
-          <DropdownMenuSeparator />
+            <div className="overflow-hidden">
+              <p className="truncate font-semibold">
+                {name}
+              </p>
 
-          <DropdownMenuItem asChild>
-            <Link href="/dashboard" className="cursor-pointer">
-              <LayoutDashboard className="mr-2 h-4 w-4" />
-              Dashboard
-            </Link>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem asChild>
-            <Link href="/profile" className="cursor-pointer">
-              <User className="mr-2 h-4 w-4" />
-              Profile
-            </Link>
-          </DropdownMenuItem>
-
-          <DropdownMenuItem asChild>
-            <Link href="/settings" className="cursor-pointer">
-              <Settings className="mr-2 h-4 w-4" />
-              Settings
-            </Link>
-          </DropdownMenuItem>
-
-          <DropdownMenuSeparator />
-
-          <DropdownMenuItem asChild>
-            <div>
-              <LogOut className="mr-2 h-4 w-4" />
-              <LogoutButton />
+              <p className="truncate text-xs text-muted-foreground">
+                {email}
+              </p>
             </div>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+          </div>
+        </DropdownMenuLabel>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem asChild>
+          <Link
+            href="/dashboard"
+            className="flex cursor-pointer items-center"
+          >
+            <LayoutDashboard className="mr-2 h-4 w-4" />
+            Dashboard
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link
+            href="/profile"
+            className="flex cursor-pointer items-center"
+          >
+            <User className="mr-2 h-4 w-4" />
+            Profile
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link
+            href="/settings"
+            className="flex cursor-pointer items-center"
+          >
+            <Settings className="mr-2 h-4 w-4" />
+            Settings
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuSeparator />
+
+        {/* Logout */}
+        <DropdownMenuItem asChild>
+          <LogoutButton />
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
-};
-
-export default UserProfile;
+}

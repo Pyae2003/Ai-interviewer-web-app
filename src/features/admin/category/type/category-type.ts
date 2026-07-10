@@ -12,6 +12,7 @@ export type Category = Prisma.CategoryGetPayload<{
         _count: {
           select: {
             questions: true,
+            interviews : true,
           },
         },
       },

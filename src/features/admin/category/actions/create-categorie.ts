@@ -5,7 +5,6 @@ import { AppError } from "@/middleware";
 import { actionClient } from "@/lib/safe-action";
 import { createCategorySchema } from "../schema/create-categories.schema";
 
-
 type CreateCategoryResponse = {
   success: boolean;
   message: string;
@@ -19,12 +18,33 @@ type CreateCategoryResponse = {
 export const createCategory = actionClient
   .inputSchema(createCategorySchema)
   .action(async ({ parsedInput }): Promise<CreateCategoryResponse> => {
-    const { name, description, isActive, sortOrder } = parsedInput;
+    const { name, description, isActive, sortOrder, categoryGroupName } =
+      parsedInput;
 
     try {
-      const existingCategory = await prisma.category.findUnique({
+      const categoryGroup = await prisma.categoryGroup.findFirst({
         where: {
-          name,
+          name: categoryGroupName,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (!categoryGroup) {
+        throw new AppError(
+          "Category group not found",
+          "CATEGORY_GROUP_NOT_FOUND",
+          404,
+        );
+      }
+      const existingCategory = await prisma.category.findFirst({
+        where: {
+          categoryGroupId: categoryGroup.id,
+          name: {
+            equals: name,
+            mode: "insensitive",
+          },
         },
         select: {
           id: true,
@@ -45,6 +65,7 @@ export const createCategory = actionClient
           description,
           isActive,
           sortOrder,
+          categoryGroupId: categoryGroup.id,
         },
         select: {
           id: true,

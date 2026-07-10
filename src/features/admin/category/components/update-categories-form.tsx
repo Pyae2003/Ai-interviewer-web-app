@@ -32,16 +32,33 @@ import {
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
 import { categoriesdashboardPath, dashboardPath } from "@/constants/route";
-import { CategoryInput } from "../schema/create-categories.schema";
 import { updateCategory } from "../actions/update-categories";
 import {
   UpdateCategoryInput,
   updateCategorySchema,
 } from "../schema/update-categories.schema";
-import { Category } from "@/generated/prisma/client";
+import { Prisma } from "@/generated/prisma/client";
+
+type UpdateCategory = Prisma.CategoryGetPayload<{
+  select: {
+    id: true;
+    name: true;
+    description: true;
+    isActive: true;
+    sortOrder: true;
+    createdAt: true;
+    updatedAt: true;
+    categoryGroup: {
+      select: {
+        id: true;
+        name: true;
+      };
+    };
+  };
+}>;
 
 type UpdateCategoryFormProps = {
-  category: Category;
+  category: UpdateCategory;
 };
 
 export function UpdateCategoryForm({ category }: UpdateCategoryFormProps) {
@@ -56,6 +73,7 @@ export function UpdateCategoryForm({ category }: UpdateCategoryFormProps) {
     defaultValues: {
       id: category.id,
       name: category.name,
+      categoryGroupName: category.categoryGroup?.name,
       description: category.description ?? "",
       isActive: category.isActive,
       sortOrder: category.sortOrder,
@@ -74,7 +92,7 @@ export function UpdateCategoryForm({ category }: UpdateCategoryFormProps) {
   useEffect(() => {
     if (hasSucceeded) {
       toast.success(result.data?.message ?? "Category updated successfully");
-      router.push(categoriesdashboardPath)
+      router.push(categoriesdashboardPath);
       router.refresh();
     }
 
@@ -111,6 +129,10 @@ export function UpdateCategoryForm({ category }: UpdateCategoryFormProps) {
                 noValidate
               >
                 <FieldGroup className="space-y-5">
+                  <Field>
+                    <FieldLabel>Category</FieldLabel>
+                    <Input value={category.categoryGroup?.name} disabled />
+                  </Field>
                   {/* Email */}
                   <Controller
                     name="name"

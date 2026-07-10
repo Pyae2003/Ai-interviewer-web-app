@@ -82,10 +82,6 @@ export async function getInterviewHistoryDetail(interviewId: string) {
                 strengths: true,
 
                 weaknesses: true,
-
-                missingPoints: true,
-
-                recommendations: true,
               },
             },
           },
@@ -123,7 +119,6 @@ export async function getInterviewHistoryDetail(interviewId: string) {
 
         weaknesses: answer?.weaknesses ?? "",
 
-        missingPoints: answer?.missingPoints ?? [],
       };
     });
 

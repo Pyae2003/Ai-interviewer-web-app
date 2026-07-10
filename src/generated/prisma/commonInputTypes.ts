@@ -178,6 +178,13 @@ export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
 }
 
+export type EnumCategoryGroupTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.CategoryGroupType | Prisma.EnumCategoryGroupTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.CategoryGroupType[] | Prisma.ListEnumCategoryGroupTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CategoryGroupType[] | Prisma.ListEnumCategoryGroupTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCategoryGroupTypeFilter<$PrismaModel> | $Enums.CategoryGroupType
+}
+
 export type IntFilter<$PrismaModel = never> = {
   equals?: number | Prisma.IntFieldRefInput<$PrismaModel>
   in?: number[] | Prisma.ListIntFieldRefInput<$PrismaModel>
@@ -187,6 +194,16 @@ export type IntFilter<$PrismaModel = never> = {
   gt?: number | Prisma.IntFieldRefInput<$PrismaModel>
   gte?: number | Prisma.IntFieldRefInput<$PrismaModel>
   not?: Prisma.NestedIntFilter<$PrismaModel> | number
+}
+
+export type EnumCategoryGroupTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CategoryGroupType | Prisma.EnumCategoryGroupTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.CategoryGroupType[] | Prisma.ListEnumCategoryGroupTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CategoryGroupType[] | Prisma.ListEnumCategoryGroupTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCategoryGroupTypeWithAggregatesFilter<$PrismaModel> | $Enums.CategoryGroupType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCategoryGroupTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCategoryGroupTypeFilter<$PrismaModel>
 }
 
 export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -441,6 +458,23 @@ export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
   _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
   _min?: Prisma.NestedBoolNullableFilter<$PrismaModel>
   _max?: Prisma.NestedBoolNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumCategoryGroupTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.CategoryGroupType | Prisma.EnumCategoryGroupTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.CategoryGroupType[] | Prisma.ListEnumCategoryGroupTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CategoryGroupType[] | Prisma.ListEnumCategoryGroupTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCategoryGroupTypeFilter<$PrismaModel> | $Enums.CategoryGroupType
+}
+
+export type NestedEnumCategoryGroupTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.CategoryGroupType | Prisma.EnumCategoryGroupTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.CategoryGroupType[] | Prisma.ListEnumCategoryGroupTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.CategoryGroupType[] | Prisma.ListEnumCategoryGroupTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumCategoryGroupTypeWithAggregatesFilter<$PrismaModel> | $Enums.CategoryGroupType
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumCategoryGroupTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumCategoryGroupTypeFilter<$PrismaModel>
 }
 
 export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {

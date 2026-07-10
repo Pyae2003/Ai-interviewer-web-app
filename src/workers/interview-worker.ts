@@ -109,15 +109,15 @@ export const interviewWorker = new Worker(
         interviewId,
         score: summary.averageScore,
       };
-    } catch (error: any) {
+    } catch (error) {
       console.error(`[Worker Error] ${interviewId}`, error);
 
       await prisma.interview.update({
         where: { id: interviewId },
         data: {
           status: "FAILED",
-          errorMessage: error?.message ?? "Unknown error",
-          failedAt: new Date(),
+          // errorMessage: error?.message ?? "Unknown error",
+          // failedAt: new Date(),
         },
       });
 
@@ -125,7 +125,7 @@ export const interviewWorker = new Worker(
     }
   },
   {
-    connection: redisConnection ,
+    connection: redisConnection as any ,
     concurrency: 3,
   }
 );

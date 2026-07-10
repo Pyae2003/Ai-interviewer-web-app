@@ -126,8 +126,6 @@ export default function InterViewsClientAnswering({
       router.push(interviewProcessingPath(interview_Id));
     } catch (error) {
       console.error(error);
-
-      toast.error("Failed to save answer");
     } finally {
       setIsSubmitting(false);
     }

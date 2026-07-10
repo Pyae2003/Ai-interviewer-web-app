@@ -1,6 +1,10 @@
+
 export const signUpPath = "/sign-up"
 export const loginPath = "/login"
 export const dashboardPath = "/dashboard"
+export const resetPasswordPath = "/reset-password"
+
+export const categoryGroupPath = (slug : string) => `/${slug}`
 
 //
 export const histroyPath = "/history"

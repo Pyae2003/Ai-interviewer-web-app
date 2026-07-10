@@ -34,7 +34,7 @@ export default function ProcessingPage({
     const pollStatus = async () => {
       try {
         const res = await fetch(
-          `/api/interview/status?id=${interviewId}`,
+          `/api/interviews/status?id=${interviewId}`,
           {
             cache: "no-store",
             signal: controller.signal,

@@ -20,6 +20,7 @@ export const getAllCategories = async () => {
         _count: {
           select: {
             questions: true,
+            interviews : true
           },
         },
       },

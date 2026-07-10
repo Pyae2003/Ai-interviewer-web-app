@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     where: { id },
     select: { status: true },
   });
-
+  
   return Response.json({
     status: interview?.status,
   });

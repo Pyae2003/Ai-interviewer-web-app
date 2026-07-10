@@ -38,6 +38,11 @@ export type Account = Prisma.AccountModel
  */
 export type Verification = Prisma.VerificationModel
 /**
+ * Model CategoryGroup
+ * 
+ */
+export type CategoryGroup = Prisma.CategoryGroupModel
+/**
  * Model Category
  * 
  */

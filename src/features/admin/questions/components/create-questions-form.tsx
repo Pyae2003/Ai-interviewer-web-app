@@ -49,15 +49,25 @@ import {
   createQuestionSchema,
 } from "../schema/create-questions-schema";
 
-import { Category } from "@/generated/prisma/client";
-
-type Props = {
-  categories: Category[];
+export type CreateQuestionFormProps = {
+  categories: {
+    name: string;
+    id: string;
+    description: string | null;
+    isActive: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    sortOrder: number;
+    _count?: {
+      questions: number;
+      interviews: number;
+    };
+  }[];
 };
 
 const DIFFICULTY_OPTIONS = ["EASY", "MEDIUM", "HARD"] as const;
 
-export function CreateCategoriesForm({ categories }: Props) {
+export function CreateQuestionForm({ categories }: CreateQuestionFormProps) {
   const router = useRouter();
 
   const { execute, result, status, hasSucceeded, hasErrored } =
@@ -80,7 +90,7 @@ export function CreateCategoriesForm({ categories }: Props) {
     execute(data);
   };
 
-   useEffect(() => {
+  useEffect(() => {
     if (hasSucceeded) {
       toast.success(result.data?.message ?? "Question Created successfully");
 
@@ -125,7 +135,6 @@ export function CreateCategoriesForm({ categories }: Props) {
                 className="space-y-6"
               >
                 <FieldGroup className="space-y-5">
-
                   {/* CATEGORY */}
                   <Controller
                     name="categoryName"
@@ -170,10 +179,7 @@ export function CreateCategoriesForm({ categories }: Props) {
                       <Field data-invalid={fieldState.invalid}>
                         <FieldLabel>Question</FieldLabel>
 
-                        <Input
-                          {...field}
-                          placeholder="e.g. What is React?"
-                        />
+                        <Input {...field} placeholder="e.g. What is React?" />
 
                         {fieldState.error && (
                           <FieldError errors={[fieldState.error]} />
@@ -198,9 +204,7 @@ export function CreateCategoriesForm({ categories }: Props) {
                             >
                               <Checkbox
                                 checked={field.value === level}
-                                onCheckedChange={() =>
-                                  field.onChange(level)
-                                }
+                                onCheckedChange={() => field.onChange(level)}
                               />
                               <span className="text-sm">{level}</span>
                             </label>
@@ -209,7 +213,6 @@ export function CreateCategoriesForm({ categories }: Props) {
                       </Field>
                     )}
                   />
-
                 </FieldGroup>
 
                 {/* ACTION BUTTONS */}

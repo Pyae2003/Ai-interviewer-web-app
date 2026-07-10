@@ -1,11 +1,21 @@
+"use client";
+
 import Link from "next/link";
 
-import { Calendar, Trophy, ArrowRight } from "lucide-react";
+import {
+  Calendar,
+  Trophy,
+  ArrowRight,
+  CheckCircle2,
+  FileQuestion,
+} from "lucide-react";
+
+import { motion } from "framer-motion";
 
 import { Card, CardContent } from "@/components/ui/card";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
 import { histroyDetailPath } from "@/constants/route";
 
 type InterViewListProp = {
@@ -17,77 +27,150 @@ type InterViewListProp = {
       score: number | null;
       status: string;
       createdAt: Date;
-
       totalQuestions: number;
       answeredQuestions: number;
     }[];
   };
 };
-const InterViewList = ({ result }: InterViewListProp) => {
+
+export default function InterViewList({ result }: InterViewListProp) {
   return (
-    <div>
-      <section>
-        {/* Category Header */}
-        <div className="mb-4 flex items-center gap-3">
-          <div className="h-10 w-1 rounded-full bg-linear-to-b from-sky-400 to-yellow-300" />
+    <section className="space-y-6">
+\
+      <div className="flex items-center gap-4">
+        <div className="h-12 w-1.5 rounded-full bg-linear-to-b from-sky-500 to-yellow-400" />
 
-          <div>
-            <h2 className="text-2xl font-bold">{result.categoryName}</h2>
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">
+            {result.categoryName}
+          </h2>
 
-            <p className="text-sm text-muted-foreground">
-              {result.interviews.length} Interview(s)
-            </p>
-          </div>
+          <p className="text-sm text-muted-foreground">
+            {result.interviews.length} Interview
+            {result.interviews.length > 1 ? "s" : ""}
+          </p>
         </div>
+      </div>
 
-        {/* Cards */}
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {result.interviews.map((interview) => (
-            <Card
+      <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        {result.interviews.map((interview, index) => {
+          const score = interview.score ?? 0;
+
+          return (
+            <motion.div
               key={interview.id}
-              className="group border-0 bg-linear-to-br from-sky-100/40 via-white to-yellow-100/40 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              initial={{
+                opacity: 0,
+                y: 20,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+              }}
+              viewport={{
+                once: true,
+              }}
+              transition={{
+                delay: index * 0.08,
+              }}
             >
-              <CardContent className="space-y-4 p-5">
-                <div className="flex items-center justify-between">
-                  <Badge>Completed</Badge>
+              <Card className="group h-full overflow-hidden border-0 bg-white shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+                <div className="h-2 bg-linear-to-r from-sky-500 via-cyan-400 to-yellow-400" />
 
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <Calendar className="h-4 w-4" />
+                <CardContent className="space-y-6 p-6">
+                  <div className="flex items-center justify-between">
+                    <Badge
+                      className={
+                        interview.status === "COMPLETED"
+                          ? "bg-green-100 text-green-700 hover:bg-green-100"
+                          : "bg-yellow-100 text-yellow-700 hover:bg-yellow-100"
+                      }
+                    >
+                      {interview.status}
+                    </Badge>
 
-                    {new Date(interview.createdAt).toLocaleDateString()}
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <Calendar className="h-4 w-4" />
+
+                      {new Date(interview.createdAt).toLocaleDateString(
+                        "en-GB",
+                        { day: "2-digit", month: "long", year: "numeric" },
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                <div>
-                  <div className="flex items-center gap-2">
-                    <Trophy className="h-5 w-5 text-yellow-500" />
+                  <div className="flex items-center gap-5">
+                    <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-linear-to-br from-sky-100 to-yellow-100">
+                      <Trophy className="absolute h-7 w-7 text-yellow-500" />
 
-                    <span className="text-3xl font-bold">
-                      {interview.score}%
-                    </span>
+                      <span className="text-xl font-bold">{score}</span>
+                    </div>
+
+                    <div className="flex-1">
+                      <p className="text-sm text-muted-foreground">
+                        Overall Score
+                      </p>
+
+                      <h3 className="text-3xl font-bold">{score}%</h3>
+
+                      <div className="mt-3 h-2 overflow-hidden rounded-full bg-zinc-200">
+                        <div
+                          className="h-full rounded-full bg-linear-to-r from-sky-500 to-yellow-400 transition-all duration-1000"
+                          style={{
+                            width: `${score}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    {interview.totalQuestions} Questions Answered
-                  </p>
-                </div>
+                  {/* Stats */}
 
-                <Button
-                  asChild
-                  className="w-full bg-linear-to-r from-sky-500 to-yellow-400 text-black hover:opacity-90"
-                >
-                  <Link href={histroyDetailPath(interview.id)}>
-                    View Details
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-    </div>
+                  <div className="grid grid-cols-2 gap-4 rounded-2xl bg-zinc-50 p-4">
+                    <div className="flex items-center gap-2">
+                      <FileQuestion className="h-5 w-5 text-sky-500" />
+
+                      <div>
+                        <p className="text-xs text-muted-foreground">
+                          Questions
+                        </p>
+
+                        <p className="font-semibold">
+                          {interview.totalQuestions}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 className="h-5 w-5 text-green-500" />
+
+                      <div>
+                        <p className="text-xs text-muted-foreground">
+                          Answered
+                        </p>
+
+                        <p className="font-semibold">
+                          {interview.answeredQuestions}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button
+                    asChild
+                    className="group/button w-full rounded-xl bg-linear-to-r from-sky-500 to-yellow-400 text-black shadow-lg transition-all hover:scale-[1.02]"
+                  >
+                    <Link href={histroyDetailPath(interview.id)}>
+                      View Interview
+                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/button:translate-x-1" />
+                    </Link>
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
+          );
+        })}
+      </div>
+    </section>
   );
-};
-
-export default InterViewList;
+}

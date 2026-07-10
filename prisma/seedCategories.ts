@@ -1,56 +1,109 @@
 import { prisma } from "@/config";
-import { categories } from "./categoryAndQuestion";
+import { categoryGroups } from "./categoryAndQuestion";
 
 export async function seedCategories() {
-  for (const category of categories) {
-    const dbCategory =
-      await prisma.category.upsert({
-        where: {
-          name: category.name,
-        },
+  console.log("🌱 Seeding Category Groups...");
 
-        update: {
-          description:
-            category.description,
+  try {
+    await prisma.$transaction(
+      async (tx) => {
+        for (const group of categoryGroups) {
+          console.log(`📂 ${group.name}`);
+          const dbGroup = await tx.categoryGroup.upsert({
+            where: {
+              slug: group.slug,
+            },
 
-          sortOrder:
-            category.sortOrder,
+            update: {
+              name: group.name,
+              description: group.description,
+              type: group.type,
+              isActive: true,
+            },
 
-          isActive: true,
-        },
+            create: {
+              name: group.name,
+              slug: group.slug,
+              description: group.description,
+              type: group.type,
+              isActive: true,
+            },
+          });
 
-        create: {
-          name: category.name,
+          for (const category of group.categories) {
+            console.log(`   📁 ${category.name}`);
 
-          description:
-            category.description,
+            const dbCategory = await tx.category.upsert({
+              where: {
+                name: category.name,
+              },
 
-          sortOrder:
-            category.sortOrder,
+              update: {
+                name: category.name,
+                description: category.description,
+                sortOrder: category.sortOrder ?? 0,
+                categoryGroupId: dbGroup.id,
+                isActive: true,
+              },
 
-          isActive: true,
-        },
-      });
+              create: {
+                name: category.name,
+                description: category.description,
+                sortOrder: category.sortOrder ?? 0,
+                categoryGroupId: dbGroup.id,
+                isActive: true,
+              },
+            });
 
-    await prisma.question.deleteMany({
-      where: {
-        categoryId: dbCategory.id,
+            const existingQuestions = await tx.question.findMany({
+              where: {
+                categoryId: dbCategory.id,
+              },
+
+              select: {
+                question: true,
+              },
+            });
+
+            const existingSet = new Set(
+              existingQuestions.map((q) => q.question.trim()),
+            );
+
+            const newQuestions = category.questions
+              .filter((q) => !existingSet.has(q.question.trim()))
+              .map((q) => ({
+                categoryId: dbCategory.id,
+
+                question: q.question.trim(),
+
+                difficulty: q.difficulty,
+              }));
+
+            if (newQuestions.length > 0) {
+              await tx.question.createMany({
+                data: newQuestions,
+
+                skipDuplicates: true,
+              });
+
+              console.log(` ✅ ${newQuestions.length} Questions inserted`);
+            } else {
+              console.log(`      ✔ No new questions`);
+            }
+          }
+        }
       },
-    });
+      {
+        timeout: 120000,
+      },
+    );
 
-    await prisma.question.createMany({
-      data: category.questions.map(
-        (q) => ({
-          categoryId:
-            dbCategory.id,
+    console.log("🎉 Category Groups Seed Completed");
+  } catch (error) {
+    console.error("❌ Category Seed Failed");
 
-          question:
-            q.question,
+    console.error(error);
 
-          difficulty:
-            q.difficulty,
-        }),
-      ),
-    });
+    throw error;
   }
 }

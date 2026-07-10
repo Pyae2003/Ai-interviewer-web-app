@@ -1,5 +1,5 @@
 import { getAllCategories } from "../../category/query/get-categories"
-import { CreateCategoriesForm } from "./create-questions-form";
+import { CreateQuestionForm } from "./create-questions-form";
 
 const CreateQuestionPage =async () => {
     const categories = await getAllCategories();
@@ -16,7 +16,7 @@ const CreateQuestionPage =async () => {
           </p>
         </div>
       ) : (
-          <CreateCategoriesForm categories={categories}/>
+          <CreateQuestionForm categories={categories}/>
       )}
     </section>
   )

@@ -34,3 +34,18 @@ export const InterviewStatus = {
 } as const
 
 export type InterviewStatus = (typeof InterviewStatus)[keyof typeof InterviewStatus]
+
+
+export const CategoryGroupType = {
+  LANGUAGE: 'LANGUAGE',
+  POSITION: 'POSITION',
+  FRAMEWORK: 'FRAMEWORK',
+  DATABASE: 'DATABASE',
+  CLOUD: 'CLOUD',
+  DEVOPS: 'DEVOPS',
+  MOBILE: 'MOBILE',
+  AI: 'AI',
+  OTHER: 'OTHER'
+} as const
+
+export type CategoryGroupType = (typeof CategoryGroupType)[keyof typeof CategoryGroupType]

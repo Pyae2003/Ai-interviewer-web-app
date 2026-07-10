@@ -1,8 +1,8 @@
 import { handleOpenAIError } from "@/middleware";
-import { gemini } from "./gemini";
 import { buildEvaluationPrompt } from "./evaluate-prompt";
 import { EvaluationResult, EvaluationSchema } from "./evalutate-schema";
 import { withRetry } from "./retry";
+import { openai } from "./openai";
 
 type Input = {
   question: string;
@@ -18,38 +18,50 @@ export async function evaluateOneAnswer(
     const prompt = buildEvaluationPrompt(input);
 
     const rawResponse = await withRetry(async () => {
-      const response = await gemini.models.generateContent({
-        model: "gemini-2.5-flash",
-        contents: [
+      const response = await openai.responses.create({
+        model: "gpt-4.1-mini",
+        temperature: 0.2,
+        input: [
+          {
+            role: "system",
+            content: [
+              {
+                type: "input_text",
+                text: `
+You are a senior software engineering interviewer.
+
+Evaluate the candidate objectively.
+
+Return ONLY valid JSON.
+
+Do NOT wrap the JSON inside markdown.
+Do NOT include explanations.
+Do NOT include additional text.
+`,
+              },
+            ],
+          },
           {
             role: "user",
-            parts: [
+            content: [
               {
-                text: `
-                      You are a strict senior software engineering interviewer.
-
-                      Return ONLY valid JSON.
-
-                      ${prompt}
-                `,
+                type: "input_text",
+                text: prompt,
               },
             ],
           },
         ],
       });
-      console.log("this is ai response " ,response);
-      return response.text ?? "";
+
+      return response.output_text;
     });
 
-    console.log("this is reponse.text response",rawResponse)
-
-    if (!rawResponse) {
-      throw new Error("Empty Gemini response");
+    if (!rawResponse?.trim()) {
+      throw new Error("OpenAI returned an empty response.");
     }
 
-    // Remove ```json ``` wrappers if Gemini returns them
     const cleaned = rawResponse
-      .replace(/```json/g, "")
+      .replace(/```json/gi, "")
       .replace(/```/g, "")
       .trim();
 
@@ -58,20 +70,23 @@ export async function evaluateOneAnswer(
     try {
       parsed = JSON.parse(cleaned);
     } catch {
-      throw new Error("Gemini returned invalid JSON");
-    }
+      throw new Error("OpenAI returned invalid JSON.");
+    };
 
-    return EvaluationSchema.parse(parsed);
+    const mainData = EvaluationSchema.parse(parsed);
+    console.log("Ai return data :" , mainData)
+
+    return mainData;
   } catch (error) {
     handleOpenAIError(error);
 
     return {
       score: 0,
-      feedback: "AI evaluation failed.",
+      feedback: "Unable to evaluate the answer.",
       idealAnswer: "",
       strengths: "",
-      weaknesses: "Evaluation failed",
-      missingPoints: "Unable to evaluate answer",
+      weaknesses: "AI evaluation failed.",
+      missingPoints: "System error.",
     };
   }
 }

@@ -7,12 +7,19 @@ import { useRouter } from "next/navigation";
 import { useAction } from "next-safe-action/hooks";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {  Loader2, RotateCcw } from "lucide-react";
+import { Loader2, RotateCcw } from "lucide-react";
 
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Card,
   CardContent,
@@ -24,6 +31,8 @@ import {
 
 import {
   Field,
+  FieldContent,
+  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -37,8 +46,13 @@ import {
   createCategorySchema,
 } from "../schema/create-categories.schema";
 import { createCategory } from "../actions/create-categorie";
+import { CategoryGroup } from "@/generated/prisma/client";
 
-export function CreateCategoriesForm() {
+type Props = {
+  groups: CategoryGroup[];
+};
+
+export function CreateCategoriesForm({ groups }: Props) {
   const router = useRouter();
 
   const { execute, result, status, hasSucceeded, hasErrored } =
@@ -47,6 +61,7 @@ export function CreateCategoriesForm() {
   const form = useForm<CategoryInput>({
     resolver: zodResolver(createCategorySchema),
     defaultValues: {
+      categoryGroupName: "",
       name: "",
       description: "",
       isActive: true,
@@ -68,7 +83,7 @@ export function CreateCategoriesForm() {
       toast.success(result.data?.message ?? "Category created successfully");
 
       form.reset();
-      router.push(categoriesdashboardPath)
+      router.push(categoriesdashboardPath);
       router.refresh();
     }
 
@@ -86,7 +101,7 @@ export function CreateCategoriesForm() {
             <h1 className="text-3xl font-bold">AI Interviewer</h1>
 
             <p className="mt-2 text-sm text-muted-foreground">
-               Create Categories.
+              Create Categories.
             </p>
           </div>
 
@@ -105,6 +120,41 @@ export function CreateCategoriesForm() {
                 noValidate
               >
                 <FieldGroup className="space-y-5">
+                  {/* CATEGORY */}
+                  <Controller
+                    name="categoryGroupName"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldContent>
+                          <FieldLabel>Category Group </FieldLabel>
+                          <FieldDescription>
+                            Select one category Group
+                          </FieldDescription>
+                          {fieldState.error && (
+                            <FieldError errors={[fieldState.error]} />
+                          )}
+                        </FieldContent>
+
+                        <Select
+                          value={field.value}
+                          onValueChange={field.onChange}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select category" />
+                          </SelectTrigger>
+
+                          <SelectContent>
+                            {groups.map((c) => (
+                              <SelectItem key={c.id} value={c.name}>
+                                {c.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </Field>
+                    )}
+                  />
                   {/* Email */}
                   <Controller
                     name="name"

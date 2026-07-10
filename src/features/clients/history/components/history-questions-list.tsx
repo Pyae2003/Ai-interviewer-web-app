@@ -1,24 +1,51 @@
-import { MessageSquare, CheckCircle2, XCircle } from "lucide-react";
+"use client"
+
+import {
+  MessageSquare,
+  CheckCircle2,
+  XCircle,
+  Lightbulb,
+  Brain,
+  Trophy,
+  HelpCircle,
+} from "lucide-react";
+
+import { motion } from "framer-motion";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Badge } from "@/components/ui/badge";
+
 import { QuestionResult } from "./history-detail";
 
-
-type HistoryQuestionListProp = {
-  index : number,
+type Props = {
+  index: number;
   item: QuestionResult;
 };
-const HistoryQuestionList = ({item , index} : HistoryQuestionListProp) => {
-  return (
-    <div>
-      <Card className="border shadow-sm">
-        <CardHeader>
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <CardTitle className="text-lg">Question {index + 1}</CardTitle>
 
-            <div className="flex items-center gap-2">
+export default function HistoryQuestionList({ item, index }: Props) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 25 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.35 }}
+    >
+      <Card className="overflow-hidden border-0 shadow-lg">
+
+        <div className="h-2 bg-linear-to-r from-sky-500 via-cyan-400 to-yellow-400" />
+
+        <CardHeader className="space-y-5">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <CardTitle className="text-2xl">Question {index + 1}</CardTitle>
+
+              <p className="mt-1 text-sm text-muted-foreground">
+                AI Evaluation Report
+              </p>
+            </div>
+
+            <div className="flex flex-wrap gap-2">
               <Badge
                 className={
                   item.difficulty === "EASY"
@@ -35,45 +62,64 @@ const HistoryQuestionList = ({item , index} : HistoryQuestionListProp) => {
                 {item.isCorrect ? "Correct" : "Incorrect"}
               </Badge>
 
-              <Badge>{item.score}/10</Badge>
+              <Badge variant="outline">{item.score}/100</Badge>
+            </div>
+          </div>
+
+          {/* Score */}
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Trophy className="h-5 w-5 text-yellow-500" />
+                <span className="font-medium">AI Score</span>
+              </div>
+
+              <span className="font-bold">{item.score}/100</span>
+            </div>
+
+            <div className="h-3 overflow-hidden rounded-full bg-zinc-200">
+              <motion.div
+                initial={{ width: 0 }}
+                whileInView={{
+                  width: `${item.score }%`,
+                }}
+                transition={{ duration: 1 }}
+                className="h-full rounded-full bg-linear-to-r from-sky-500 to-green-500"
+              />
             </div>
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-5">
+        <CardContent className="space-y-6">
           {/* Question */}
-          <div>
-            <p className="mb-2 font-medium">Question</p>
 
-            <div className="rounded-xl bg-sky-50 p-4">{item.questionText}</div>
-          </div>
+          <section>
+            <div className="mb-3 flex items-center gap-2 font-semibold">
+              <HelpCircle className="h-5 w-5 text-sky-500" />
+              Question
+            </div>
 
-          {/* Answer */}
-          <div>
-            <p className="mb-2 font-medium">Your Answer</p>
+            <div className="rounded-2xl bg-sky-50 p-5 leading-7">
+              {item.questionText}
+            </div>
+          </section>
 
-            <div className="rounded-xl border bg-white p-4 whitespace-pre-wrap">
+          {/* User Answer */}
+
+          <section>
+            <div className="mb-3 flex items-center gap-2 font-semibold">
+              <Brain className="h-5 w-5 text-violet-500" />
+              Your Answer
+            </div>
+
+            <div className="rounded-2xl border bg-white p-5 whitespace-pre-wrap leading-7">
               {item.answer}
             </div>
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span>AI Score</span>
-              <span>{item.score}/100</span>
-            </div>
-
-            <div className="h-2 rounded-full bg-zinc-200">
-              <div
-                className="h-full rounded-full bg-linear-to-r from-sky-500 to-green-500"
-                style={{
-                  width: `${item.score * 10}%`,
-                }}
-              />  
-            </div>
-          </div>
+          </section>
 
           {/* Feedback */}
+
           {item.feedback && (
             <Card className="border-green-200 bg-green-50">
               <CardHeader>
@@ -89,34 +135,58 @@ const HistoryQuestionList = ({item , index} : HistoryQuestionListProp) => {
             </Card>
           )}
 
-          <Card>
+          {/* Strengths & Weaknesses */}
+
+          <div className="grid gap-5 lg:grid-cols-2">
+            <Card className="border-green-200">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-green-700">
+                  <CheckCircle2 className="h-5 w-5" />
+                  Strengths
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent>
+                <CheckCircle2 className="mt-1 h-4 w-4 text-green-600" />
+
+                <span>{item.strengths}</span>
+              </CardContent>
+            </Card>
+
+            <Card className="border-red-200">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-red-700">
+                  <XCircle className="h-5 w-5" />
+                  Weaknesses
+                </CardTitle>
+              </CardHeader>
+
+              <CardContent>
+                <XCircle className="mt-1 h-4 w-4 text-red-600" />
+
+                <span>{item.weaknesses}</span>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Ideal Answer */}
+
+          <Card className="border-sky-200 bg-sky-50/50">
             <CardHeader>
-              <CardTitle className="text-green-700">✅ Strengths</CardTitle>
+              <CardTitle className="flex items-center gap-2">
+                <Lightbulb className="h-5 w-5 text-yellow-500" />
+                Ideal Answer
+              </CardTitle>
             </CardHeader>
 
             <CardContent>
-              <ul className="space-y-2">
-                <CheckCircle2 className="h-4 w-4 mt-1 text-green-600" />
-
-                {item.strengths}
-              </ul>
-            </CardContent>
-          </Card>
-          <Card className="border-sky-200">
-            <CardHeader>
-              <CardTitle>⭐ Ideal Answer</CardTitle>
-            </CardHeader>
-
-            <CardContent>
-              <div className="rounded-xl bg-sky-50 p-5 leading-7 whitespace-pre-wrap">
+              <div className="rounded-2xl bg-white p-5 whitespace-pre-wrap leading-8 shadow-sm">
                 {item.idealAnswer}
               </div>
             </CardContent>
           </Card>
         </CardContent>
       </Card>
-    </div>
+    </motion.div>
   );
-};
-
-export default HistoryQuestionList;
+}

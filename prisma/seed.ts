@@ -23,9 +23,7 @@ async function seedAdmin() {
     },
   });
 
-  /**
-   * Admin already exists
-   */
+
   if (existingAdmin) {
     console.log(`✅ Admin already exists (${adminEmail})`);
 
@@ -34,9 +32,6 @@ async function seedAdmin() {
 
   console.log("🚀 Creating admin account...");
 
-  /**
-   * Create User using Better Auth
-   */
   const createdUser = await auth.api.signUpEmail({
     body: {
       name: adminName,
@@ -48,16 +43,7 @@ async function seedAdmin() {
   if (!createdUser?.user?.id) {
     throw new Error("Failed to create admin user");
   }
-
-  /**
-   * Assign Admin Role
-   *
-   * NOTE:
-   * Some Better Auth versions
-   * don't expose setRole().
-   *
-   * In that case update Prisma directly.
-   */
+  
   await prisma.user.update({
     where: {
       id: createdUser.user.id,

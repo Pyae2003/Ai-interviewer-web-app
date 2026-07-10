@@ -24,6 +24,12 @@ export const getCategoryById = actionClient
           sortOrder: true,
           createdAt: true,
           updatedAt: true,
+          categoryGroup : {
+            select : {
+              id : true,
+              name : true,
+            }
+          }
         },
       });
 

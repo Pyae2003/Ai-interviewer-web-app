@@ -35,7 +35,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
-import { dashboardPath, signUpPath } from "@/constants/route";
+import { dashboardPath, resetPasswordPath, signUpPath } from "@/constants/route";
 
 export function LoginForm() {
   const router = useRouter();
@@ -88,7 +88,7 @@ export function LoginForm() {
 
   return (
     <>
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 via-white to-yellow-100 px-4 py-10">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-sky-100 via-white to-yellow-100 px-4 py-10">
         <div className="w-full max-w-md">
           {/* Brand */}
           <div className="mb-6 text-center">
@@ -100,7 +100,7 @@ export function LoginForm() {
           </div>
 
           <Card className="shadow-xl border">
-            <CardHeader className="text-center border-b bg-gradient-to-r from-sky-100 to-yellow-100">
+            <CardHeader className="text-center border-b bg-linear-to-r from-sky-100 to-yellow-100">
               <CardTitle className="text-2xl">Welcome Back</CardTitle>
 
               <CardDescription>Login to your account</CardDescription>
@@ -199,7 +199,7 @@ export function LoginForm() {
                   <Button
                     type="submit"
                     disabled={isLoading || !form.formState.isValid}
-                    className="w-full h-11 rounded-xl bg-gradient-to-r from-sky-500 to-yellow-400 text-black font-semibold shadow-md hover:shadow-xl transition"
+                    className="w-full h-11 rounded-xl bg-linear-to-r from-sky-500 to-yellow-400 text-black font-semibold shadow-md hover:shadow-xl transition"
                   >
                     {isLoading ? (
                       <>
@@ -227,17 +227,34 @@ export function LoginForm() {
               </form>
             </CardContent>
 
-            <CardFooter className="flex flex-col gap-2 border-t bg-sky-50">
-              <p className="text-sm text-muted-foreground">
-                Don`t have an account?
-              </p>
+            <CardFooter className="flex flex-col gap-4 border-t bg-sky-50 px-6 py-5">
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground">
+                  Forgot your password?
+                </p>
 
-              <Link
-                href={signUpPath}
-                className="text-sm font-medium text-sky-600 hover:text-sky-700"
-              >
-                Create Account
-              </Link>
+                <Link
+                  href={resetPasswordPath}
+                  className="mt-1 inline-block text-sm font-semibold text-sky-600 transition-colors hover:text-sky-700 hover:underline"
+                >
+                  Reset Password
+                </Link>
+              </div>
+
+              <div className="h-px w-full bg-border" />
+
+              <div className="text-center">
+                <p className="text-sm text-muted-foreground">
+                  Do not have an account?
+                </p>
+
+                <Link
+                  href={signUpPath}
+                  className="mt-1 inline-block text-sm font-semibold text-sky-600 transition-colors hover:text-sky-700 hover:underline"
+                >
+                  Create Account
+                </Link>
+              </div>
             </CardFooter>
           </Card>
         </div>

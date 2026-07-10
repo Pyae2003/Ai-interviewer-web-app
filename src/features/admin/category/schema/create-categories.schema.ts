@@ -1,17 +1,17 @@
 import { z } from "zod";
 
 export const createCategorySchema = z.object({
+   categoryGroupName: z
+    .string("Category must be a string")
+    .trim()
+    .min(3, "Category is required")
+    .max(100, "Category name cannot exceed 100 characters"),
   name: z
-    .string(
-       "Category name is required",
-    )
+    .string("Category name is required")
     .trim()
     .min(3, "Category name must be at least 3 characters")
     .max(50, "Category name cannot exceed 50 characters")
-    .regex(
-      /^[a-zA-Z0-9\s-&]+$/,
-      "Category name contains invalid characters"
-    ),
+    .regex(/^[a-zA-Z0-9\s-&]+$/, "Category name contains invalid characters"),
 
   description: z
     .string()
@@ -22,11 +22,7 @@ export const createCategorySchema = z.object({
 
   isActive: z.boolean(),
 
-  sortOrder: z
-    .number()
-    .int()
-    .min(0)
-    .max(9999)
+  sortOrder: z.number().int().min(0).max(9999),
 });
 
 export type CategoryInput = z.infer<typeof createCategorySchema>;

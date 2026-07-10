@@ -12,14 +12,6 @@ export const getCategoryWithQuestions = async (id: string) => {
     id,
   });
   try {
-    /**
-     * 🔐 AUTH CHECK (enable in real production)
-     */
-    // const user = await getCurrentUser();
-    // if (!user) {
-    //   throw new AppError("Unauthorized", "UNAUTHORIZED", 401);
-    // }
-
     const category = await prisma.category.findUnique({
       where: { id: validatedData.data?.id },
       select: {
@@ -36,11 +28,6 @@ export const getCategoryWithQuestions = async (id: string) => {
           orderBy: {
             createdAt: "asc",
           },
-
-          /**
-           * 🚀 PRODUCTION IMPROVEMENT (optional but recommended)
-           * Prevent huge payloads
-           */
           take: 50,
         },
       },

@@ -1,35 +1,118 @@
-// src/middleware.ts
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
-import { auth } from "@/lib/auth"; // မင်းရဲ့ Better Auth instance ကို path မှန်အောင် ညွှန်းပေးပါ
-import { headers } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
+
+import { auth } from "@/lib/auth";
+
+const PUBLIC_ROUTES = [
+  "/",
+  "/login",
+  "/sign-up",
+  "/reset-password",
+  "/change-password",
+  "/auth/admin/log-in"
+];
+
+const AUTH_ROUTES = [
+  "/login",
+  "/sign-up",
+];
+
+const ADMIN_PREFIX = "/admin";
+
+const API_AUTH_PREFIX = "/api/auth";
 
 export async function middleware(request: NextRequest) {
-   const session = await auth.api.getSession({
-        headers: await headers()
-    });
+  const { pathname } = request.nextUrl;
 
-   if (session?.user && (session.user as any).banned) {
-        
-        if (request.nextUrl.pathname.startsWith("/api")) {
-            return new NextResponse(
-                JSON.stringify({ error: "Your account has been banned." }),
-                { status: 403, headers: { "content-type": "application/json" } }
-            );
-        }
+  if (pathname.startsWith(API_AUTH_PREFIX)) {
+    return NextResponse.next();
+  }
 
-        return NextResponse.redirect(new URL("/login?error=banned", request.url));
+  const session = await auth.api.getSession({
+    headers: request.headers,
+  });
+
+  const isLoggedIn = !!session?.user;
+
+  const isAdmin =
+    session?.user?.role?.toLowerCase() === "admin";
+
+  const isBanned =
+    Boolean((session?.user as any)?.banned);
+
+  const isPublic =
+    PUBLIC_ROUTES.some((route) =>
+      pathname === route || pathname.startsWith(route + "/")
+    );
+
+  const isAuthPage =
+    AUTH_ROUTES.some((route) =>
+      pathname.startsWith(route)
+    );
+
+  const isAdminPage =
+    pathname.startsWith(ADMIN_PREFIX);
+
+  const isApi =
+    pathname.startsWith("/api");
+
+
+
+  if (!isLoggedIn && !isPublic && !isApi) {
+    return NextResponse.redirect(
+      new URL("/login", request.url)
+    );
+  }
+
+
+  if (isLoggedIn && isAuthPage) {
+    return NextResponse.redirect(
+      new URL("/dashboard", request.url)
+    );
+  }
+
+
+  if (isLoggedIn && isBanned) {
+    if (isApi) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Your account has been banned.",
+        },
+        {
+          status: 403,
+        },
+      );
     }
 
-    return NextResponse.next();
+    return NextResponse.redirect(
+      new URL("/banned", request.url),
+    );
+  }
+
+
+  if (isAdminPage && !isAdmin) {
+    if (isApi) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Forbidden",
+        },
+        {
+          status: 403,
+        },
+      );
+    }
+
+    return NextResponse.redirect(
+      new URL("/403", request.url),
+    );
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
-    matcher: [
-        /*
-         * static ဖိုင်တွေ၊ ပုံတွေကလွဲရင် ကျန်တဲ့ Page တွေနဲ့ API တွေအားလုံးကို 
-         * ဒီ Middleware ထဲ ဖြတ်ပြီးမှ ပေးဝင်မယ်လို့ သတ်မှတ်တာဖြစ်ပါတယ်။
-         */
-        "/((?!_next/static|_next/image|favicon.ico).*)",
-    ],
+  matcher: [
+    "/((?!_next|favicon.ico|images|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+  ],
 };

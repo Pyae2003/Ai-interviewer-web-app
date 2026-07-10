@@ -10,8 +10,8 @@ import {
   Bot,
   Sparkles,
   LayoutDashboard,
-  Mic,
   BookOpen,
+  User,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -22,6 +22,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import UserProfile from "./user-profile";
+import { LogoutButton } from "./logout";
 
 export interface ClientHeaderProp {
   path: string;
@@ -40,17 +41,17 @@ export default function Header({ user, path, action }: ClientHeaderProp) {
 
   const navItems = [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "Interviews", href: "/interviews", icon: Mic },
     { label: "History", href: "/history", icon: BookOpen },
+    { label: "Profile", href: "/profile", icon: User },
   ];
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-xl border-b border-black/10">
-      {/* OUTER BOX */}
+      {/* outer */}
       <div className="mx-auto max-w-7xl px-4 py-3">
-        {/* INNER BOX CONTAINER */}
+        {/* innter */}
         <div className="flex items-center justify-between rounded-2xl border border-black/10 bg-linear-to-r from-sky-100 via-white to-yellow-100 px-4 py-3 shadow-sm">
-          {/* LEFT: BRAND BOX */}
+          {/* left*/}
           <Link
             href="/"
             className="flex items-center gap-3 rounded-xl bg-white px-3 py-2 shadow-sm border border-black/10"
@@ -65,7 +66,7 @@ export default function Header({ user, path, action }: ClientHeaderProp) {
             </div>
           </Link>
 
-          {/* CENTER: NAV BOX (DESKTOP) */}
+          {/* center  : desktop */}
           <nav className="hidden md:flex items-center gap-2 rounded-xl border border-black/10 bg-white px-2 py-2 shadow-sm">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -82,30 +83,34 @@ export default function Header({ user, path, action }: ClientHeaderProp) {
             })}
           </nav>
 
-          {/* RIGHT: ACTION BOX */}
-          <div className="flex items-center gap-2">
-            {/* THEME TOGGLE BOX */}
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="flex h-10 w-10 items-center justify-center rounded-xl border border-black/10 bg-white shadow-sm hover:bg-yellow-100 transition"
-            >
-              {theme === "dark" ? (
-                <Sun size={18} className="text-yellow-500" />
-              ) : (
-                <Moon size={18} className="text-sky-500" />
-              )}
-            </button>
+          {/* Right*/}
+          <div className="flex items-center gap-2 ">
+            {/* Theme */}
+            <div className="hidden sm:block">
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="flex h-10 w-10 items-center  justify-center rounded-xl border border-black/10 bg-white shadow-sm hover:bg-yellow-100 transition "
+              >
+                {theme === "dark" ? (
+                  <Sun size={18} className="text-yellow-500" />
+                ) : (
+                  <Moon size={18} className="text-sky-500" />
+                )}
+              </button>
+            </div>
 
-            {/* CTA BUTTON */}
+            {/* user profile */}
             {user ? (
-              <UserProfile {...user} />
+              <div className="hidden sm:block">
+                <UserProfile {...user} />
+              </div>
             ) : (
               <Link href={path} className="hidden sm:block">
                 {action}
               </Link>
             )}
 
-            {/* MOBILE MENU */}
+            {/* mobile menu */}
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
               <SheetTrigger asChild className="md:hidden">
@@ -115,7 +120,7 @@ export default function Header({ user, path, action }: ClientHeaderProp) {
               </SheetTrigger>
 
               <SheetContent side="right" className="w-75 bg-white">
-                {/* MOBILE HEADER BOX */}
+                {/* mobile header  */}
                 <div className="mb-6 rounded-xl border border-black/10 bg-linear-to-r from-sky-100 to-yellow-100 p-4">
                   <div className="flex items-center gap-2">
                     <Bot />
@@ -128,8 +133,8 @@ export default function Header({ user, path, action }: ClientHeaderProp) {
                 {user && (
                   <div className="mb-4 rounded-xl border bg-white p-4">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-yellow-300 font-semibold text-black">
-                        {user.name?.charAt(0).toUpperCase()}
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-sky-400 to-yellow-300 font-semibold text-black">
+                        <UserProfile {...user} />
                       </div>
 
                       <div>
@@ -143,7 +148,7 @@ export default function Header({ user, path, action }: ClientHeaderProp) {
                   </div>
                 )}
 
-                {/* MOBILE NAV BOX */}
+                {/* mobile nav dev */}
                 <div className="flex flex-col gap-2">
                   {navItems.map((item) => {
                     const Icon = item.icon;
@@ -161,14 +166,21 @@ export default function Header({ user, path, action }: ClientHeaderProp) {
                   })}
                 </div>
 
-                {/* MOBILE CTA BOX */}
+                {/* mobile cta  */}
                 <div className="mt-6 rounded-xl border border-black/10 bg-linear-to-r from-yellow-200 to-sky-200 p-4">
-                  <Link href="/signup" onClick={() => setOpen(false)}>
-                    <Button className="w-full bg-black text-white rounded-xl">
+                  {!user ? (
+                    <Link href="/signup" onClick={() => setOpen(false)}>
+                      <Button className="w-full bg-black text-white rounded-xl">
+                        <Sparkles className="mr-2" size={16} />
+                        Get Started
+                      </Button>
+                    </Link>
+                  ) : (
+                    <div className="flex ">
                       <Sparkles className="mr-2" size={16} />
-                      Get Started
-                    </Button>
-                  </Link>
+                      <LogoutButton />
+                    </div>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>

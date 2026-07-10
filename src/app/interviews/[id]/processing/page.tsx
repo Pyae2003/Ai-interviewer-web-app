@@ -10,14 +10,12 @@ type Props = {
 
 export default async function Page({ params }: Props) {
   const session = await getSession();
-
-  // AUTH GUARD
   if (!session?.user?.id) {
     redirect("/login");
   }
 
   const {id} = await params;
-  // BASIC VALIDATION
+  console.log(id)
   if (!id) {
     redirect("/dashboard");
   }

@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { signOutUser } from "@/features/clients/auth/actions/logout";
+import { LogOut } from "lucide-react";
 
 export function LogoutButton() {
   const [pending, startTransition] = useTransition();
@@ -20,10 +21,9 @@ export function LogoutButton() {
   };
 
   return (
-    <button
-      onClick={handleLogout}
-      disabled={pending}
-    >
+    <button onClick={handleLogout} disabled={pending}>
+      <LogOut className="mr-2 h-4 w-4" />
+
       {pending ? "Logging out..." : "Logout"}
     </button>
   );

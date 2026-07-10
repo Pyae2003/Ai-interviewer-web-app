@@ -19,7 +19,7 @@ type UpdateCategoryResponse = {
 export const updateCategory = actionClient
   .inputSchema(updateCategorySchema)
   .action(async ({ parsedInput }): Promise<UpdateCategoryResponse> => {
-    const { id, name, description, isActive, sortOrder } = parsedInput;
+    const { id, name, description, isActive, sortOrder , categoryGroupName } = parsedInput;
 
     try {
       const existingCategory = await prisma.category.findUnique({

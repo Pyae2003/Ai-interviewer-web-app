@@ -1,4 +1,3 @@
-import { Category } from "@/generated/prisma/client";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,22 +5,37 @@ import { Button } from "@/components/ui/button";
 
 import { Briefcase, FileQuestion, Mic, Pencil } from "lucide-react";
 import Link from "next/link";
-import { questionDashboardWithCategoryNamePath, updateCategoryPath } from "@/constants/route";
+import {
+  questionDashboardWithCategoryNamePath,
+  updateCategoryPath,
+} from "@/constants/route";
 import { deleteCategory } from "../actions/delete-single-categorie";
 import DeleteButton from "@/components/delete-button";
 
 type CategoriesProp = {
-  category: Category;
+  category: {
+    name: string;
+    id: string;
+    description: string | null;
+    isActive: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+    sortOrder: number;
+    _count?: {
+      questions: number;
+      interviews: number;
+    };
+  };
 };
 
 const CategoriesList = ({ category }: CategoriesProp) => {
   return (
-    <Card className="group overflow-hidden border-0 bg-gradient-to-br from-sky-100/40 via-white to-yellow-100/50 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+    <Card className="group overflow-hidden border-0 bg-linear-to-br from-sky-100/40 via-white to-yellow-100/50 shadow-md transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
       <CardContent className="p-5">
         {/* Header */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400 to-yellow-300 shadow-md">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-sky-400 to-yellow-300 shadow-md">
               <Briefcase className="h-6 w-6 text-black" />
             </div>
 
