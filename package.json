@@ -2,12 +2,9 @@
   "name": "ai-app",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node" : ">=22.0.0"
-  },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint",
     "seed": "npx tsx ./prisma/seed.ts",
