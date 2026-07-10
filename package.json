@@ -9,6 +9,7 @@
     "lint": "eslint",
     "seed": "npx tsx ./prisma/seed.ts",
     "worker": "tsx watch src/workers/interview-worker.ts",
+    "scripts":{"postinstall": "prisma genearate"},
     "worker:dev": "tsx watch src/workers/interview-worker.ts"
   },
   "dependencies": {

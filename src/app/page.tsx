@@ -4,7 +4,7 @@ import { loginPath } from "@/constants/route";
 import WelcomeProfilePage from "@/features/clients/dashboard/components/first-UI-Page";
 import { getSession } from "@/lib/get-Session";
 import { Plus } from "lucide-react";
-
+export const dynamic = "force-dynamic";
 export default async function Home() {
   const session = await getSession();
 
