@@ -19,7 +19,7 @@ export const requestPasswordReset = actionClient
       await auth.api.requestPasswordReset({
         body: {
           email,
-          redirectTo: `${process.env.DEV_URL}/change-password`,
+          redirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/change-password`,
         },
       });
 
