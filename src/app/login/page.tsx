@@ -5,7 +5,7 @@ import { getSession } from "@/lib/get-Session";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-
+export const dynamic = 'force-dynamic';
 export default async function Page() {
   const session = await getSession();
 

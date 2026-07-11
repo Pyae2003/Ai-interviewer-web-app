@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { loginPath } from "@/constants/route";
 import UpdateQuestionPage from "@/features/admin/questions/components/update-question-page";
 import { Plus } from "lucide-react";
+export const dynamic = "force-dynamic";
 
 type Prop = {
   params: Promise<{ id: string }>;

@@ -1,5 +1,5 @@
 import AdminUserManagementPage from '@/features/admin/user-managemant/components/admin-user-managemant-page'
-import React from 'react'
+export const dynamic = "force-dynamic";
 
 const page = () => {
   return (

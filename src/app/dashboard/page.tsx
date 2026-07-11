@@ -3,7 +3,7 @@ import { loginPath } from "@/constants/route";
 import MainDashboard from "@/features/clients/dashboard/components/main-dashboard";
 import { getSession } from "@/lib/get-Session";
 import { redirect } from "next/navigation";
-
+export const dynamic = 'force-dynamic';
 export default async function Page() {
   const session = await getSession();
 

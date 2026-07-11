@@ -3,6 +3,7 @@ import { loginPath } from "@/constants/route";
 import CreateCategoriesPage from "@/features/admin/category/components/create-categories-page";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+export const dynamic = 'force-dynamic';
 const page = () => {
   return (
     <div>

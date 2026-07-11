@@ -4,7 +4,7 @@ import UserProfilePage from "@/features/clients/profile/components/user-profile-
 import { getSession } from "@/lib/get-Session";
 import { loginPath } from "@/constants/route";
 import Header from "@/components/header";
-
+export const dynamic = 'force-dynamic';
 export default async function Page() {
   const session = await getSession();
 
