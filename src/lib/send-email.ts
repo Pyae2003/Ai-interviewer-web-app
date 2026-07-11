@@ -23,7 +23,7 @@ export async function sendResetPasswordEmail({
 }: SendResetPasswordEmailOptions): Promise<SendEmailResponse> {
   try {
     const { data, error } = await resend.emails.send({
-      from: "AI Interviewer <onboarding@resend.dev>",
+      from: "AI Interviewer <noreply@ai-interviewer.site>",
 
       to,
 
