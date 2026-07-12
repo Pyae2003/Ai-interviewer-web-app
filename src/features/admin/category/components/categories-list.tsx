@@ -66,7 +66,7 @@ const CategoriesList = ({ category }: CategoriesProp) => {
           <div className="rounded-xl bg-sky-50 p-3 text-center">
             <FileQuestion className="mx-auto mb-1 h-5 w-5 text-sky-600" />
 
-            <p className="text-lg font-bold text-zinc-900">120</p>
+            <p className="text-lg font-bold text-zinc-900">{category._count?.questions}</p>
 
             <p className="text-xs text-zinc-500">Questions</p>
           </div>
@@ -74,7 +74,7 @@ const CategoriesList = ({ category }: CategoriesProp) => {
           <div className="rounded-xl bg-yellow-50 p-3 text-center">
             <Mic className="mx-auto mb-1 h-5 w-5 text-yellow-600" />
 
-            <p className="text-lg font-bold text-zinc-900">45</p>
+            <p className="text-lg font-bold text-zinc-900">{category._count?.interviews}</p>
 
             <p className="text-xs text-zinc-500">Interviews</p>
           </div>

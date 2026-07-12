@@ -38,3 +38,9 @@ export const editQuestionPath = (params : string) =>  `/admin/questions/edit-que
 //userDetail
 
 export const userDetailPath =(params : string) => `/admin/user-managemant/${params}`
+
+//CRUD Categories Group
+export const createCategoryGroupPath =  `/admin/category-groups/create-category-groups`;
+export const updateCategoryGroupPath = (params : string) => `/admin/category-groups/update-category-groups/${params}`
+
+

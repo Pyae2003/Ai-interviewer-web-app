@@ -36,6 +36,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
 import { dashboardPath, resetPasswordPath, signUpPath } from "@/constants/route";
+import { OAuthButtons } from "@/components/Oauth-button/oauth-buttons";
 
 export function LoginForm() {
   const router = useRouter();
@@ -254,6 +255,9 @@ export function LoginForm() {
                 >
                   Create Account
                 </Link>
+              </div>
+              <div>
+                <OAuthButtons/>
               </div>
             </CardFooter>
           </Card>

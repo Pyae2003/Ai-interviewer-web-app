@@ -10,7 +10,7 @@ const page = () => {
       <AdminHeader
         path={loginPath}
         action={
-          <Button className="bg-gradient-to-r from-sky-500 to-yellow-400 text-black hover:opacity-90">
+          <Button className="bg-linear-to-r from-sky-500 to-yellow-400 text-black hover:opacity-90">
             <Plus className="mr-2 h-4 w-4" />
             Login
           </Button>

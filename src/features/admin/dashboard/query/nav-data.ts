@@ -23,6 +23,11 @@ export const navDataArray = [
   },
   {
     icon: Briefcase,
+    label: "Category Group",
+    path : categoriesdashboardPath
+  },
+  {
+    icon: Briefcase,
     label: "Categories",
     path : categoriesdashboardPath
   },

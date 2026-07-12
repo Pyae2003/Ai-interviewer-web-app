@@ -18,7 +18,7 @@ export default function AdminDashboard({
       <aside className="hidden w-72 border-r bg-white lg:flex lg:flex-col">
         <div className="border-b p-6">
           <div className="flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-400 to-yellow-300 shadow-md">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-linear-to-br from-sky-400 to-yellow-300 shadow-md">
               <Mic className="h-6 w-6 text-black" />
             </div>
 
@@ -47,7 +47,7 @@ export default function AdminDashboard({
                     key={item.label}
                     className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
                       item.active
-                        ? "bg-gradient-to-r from-sky-100 to-yellow-100 text-black"
+                        ? "bg-linear-to-r from-sky-100 to-yellow-100 text-black"
                         : "hover:bg-zinc-100"
                     }`}
                   >

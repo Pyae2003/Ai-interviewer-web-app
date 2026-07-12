@@ -13,11 +13,7 @@ import { motion } from "framer-motion";
 
 import { Card, CardContent } from "@/components/ui/card";
 
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-
 import { Input } from "@/components/ui/input";
-import { navDataArray } from "../query/nav-data";
-import Link from "next/link";
 import { RecentInterview } from "../actions/recent-interviews";
 import RecentInterviewsPage from "./recent-interviews-page";
 import { TopCategory } from "../actions/get-top-categories";
@@ -129,7 +125,7 @@ export default function AdminDashboard({
                           </h3>
                         </div>
 
-                        <div className="rounded-2xl bg-gradient-to-br from-sky-400 to-yellow-300 p-3">
+                        <div className="rounded-2xl bg-linear-to-br from-sky-400 to-yellow-300 p-3">
                           <Icon className="h-6 w-6 text-black" />
                         </div>
                       </div>
