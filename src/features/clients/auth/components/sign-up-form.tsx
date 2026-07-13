@@ -87,7 +87,7 @@ export function SignUpForm() {
   }, [hasSucceeded, hasErrored, result,form,router]);
 
   return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-sky-100 via-white to-yellow-100 px-4 py-10">
+      <div className="min-h-screen flex items-center justify-center bg--to-br from-sky-100 via-white to-yellow-100 px-4 py-10">
       {/* OUTER FRAME */}
       <div className="w-full max-w-2xl">
         {/* TOP BRAND BOX */}
@@ -103,7 +103,7 @@ export function SignUpForm() {
         {/* FORM CARD */}
         <Card className="w-full rounded-2xl border border-black/10 shadow-xl bg-white">
           {/* HEADER BOX */}
-          <CardHeader className="space-y-2 text-center border-b border-black/10 bg-gradient-to-r from-sky-100 to-yellow-100 rounded-t-2xl">
+          <CardHeader className="space-y-2 text-center border-b border-black/10 bg--to-r from-sky-100 to-yellow-100 rounded-t-2xl">
             <CardTitle className="text-xl sm:text-2xl font-bold text-black">
               Create Account
             </CardTitle>
@@ -239,7 +239,7 @@ export function SignUpForm() {
                   variant="outline"
                   disabled={isPending}
                   onClick={() => form.reset()}
-                  className="h-12 w-full rounded-xl border-yellow-300 bg-white text-black transition-all duration-200 hover:bg-yellow-100 hover:text-black sm:w-[140px]"
+                  className="h-12 w-full rounded-xl border-yellow-300 bg-white text-black transition-all duration-200 hover:bg-yellow-100 hover:text-black sm:w-35"
                 >
                   <RotateCcw className="mr-2 h-4 w-4" />
                   Reset
@@ -247,7 +247,7 @@ export function SignUpForm() {
                 <Button
                   type="submit"
                   form="signup-form"
-                  className="w-full h-11 rounded-xl bg-gradient-to-r from-sky-500 to-yellow-400 text-black font-semibold shadow-md hover:shadow-xl transition"
+                  className="w-full h-11 rounded-xl bg--to-r from-sky-500 to-yellow-400 text-black font-semibold shadow-md hover:shadow-xl transition"
                   disabled={isPending}
                 >
                   {isPending ? (

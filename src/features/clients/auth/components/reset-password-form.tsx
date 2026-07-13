@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 import { useAction } from "next-safe-action/hooks";
 import { useForm, Controller } from "react-hook-form";
@@ -44,7 +43,6 @@ import {
 import { loginPath } from "@/constants/route";
 
 export function RequestPasswordResetForm() {
-    const router = useRouter();
 
     const { execute, status, result, hasSucceeded, hasErrored } =
         useAction(requestPasswordReset);

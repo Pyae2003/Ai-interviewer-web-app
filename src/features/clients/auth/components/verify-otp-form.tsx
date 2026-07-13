@@ -30,10 +30,21 @@ import { OTPInput } from "./otp-input";
 import { Countdown } from "./countdown";
 import { ResendOTPButton } from "./resend-otp-button";
 import { VerifyOtpInput, verifyOtpSchema } from "../schema/verify-otp.schema";
+import { verifyOtp } from "../actions/verify-otp";
+import { useAction } from "next-safe-action/hooks";
 
 export function VerifyOTPForm() {
   const [allowResend, setAllowResend] =
     useState(false);
+   const {
+    execute,
+    result,
+    status,
+    isPending,
+    hasErrored,
+    hasSucceeded,
+    isExecuting,
+  } = useAction(verifyOtp);
 
   const form = useForm<VerifyOtpInput>({
     resolver: zodResolver(verifyOtpSchema),
@@ -41,14 +52,13 @@ export function VerifyOTPForm() {
     defaultValues: {
       otp: "",
     },
-
     mode: "onChange",
   });
 
   const submit = async (
     values: VerifyOtpInput,
   ) => {
-    console.log(values);
+    execute(values)
 
     toast.success("OTP Verified");
   };

@@ -8,7 +8,8 @@ const PUBLIC_ROUTES = [
   "/sign-up",
   "/reset-password",
   "/change-password",
-  "/auth/admin/log-in"
+  "/auth/admin/log-in",
+  "/verify-otp"
 ];
 
 const AUTH_ROUTES = [
