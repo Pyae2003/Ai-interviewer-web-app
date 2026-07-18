@@ -1,6 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import {
+  motion,
+  MotionConfig,
+  type Variants,
+} from "framer-motion";
 import {
   ChevronDown,
   LayoutDashboard,
@@ -16,7 +22,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { Button } from "@/components/ui/button";
 import { LogoutButton } from "./logout";
 
@@ -26,112 +31,239 @@ type UserProfileProps = {
   email: string;
 };
 
+interface AnimatedNameProps {
+  name: string;
+  className?: string;
+}
+
+const nameContainerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      delayChildren: 0.05,
+      staggerChildren: 0.055,
+    },
+  },
+};
+
+const nameWordVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 4,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+function AnimatedName({
+  name,
+  className = "",
+}: AnimatedNameProps) {
+  const words = name.trim().split(/\s+/);
+
+  return (
+    <MotionConfig reducedMotion="user">
+      <motion.span
+        initial="hidden"
+        animate="visible"
+        variants={nameContainerVariants}
+        aria-label={name}
+        className={className}
+      >
+        {words.map((word, index) => (
+          <motion.span
+            key={`${word}-${index}`}
+            aria-hidden="true"
+            variants={nameWordVariants}
+            className={
+              index === words.length - 1
+                ? "inline-block"
+                : "mr-[0.25em] inline-block"
+            }
+          >
+            {word}
+          </motion.span>
+        ))}
+      </motion.span>
+    </MotionConfig>
+  );
+}
+
 export default function UserProfile({
   name,
   email,
 }: UserProfileProps) {
-  const initial = name?.charAt(0).toUpperCase() ?? "U";
+  const [open, setOpen] = useState(false);
+
+  const trimmedName = name?.trim() || "User";
+  const initial = trimmedName.charAt(0).toUpperCase();
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button
+          type="button"
           variant="ghost"
-          className="
-            h-auto
-            rounded-xl
-            px-2
-            py-1
-            transition-all
-            hover:bg-muted
-          "
+          aria-label={`Open profile menu for ${trimmedName}`}
+          className="group h-auto rounded-2xl border border-transparent px-2 py-1.5 transition-colors duration-200 hover:border-black/5 hover:bg-white/80 hover:shadow-sm data-[state=open]:border-black/5 data-[state=open]:bg-white data-[state=open]:shadow-sm dark:hover:border-white/10 dark:hover:bg-white/5 dark:data-[state=open]:border-white/10 dark:data-[state=open]:bg-white/5"
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2.5">
             {/* Avatar */}
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-sky-500 to-yellow-400 font-semibold text-black shadow">
+            <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-yellow-300 font-bold text-zinc-950 shadow-sm ring-1 ring-black/5 transition-transform duration-200 group-hover:scale-[1.03] dark:ring-white/10">
               {initial}
+
+              <span
+                aria-hidden="true"
+                className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500 dark:border-zinc-900"
+              />
             </div>
 
-            {/* Desktop */}
-            <div className="hidden sm:flex flex-col items-start">
-              <span className="max-w-35 truncate text-sm font-semibold">
-                {name}
+            {/* Desktop user details */}
+            <div className="hidden min-w-0 flex-col items-start leading-tight sm:flex">
+              <span className="max-w-36 truncate text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                {trimmedName}
               </span>
 
-              <span className="max-w-40] truncate text-xs text-muted-foreground">
+              <span className="mt-0.5 max-w-44 truncate text-xs font-normal text-zinc-500 dark:text-zinc-400">
                 {email}
               </span>
             </div>
 
-            {/* Desktop Arrow */}
-            <ChevronDown className="hidden h-4 w-4 text-muted-foreground sm:block" />
+            <ChevronDown
+              aria-hidden="true"
+              className={`hidden h-4 w-4 shrink-0 text-zinc-400 transition-transform duration-200 sm:block ${
+                open ? "rotate-180" : "rotate-0"
+              }`}
+            />
           </div>
         </Button>
       </DropdownMenuTrigger>
 
       <DropdownMenuContent
         align="end"
-        sideOffset={8}
-        className="w-64 rounded-xl"
+        sideOffset={10}
+        className="w-72 overflow-hidden rounded-2xl border-black/5 bg-white/95 p-1.5 shadow-[0_20px_60px_rgba(15,23,42,0.16)] backdrop-blur-xl dark:border-white/10 dark:bg-zinc-900/95"
       >
-        {/* Header */}
-        <DropdownMenuLabel className="pb-3">
+        {/* Profile header */}
+        <DropdownMenuLabel className="p-3 font-normal">
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-linear-to-br from-sky-500 to-yellow-400 font-bold text-black">
+            <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-sky-400 to-yellow-300 text-base font-bold text-zinc-950 shadow-sm ring-1 ring-black/5 dark:ring-white/10">
               {initial}
+
+              <span
+                aria-hidden="true"
+                className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 dark:border-zinc-900"
+              />
             </div>
 
-            <div className="overflow-hidden">
-              <p className="truncate font-semibold">
-                {name}
-              </p>
+            <div className="min-w-0">
+              <AnimatedName
+                name={trimmedName}
+                className="block truncate text-sm font-semibold text-zinc-950 dark:text-white"
+              />
 
-              <p className="truncate text-xs text-muted-foreground">
+              <p className="mt-1 truncate text-xs text-zinc-500 dark:text-zinc-400">
                 {email}
               </p>
             </div>
           </div>
         </DropdownMenuLabel>
 
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator className="mx-2 bg-black/5 dark:bg-white/10" />
 
-        <DropdownMenuItem asChild>
-          <Link
-            href="/dashboard"
-            className="flex cursor-pointer items-center"
+        <div className="p-1">
+          <DropdownMenuItem
+            asChild
+            className="cursor-pointer rounded-xl px-3 py-2.5 focus:bg-sky-50 focus:text-zinc-950 dark:focus:bg-sky-950/50 dark:focus:text-white"
           >
-            <LayoutDashboard className="mr-2 h-4 w-4" />
-            Dashboard
-          </Link>
-        </DropdownMenuItem>
+            <Link href="/dashboard">
+              <span className="mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-sky-50 text-sky-600 dark:bg-sky-950 dark:text-sky-400">
+                <LayoutDashboard
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                />
+              </span>
 
-        <DropdownMenuItem asChild>
-          <Link
-            href="/profile"
-            className="flex cursor-pointer items-center"
+              <span className="flex flex-col">
+                <span className="text-sm font-medium">
+                  Dashboard
+                </span>
+
+                <span className="text-xs text-muted-foreground">
+                  View your overview
+                </span>
+              </span>
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            asChild
+            className="cursor-pointer rounded-xl px-3 py-2.5 focus:bg-yellow-50 focus:text-zinc-950 dark:focus:bg-yellow-950/40 dark:focus:text-white"
           >
-            <User className="mr-2 h-4 w-4" />
-            Profile
-          </Link>
-        </DropdownMenuItem>
+            <Link href="/profile">
+              <span className="mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-yellow-50 text-yellow-600 dark:bg-yellow-950 dark:text-yellow-400">
+                <User
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                />
+              </span>
 
-        <DropdownMenuItem asChild>
-          <Link
-            href="/settings"
-            className="flex cursor-pointer items-center"
+              <span className="flex flex-col">
+                <span className="text-sm font-medium">
+                  Profile
+                </span>
+
+                <span className="text-xs text-muted-foreground">
+                  Manage personal details
+                </span>
+              </span>
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem
+            asChild
+            className="cursor-pointer rounded-xl px-3 py-2.5 focus:bg-zinc-100 focus:text-zinc-950 dark:focus:bg-zinc-800 dark:focus:text-white"
           >
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
-          </Link>
-        </DropdownMenuItem>
+            <Link href="/settings">
+              <span className="mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                <Settings
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                />
+              </span>
 
-        <DropdownMenuSeparator />
+              <span className="flex flex-col">
+                <span className="text-sm font-medium">
+                  Settings
+                </span>
+
+                <span className="text-xs text-muted-foreground">
+                  Update your preferences
+                </span>
+              </span>
+            </Link>
+          </DropdownMenuItem>
+        </div>
+
+        <DropdownMenuSeparator className="mx-2 bg-black/5 dark:bg-white/10" />
 
         {/* Logout */}
-        <DropdownMenuItem asChild>
-          <LogoutButton />
-        </DropdownMenuItem>
+        <div className="p-1">
+          <DropdownMenuItem
+            asChild
+            className="cursor-pointer rounded-xl px-3 py-2.5 text-red-600 focus:bg-red-50 focus:text-red-700 dark:text-red-400 dark:focus:bg-red-950/40 dark:focus:text-red-300"
+          >
+            <LogoutButton />
+          </DropdownMenuItem>
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
 }
+

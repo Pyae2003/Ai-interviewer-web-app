@@ -85,9 +85,24 @@ export async function finishInterview(interviewId: string) {
       },
     });
 
-    await interviewQueue.add("evaluate-interview", {
-      interviewId,
-    });
+    await interviewQueue.add(
+      "evaluate-interview",
+      {
+        interviewId,
+      },
+      {
+        deduplication: {
+          id: `evaluate-interview`,
+        },
+
+        attempts: 3,
+
+        backoff: {
+          type: "exponential",
+          delay: 2000,
+        },
+      },
+    );
   } catch (error) {
     if (error instanceof AppError) {
       throw error;

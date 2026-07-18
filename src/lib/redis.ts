@@ -1,12 +1,18 @@
 import Redis from "ioredis";
+const redisUrl = process.env.REDIS_URL;
 
+if (!redisUrl) {
+  throw new Error(
+    "REDIS_URL environment variable is missing",
+  );
+}
 declare global {
   var redisConnection: Redis | undefined;
 }
 
 export const redisConnection =
   global.redisConnection ??
-  new Redis(process.env.REDIS_URL!, {
+  new Redis(redisUrl, {
     maxRetriesPerRequest: null,
     enableReadyCheck: true,
     lazyConnect: true,

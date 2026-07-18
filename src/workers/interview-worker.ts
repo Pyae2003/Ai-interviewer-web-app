@@ -9,7 +9,7 @@ type InterviewJob = {
 };
 
 export const interviewWorker = new Worker(
-  "interview",
+  "evaluate-interview",
   async (job: Job<InterviewJob>) => {
     const { interviewId } = job.data;
 

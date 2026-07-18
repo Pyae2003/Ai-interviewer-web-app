@@ -1,61 +1,108 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, MotionConfig, type Variants } from "framer-motion";
 
-const circles = [
+type Orb = {
+  id: string;
+  size: number;
+  className: string;
+  position: {
+    top?: string;
+    left?: string;
+    right?: string;
+    bottom?: string;
+  };
+  duration: number;
+  delay: number;
+};
+
+const orbs: Orb[] = [
   {
-    size: 260,
-    top: "8%",
-    left: "5%",
-    color: "bg-sky-300",
+    id: "sky",
+    size: 280,
+    position: {
+      top: "4%",
+      left: "2%",
+    },
+    className: "bg-sky-300/35 dark:bg-sky-700/15",
+    duration: 16,
+    delay: 0,
   },
   {
-    size: 200,
-    top: "70%",
-    left: "15%",
-    color: "bg-yellow-300",
-  },
-  {
-    size: 300,
-    top: "15%",
-    right: "5%",
-    color: "bg-cyan-300",
-  },
-  {
+    id: "yellow",
     size: 220,
-    bottom: "10%",
-    right: "15%",
-    color: "bg-blue-300",
+    position: {
+      bottom: "5%",
+      left: "12%",
+    },
+    className: "bg-yellow-300/30 dark:bg-yellow-700/10",
+    duration: 18,
+    delay: 1.5,
+  },
+  {
+    id: "cyan",
+    size: 320,
+    position: {
+      top: "12%",
+      right: "0%",
+    },
+    className: "bg-cyan-300/30 dark:bg-cyan-700/10",
+    duration: 20,
+    delay: 0.8,
   },
 ];
 
+const orbVariants: Variants = {
+  initial: {
+    x: 0,
+    y: 0,
+    scale: 1,
+  },
+  animate: {
+    x: [0, 8, 0],
+    y: [0, -12, 0],
+    scale: [1, 1.025, 1],
+  },
+};
+
 export default function ProcessingBackground() {
   return (
-    <>
-      {circles.map((circle, index) => (
-        <motion.div
-          key={index}
-          animate={{
-            y: [-20, 20, -20],
-            x: [-10, 10, -10],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 10 + index * 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className={`absolute rounded-full blur-3xl opacity-25 ${circle.color}`}
-          style={{
-            width: circle.size,
-            height: circle.size,
-            top: circle.top,
-            left: circle.left,
-            right: circle.right,
-            bottom: circle.bottom,
-          }}
-        />
-      ))}
-    </>
+    <MotionConfig reducedMotion="user">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 overflow-hidden"
+      >
+        {/* Soft base gradient */}
+        <div className="absolute inset-0 bg-linear-to-br from-sky-50/80 via-white to-yellow-50/70 dark:from-zinc-950 dark:via-zinc-950 dark:to-zinc-900" />
+
+        {/* Subtle top light */}
+        <div className="absolute inset-x-0 top-0 h-64 bg-linear-to-b from-white/70 to-transparent dark:from-white/[0.03]" />
+
+        {/* Animated ambient orbs */}
+        {orbs.map((orb) => (
+          <motion.div
+            key={orb.id}
+            initial="initial"
+            animate="animate"
+            variants={orbVariants}
+            transition={{
+              duration: orb.duration,
+              delay: orb.delay,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className={`absolute rounded-full blur-3xl ${orb.className}`}
+            style={{
+              width: orb.size,
+              height: orb.size,
+              ...orb.position,
+            }}
+          />
+        ))}
+
+        {/* Gentle center glow */}
+        <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/40 blur-3xl dark:bg-white/[0.015]" />
+      </div>
+    </MotionConfig>
   );
 }

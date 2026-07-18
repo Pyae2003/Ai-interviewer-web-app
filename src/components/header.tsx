@@ -1,12 +1,10 @@
-"use client";
+  "use client";
 
 import Link from "next/link";
 import { useState } from "react";
-import { useTheme } from "next-themes";
+import { motion, MotionConfig, type Variants } from "framer-motion";
 import {
   Menu,
-  Sun,
-  Moon,
   Bot,
   Sparkles,
   LayoutDashboard,
@@ -17,12 +15,14 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
-  SheetTitle,
   SheetContent,
+  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+
 import UserProfile from "./user-profile";
 import { LogoutButton } from "./logout";
+import { ThemeToggle } from "./theme-toggle";
 
 export interface ClientHeaderProp {
   path: string;
@@ -35,71 +35,148 @@ export interface ClientHeaderProp {
   };
 }
 
-export default function Header({ user, path, action }: ClientHeaderProp) {
-  const { theme, setTheme } = useTheme();
+interface AnimatedHeadlineProps {
+  text: string;
+  className?: string;
+}
+
+const headlineContainerVariants: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      delayChildren: 0.08,
+      staggerChildren: 0.07,
+    },
+  },
+};
+
+const headlineWordVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 6,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.48,
+      ease: [0.22, 1, 0.36, 1],
+    },
+  },
+};
+
+function AnimatedHeadline({
+  text,
+  className = "",
+}: AnimatedHeadlineProps) {
+  const words = text.split(" ");
+
+  return (
+    <MotionConfig reducedMotion="user">
+      <motion.p
+        initial="hidden"
+        animate="visible"
+        variants={headlineContainerVariants}
+        aria-label={text}
+        className={className}
+      >
+        {words.map((word, index) => (
+          <motion.span
+            key={`${word}-${index}`}
+            aria-hidden="true"
+            variants={headlineWordVariants}
+            className={
+              index === words.length - 1
+                ? "inline-block bg-linear-to-r from-sky-500 to-yellow-500 bg-clip-text text-transparent"
+                : "mr-[0.25em] inline-block"
+            }
+          >
+            {word}
+          </motion.span>
+        ))}
+      </motion.p>
+    </MotionConfig>
+  );
+}
+
+export default function Header({
+  user,
+  path,
+  action,
+}: ClientHeaderProp) {
   const [open, setOpen] = useState(false);
 
   const navItems = [
-    { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "History", href: "/history", icon: BookOpen },
-    { label: "Profile", href: "/profile", icon: User },
+    {
+      label: "Dashboard",
+      href: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      label: "History",
+      href: "/history",
+      icon: BookOpen,
+    },
+    {
+      label: "Profile",
+      href: "/profile",
+      icon: User,
+    },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-xl border-b border-black/10">
-      {/* outer */}
+    <header className="sticky top-0 z-50 w-full border-b border-black/5 bg-white/75 backdrop-blur-xl  bg-linear-to-br from-sky-50 via-white to-yellow-50 dark:from-sky-950 dark:via-zinc-950 dark:to-yellow-950">
       <div className="mx-auto max-w-7xl px-4 py-3">
-        {/* innter */}
-        <div className="flex items-center justify-between rounded-2xl border border-black/10 bg-linear-to-r from-sky-100 via-white to-yellow-100 px-4 py-3 shadow-sm">
-          {/* left*/}
+        <div className="flex items-center justify-between rounded-2xl border border-black/5 bg-linear-to-r from-sky-50 via-white to-yellow-50 px-4 py-3 shadow-[0_8px_30px_rgb(0,0,0,0.05)] dark:border-white/10 dark:from-sky-950/70 dark:via-zinc-950 dark:to-yellow-950/70">
+          {/* Brand */}
           <Link
             href="/"
-            className="flex items-center gap-3 rounded-xl bg-white px-3 py-2 shadow-sm border border-black/10"
+            aria-label="AI Interviewer home"
+            className="group flex items-center gap-3 rounded-xl border border-black/5 bg-white/90 px-3 py-2 shadow-sm transition-colors duration-200 hover:bg-white dark:border-white/10 dark:bg-zinc-900/90 dark:hover:bg-zinc-900"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-yellow-300 text-black shadow-md">
-              <Bot size={18} />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-yellow-300 text-zinc-900 shadow-sm">
+              <Bot size={18} aria-hidden="true" />
             </div>
 
-            <div className="leading-tight">
-              <p className="font-bold text-black">AI Interviewer</p>
-              <p className="text-xs text-black/60">Smart Interview Platform</p>
+            <div className="min-w-0 leading-tight">
+              <AnimatedHeadline
+                text="AI Interviewer"
+                className="whitespace-nowrap text-sm font-bold tracking-tight text-zinc-900 sm:text-base dark:text-white"
+              />
+
+              <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
+                Smart Interview Platform
+              </p>
             </div>
           </Link>
 
-          {/* center  : desktop */}
-          <nav className="hidden md:flex items-center gap-2 rounded-xl border border-black/10 bg-white px-2 py-2 shadow-sm">
+          {/* Desktop navigation */}
+          <nav
+            aria-label="Main navigation"
+            className="hidden items-center gap-1 rounded-xl border border-black/5 bg-white/90 p-1.5 shadow-sm md:flex dark:border-white/10 dark:bg-zinc-900/90"
+          >
             {navItems.map((item) => {
               const Icon = item.icon;
+
               return (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-black/70 hover:bg-sky-100 hover:text-black transition"
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-zinc-600 transition-colors duration-200 hover:bg-sky-50 hover:text-zinc-950 dark:text-zinc-300 dark:hover:bg-white/5 dark:hover:text-white"
                 >
-                  <Icon size={16} />
+                  <Icon size={16} aria-hidden="true" />
                   {item.label}
                 </Link>
               );
             })}
           </nav>
 
-          {/* Right*/}
-          <div className="flex items-center gap-2 ">
-            {/* Theme */}
+          {/* Right controls */}
+          <div className="flex items-center gap-2">
             <div className="hidden sm:block">
-              <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="flex h-10 w-10 items-center  justify-center rounded-xl border border-black/10 bg-white shadow-sm hover:bg-yellow-100 transition "
-              >
-                {theme === "dark" ? (
-                  <Sun size={18} className="text-yellow-500" />
-                ) : (
-                  <Moon size={18} className="text-sky-500" />
-                )}
-              </button>
+              <ThemeToggle />
             </div>
 
-            {/* user profile */}
             {user ? (
               <div className="hidden sm:block">
                 <UserProfile {...user} />
@@ -110,37 +187,58 @@ export default function Header({ user, path, action }: ClientHeaderProp) {
               </Link>
             )}
 
-            {/* mobile menu */}
+            {/* Mobile menu */}
             <Sheet open={open} onOpenChange={setOpen}>
-              <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-              <SheetTrigger asChild className="md:hidden">
-                <button className="flex h-10 w-10 items-center justify-center rounded-xl border border-black/10 bg-white shadow-sm">
-                  <Menu />
+              <SheetTrigger asChild>
+                <button
+                  type="button"
+                  aria-label="Open navigation menu"
+                  className="flex h-10 w-10 items-center justify-center rounded-xl border border-black/5 bg-white shadow-sm transition-colors duration-200 hover:bg-zinc-50 md:hidden dark:border-white/10 dark:bg-zinc-900 dark:hover:bg-zinc-800"
+                >
+                  <Menu size={19} aria-hidden="true" />
                 </button>
               </SheetTrigger>
 
-              <SheetContent side="right" className="w-75 bg-white">
-                {/* mobile header  */}
-                <div className="mb-6 rounded-xl border border-black/10 bg-linear-to-r from-sky-100 to-yellow-100 p-4">
-                  <div className="flex items-center gap-2">
-                    <Bot />
-                    <span className="font-bold">AI Interviewer</span>
+              <SheetContent
+                side="right"
+                className="w-75 border-l border-black/5 bg-white p-5 dark:border-white/10 dark:bg-zinc-950"
+              >
+                <SheetTitle className="sr-only">
+                  Navigation Menu
+                </SheetTitle>
+
+                {/* Mobile brand */}
+                <div className="mb-6 rounded-2xl border border-black/5 bg-linear-to-r from-sky-50 to-yellow-50 p-4 dark:border-white/10 dark:from-sky-950/70 dark:to-yellow-950/70">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-yellow-300 text-zinc-900">
+                      <Bot size={18} aria-hidden="true" />
+                    </div>
+
+                    <div>
+                      <AnimatedHeadline
+                        text="AI Interviewer"
+                        className="font-bold tracking-tight text-zinc-900 dark:text-white"
+                      />
+
+                      <p className="mt-0.5 text-xs text-zinc-500 dark:text-zinc-400">
+                        Prepare smarter. Interview better.
+                      </p>
+                    </div>
                   </div>
-                  <p className="text-xs text-black/60 mt-1">
-                    Prepare smarter. Interview better.
-                  </p>
                 </div>
+
+                {/* Mobile user */}
                 {user && (
-                  <div className="mb-4 rounded-xl border bg-white p-4">
+                  <div className="mb-4 rounded-2xl border border-black/5 bg-white p-4 shadow-sm dark:border-white/10 dark:bg-zinc-900">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-linear-to-br from-sky-400 to-yellow-300 font-semibold text-black">
-                        <UserProfile {...user} />
-                      </div>
+                      <UserProfile {...user} />
 
-                      <div>
-                        <p className="font-medium">{user.name}</p>
+                      <div className="min-w-0">
+                        <p className="truncate font-medium text-zinc-900 dark:text-white">
+                          {user.name}
+                        </p>
 
-                        <p className="text-xs text-muted-foreground">
+                        <p className="truncate text-xs text-zinc-500 dark:text-zinc-400">
                           {user.email}
                         </p>
                       </div>
@@ -148,36 +246,50 @@ export default function Header({ user, path, action }: ClientHeaderProp) {
                   </div>
                 )}
 
-                {/* mobile nav dev */}
-                <div className="flex flex-col gap-2">
+                {/* Mobile navigation */}
+                <nav
+                  aria-label="Mobile navigation"
+                  className="flex flex-col gap-2"
+                >
                   {navItems.map((item) => {
                     const Icon = item.icon;
+
                     return (
                       <Link
                         key={item.href}
                         href={item.href}
                         onClick={() => setOpen(false)}
-                        className="flex items-center gap-3 rounded-xl border border-black/10 bg-white px-4 py-3 text-sm font-medium hover:bg-sky-50 transition"
+                        className="flex items-center gap-3 rounded-xl border border-black/5 bg-white px-4 py-3 text-sm font-medium text-zinc-700 transition-colors duration-200 hover:bg-sky-50 hover:text-zinc-950 dark:border-white/10 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-white"
                       >
-                        <Icon size={16} />
+                        <Icon size={16} aria-hidden="true" />
                         {item.label}
                       </Link>
                     );
                   })}
-                </div>
+                </nav>
 
-                {/* mobile cta  */}
-                <div className="mt-6 rounded-xl border border-black/10 bg-linear-to-r from-yellow-200 to-sky-200 p-4">
+                {/* Mobile action */}
+                <div className="mt-6 rounded-2xl border border-black/5 bg-linear-to-r from-yellow-100 to-sky-100 p-4 dark:border-white/10 dark:from-yellow-950/70 dark:to-sky-950/70">
                   {!user ? (
-                    <Link href="/signup" onClick={() => setOpen(false)}>
-                      <Button className="w-full bg-black text-white rounded-xl">
-                        <Sparkles className="mr-2" size={16} />
+                    <Button
+                      asChild
+                      className="w-full rounded-xl bg-zinc-950 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
+                    >
+                      <Link
+                        href="/signup"
+                        onClick={() => setOpen(false)}
+                      >
+                        <Sparkles
+                          className="mr-2"
+                          size={16}
+                          aria-hidden="true"
+                        />
                         Get Started
-                      </Button>
-                    </Link>
+                      </Link>
+                    </Button>
                   ) : (
-                    <div className="flex ">
-                      <Sparkles className="mr-2" size={16} />
+                    <div className="flex items-center gap-2 text-sm">
+                      <Sparkles size={16} aria-hidden="true" />
                       <LogoutButton />
                     </div>
                   )}

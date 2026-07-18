@@ -2,25 +2,49 @@
 
 import { useEffect, useState } from "react";
 
-const messages = [
+const PROCESSING_MESSAGES = [
   "Analyzing your answers...",
   "Checking technical accuracy...",
-  "Evaluating problem solving...",
+  "Evaluating problem-solving skills...",
   "Comparing with industry standards...",
-  "Generating AI feedback...",
-  "Preparing final report...",
-];
+  "Generating personalized feedback...",
+  "Preparing your final report...",
+] as const;
+
+const MESSAGE_INTERVAL = 2800;
 
 export function useTypingMessages() {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % messages.length);
-    }, 2500);
+    let timeoutId: ReturnType<typeof setTimeout>;
+    let isActive = true;
 
-    return () => clearInterval(interval);
+    const showNextMessage = () => {
+      if (!isActive) return;
+
+      setIndex(
+        (currentIndex) =>
+          (currentIndex + 1) %
+          PROCESSING_MESSAGES.length,
+      );
+
+      timeoutId = setTimeout(
+        showNextMessage,
+        MESSAGE_INTERVAL,
+      );
+    };
+
+    timeoutId = setTimeout(
+      showNextMessage,
+      MESSAGE_INTERVAL,
+    );
+
+    return () => {
+      isActive = false;
+      clearTimeout(timeoutId);
+    };
   }, []);
 
-  return messages[index];
+  return PROCESSING_MESSAGES[index];
 }

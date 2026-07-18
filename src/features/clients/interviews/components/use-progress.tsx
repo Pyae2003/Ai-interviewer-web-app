@@ -2,19 +2,55 @@
 
 import { useEffect, useState } from "react";
 
+const MAX_PROGRESS = 95;
+const UPDATE_INTERVAL = 650;
+
 export function useProgress() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 95) return prev; // stop at 95 until backend finishes
-        return prev + Math.random() * 3;
-      });
-    }, 500);
+    let timeoutId: ReturnType<typeof setTimeout>;
+    let isActive = true;
 
-    return () => clearInterval(interval);
+    const updateProgress = () => {
+      if (!isActive) return;
+
+      setProgress((currentProgress) => {
+        if (currentProgress >= MAX_PROGRESS) {
+          return MAX_PROGRESS;
+        }
+
+        const remaining =
+          MAX_PROGRESS - currentProgress;
+
+        /*
+         * Progress starts faster and gradually slows
+         * as it approaches 95%.
+         */
+        const increment = Math.max(
+          0.2,
+          remaining * 0.055,
+        );
+
+        return Math.min(
+          currentProgress + increment,
+          MAX_PROGRESS,
+        );
+      });
+
+      timeoutId = setTimeout(
+        updateProgress,
+        UPDATE_INTERVAL,
+      );
+    };
+
+    timeoutId = setTimeout(updateProgress, 350);
+
+    return () => {
+      isActive = false;
+      clearTimeout(timeoutId);
+    };
   }, []);
 
-  return Math.min(progress, 95);
+  return progress;
 }
