@@ -32,6 +32,7 @@ export interface ClientHeaderProp {
     id: string;
     email: string;
     name: string;
+    image? : string;
   };
 }
 
@@ -173,7 +174,7 @@ export default function Header({
 
           {/* Right controls */}
           <div className="flex items-center gap-2">
-            <div className="hidden sm:block">
+            <div className=" sm:block">
               <ThemeToggle />
             </div>
 

@@ -4,7 +4,7 @@ import UserProfilePage from "@/features/clients/profile/components/user-profile-
 import { getSession } from "@/lib/get-Session";
 import { loginPath } from "@/constants/route";
 import Header from "@/components/header";
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export default async function Page() {
   const session = await getSession();
 
@@ -12,17 +12,17 @@ export default async function Page() {
     redirect(loginPath);
   }
 
-   const userObject = {
-    id: session.user.id,
-    name: session.user.name ?? "User",
-    email: session.user.email ?? "",
-  };
-
-
   return (
     <div>
-      {" "}
-      <Header path={loginPath} user={userObject} />
+      <Header
+        path={loginPath}
+        user={{
+          id: session.user.id,
+          name: session.user.name ?? "User",
+          email: session.user.email ?? "",
+          image: session.user.image ?? "",
+        }}
+      />
       <UserProfilePage />
     </div>
   );

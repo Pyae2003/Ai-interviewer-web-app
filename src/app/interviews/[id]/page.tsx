@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 
 
 type Props = {
-  params: Promise< {
+  params: Promise<{
     id: string;
   }>
 };
@@ -18,7 +18,7 @@ export default async function Page({ params }: Props) {
     redirect(loginPath);
   };
 
-  const {id} = await params;
+  const { id } = await params;
   if (!id) {
     redirect("/dashboard");
   }
@@ -31,6 +31,7 @@ export default async function Page({ params }: Props) {
           id: session.user.id,
           name: session.user.name ?? "User",
           email: session.user.email ?? "",
+          image: session.user.image ?? "",
         }}
       />
 

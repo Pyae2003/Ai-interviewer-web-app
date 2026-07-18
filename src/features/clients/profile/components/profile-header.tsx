@@ -16,6 +16,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { editProfilePath } from "@/constants/route";
 
 type Props = {
   id: string;
@@ -81,7 +83,7 @@ function AnimatedProfileName({ name }: { name: string }) {
             variants={nameWordVariants}
             className={
               index === words.length - 1
-                ? "inline-block bg-linear-to-r from-sky-500 to-yellow-500 bg-clip-text text-transparent"
+                ? "inline-block bg-linear-to-r from-purple-500 to-red-500 bg-clip-text text-transparent"
                 : "mr-[0.22em] inline-block"
             }
           >
@@ -292,8 +294,10 @@ export default function ProfileHeader({
             size="lg"
             className="h-11 shrink-0 rounded-xl bg-zinc-950 px-5 font-semibold text-white shadow-sm transition-[background-color,box-shadow] duration-200 hover:bg-zinc-800 hover:shadow-md dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-200"
           >
-            <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
-            Edit Profile
+            <Link href={editProfilePath}>
+              <Pencil className="mr-2 h-4 w-4" aria-hidden="true" />
+              Edit Profile
+            </Link>
           </Button>
         </div>
 

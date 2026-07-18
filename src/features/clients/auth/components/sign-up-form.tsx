@@ -40,10 +40,6 @@ import { dashboardPath, loginPath } from "@/constants/route";
 import { signUpUser } from "../actions/sign-up";
 import { signUpSchema } from "../schema/signup-schema";
 
-/* -------------------------------------------------------------------------- */
-/*                         Subtle headline animation                           */
-/* -------------------------------------------------------------------------- */
-
 const headlineContainerVariants: Variants = {
   hidden: {},
   visible: {

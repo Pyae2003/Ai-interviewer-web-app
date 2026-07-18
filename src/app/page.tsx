@@ -13,6 +13,7 @@ export default async function Home() {
         id: session.user.id,
         name: session.user.name,
         email: session.user.email,
+        image: session.user.image || undefined,
       }
     : null;
 
@@ -21,7 +22,7 @@ export default async function Home() {
       {/* HEADER */}
       <Header
         user={user ?? undefined}
-        path={loginPath }
+        path={loginPath}
         action={
           !user ? (
             <Button className="bg-linear-to-r from-sky-500 to-yellow-400 text-black hover:opacity-90">

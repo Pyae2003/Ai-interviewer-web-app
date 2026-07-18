@@ -1,19 +1,20 @@
 import Header from "@/components/header";
 import { loginPath } from "@/constants/route";
-import { InterviewHistory } from "@/features/clients/history/components/interview-history";
+import EditProfilePage from "@/features/clients/profile/components/edit-user-info-page";
 import { getSession } from "@/lib/get-Session";
 import { redirect } from "next/navigation";
 export const dynamic = "force-dynamic";
-export default async function Page() {
+
+const page = async () => {
   const session = await getSession();
 
-  // AUTH GUARD
   if (!session?.user?.id) {
-    redirect("/login");
+    redirect(loginPath);
   }
 
   return (
     <div>
+      {" "}
       <Header
         path={loginPath}
         user={{
@@ -23,7 +24,9 @@ export default async function Page() {
           image: session.user.image ?? "",
         }}
       />
-      <InterviewHistory />
+      <EditProfilePage />
     </div>
   );
-}
+};
+
+export default page;

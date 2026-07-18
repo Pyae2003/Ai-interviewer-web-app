@@ -23,15 +23,17 @@ export default async function Page({ params }: Props) {
     redirect("/history");
   }
 
-  const userObject = {
-    id: session.user.id,
-    name: session.user.name ?? "User",
-    email: session.user.email ?? "",
-  };
-
   return (
     <div>
-      <Header path={loginPath} user={userObject} />
+      <Header
+        path={loginPath}
+        user={{
+          id: session.user.id,
+          name: session.user.name ?? "User",
+          email: session.user.email ?? "",
+          image: session.user.image ?? "",
+        }}
+      />
       <HistroyDetailPage interviewId={id} />
     </div>
   );

@@ -13,7 +13,7 @@ import {
   Settings,
   User,
 } from "lucide-react";
-
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,6 +29,7 @@ type UserProfileProps = {
   id: string;
   name: string;
   email: string;
+  image?: string;
 };
 
 interface AnimatedNameProps {
@@ -98,6 +99,7 @@ function AnimatedName({
 export default function UserProfile({
   name,
   email,
+  image
 }: UserProfileProps) {
   const [open, setOpen] = useState(false);
 
@@ -114,15 +116,19 @@ export default function UserProfile({
           className="group h-auto rounded-2xl border border-transparent px-2 py-1.5 transition-colors duration-200 hover:border-black/5 hover:bg-white/80 hover:shadow-sm data-[state=open]:border-black/5 data-[state=open]:bg-white data-[state=open]:shadow-sm dark:hover:border-white/10 dark:hover:bg-white/5 dark:data-[state=open]:border-white/10 dark:data-[state=open]:bg-white/5"
         >
           <div className="flex items-center gap-2.5">
-            {/* Avatar */}
-            <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-yellow-300 font-bold text-zinc-950 shadow-sm ring-1 ring-black/5 transition-transform duration-200 group-hover:scale-[1.03] dark:ring-white/10">
-              {initial}
+             <Avatar className="h-10 w-10 shrink-0 border-4 border-white shadow-[0_12px_35px_rgba(15,23,42,0.18)] dark:border-zinc-900">
+              {image && (
+                <AvatarImage
+                  src={image}
+                  alt={`${trimmedName}'s profile`}
+                  className="object-cover"
+                />
+              )}
 
-              <span
-                aria-hidden="true"
-                className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-emerald-500 dark:border-zinc-900"
-              />
-            </div>
+              <AvatarFallback className="bg-linear-to-br from-sky-100 to-yellow-100 text-4xl font-bold text-sky-700 dark:from-sky-950 dark:to-yellow-950 dark:text-sky-400">
+                {initial}
+              </AvatarFallback>
+            </Avatar>
 
             {/* Desktop user details */}
             <div className="hidden min-w-0 flex-col items-start leading-tight sm:flex">
@@ -137,9 +143,8 @@ export default function UserProfile({
 
             <ChevronDown
               aria-hidden="true"
-              className={`hidden h-4 w-4 shrink-0 text-zinc-400 transition-transform duration-200 sm:block ${
-                open ? "rotate-180" : "rotate-0"
-              }`}
+              className={`hidden h-4 w-4 shrink-0 text-zinc-400 transition-transform duration-200 sm:block ${open ? "rotate-180" : "rotate-0"
+                }`}
             />
           </div>
         </Button>
@@ -153,14 +158,19 @@ export default function UserProfile({
         {/* Profile header */}
         <DropdownMenuLabel className="p-3 font-normal">
           <div className="flex items-center gap-3">
-            <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-linear-to-br from-sky-400 to-yellow-300 text-base font-bold text-zinc-950 shadow-sm ring-1 ring-black/5 dark:ring-white/10">
-              {initial}
+              <Avatar className="h-12 w-12 shrink-0 border-4 border-white shadow-[0_12px_35px_rgba(15,23,42,0.18)] dark:border-zinc-900">
+              {image && (
+                <AvatarImage
+                  src={image}
+                  alt={`${trimmedName}'s profile`}
+                  className="object-cover"
+                />
+              )}
 
-              <span
-                aria-hidden="true"
-                className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white bg-emerald-500 dark:border-zinc-900"
-              />
-            </div>
+              <AvatarFallback className="bg-linear-to-br from-sky-100 to-yellow-100 text-4xl font-bold text-sky-700 dark:from-sky-950 dark:to-yellow-950 dark:text-sky-400">
+                {initial}
+              </AvatarFallback>
+            </Avatar>
 
             <div className="min-w-0">
               <AnimatedName

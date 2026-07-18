@@ -4,6 +4,8 @@ export const loginPath = "/login"
 export const dashboardPath = "/dashboard"
 export const resetPasswordPath = "/reset-password"
 export const verifyOtpPath = "/verify-otp"
+export const editProfilePath = "/profile/edit-profile"
+export const profilePath = "/profile"
 
 export const categoryGroupPath = (slug : string) => `/${slug}`
 

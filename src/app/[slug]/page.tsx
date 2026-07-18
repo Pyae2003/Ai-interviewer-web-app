@@ -42,6 +42,7 @@ export default async function Page({ params }: PageProps) {
           id: session.user.id,
           name: session.user.name ?? "User",
           email: session.user.email ?? "",
+          image: session.user.image ?? "",
         }}
       />
 
