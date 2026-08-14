@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import React, { useRef, useState } from "react";
 import { Trash2, Upload, Loader2 } from "lucide-react";
 import { toast } from "sonner";
