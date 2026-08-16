@@ -1,6 +1,6 @@
 import NotFound from "@/app/not-found";
 import { getInterviewResult } from "../actions/get-interview-result";
-import InterviewResult from "./interviews-result";
+import InterviewResult from "./interview-result/ interview-result";
 
 type InterviewsResultPageProp = {
   id: string;

@@ -8,6 +8,7 @@ export const editProfilePath = "/profile/edit-profile"
 export const profilePath = "/profile"
 
 export const categoryGroupPath = (slug : string) => `/${slug}`
+export const categoryGroupDashboardPath = "/admin/category-groups"
 
 //
 export const histroyPath = "/history"
@@ -24,6 +25,7 @@ export const ADMIN_PREFIX = "/admin";
 export const adminDashboardPath = "/admin/dashboard"
 export const adminUserManagemant = "/admin/user-managemant"
 export const adminInterviewsPath = "/admin/interviews"
+export const adminAnalyticsPath = "/admin/analytics"
 
 //CRUD Category
 export const createCategoryPath = "/admin/categories/create-categories"
@@ -35,7 +37,7 @@ export const categoriesdashboardPath = "/admin/categories"
 //CRUD Questions
 export const createQuestionPath = "/admin/questions/create-questions"
 export const questionsDashboardPath = "/admin/questions"
-export const questionDashboardWithCategoryNamePath = (params : string) =>  `/admin/categories/${params}/questions`
+export const viewDetailQuestionPath = (params : string) =>  `/admin/questions/view-details/${params}`
 export const editQuestionPath = (params : string) =>  `/admin/questions/edit-questions/${params}`
 
 //userDetail
@@ -45,5 +47,6 @@ export const userDetailPath =(params : string) => `/admin/user-managemant/${para
 //CRUD Categories Group
 export const createCategoryGroupPath =  `/admin/category-groups/create-category-groups`;
 export const updateCategoryGroupPath = (params : string) => `/admin/category-groups/update-category-groups/${params}`
+export const viewDetailCategoryGroupPath = (params : string) => `/admin/category-groups/view-details/${params}`
 
 

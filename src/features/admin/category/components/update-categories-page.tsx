@@ -11,7 +11,7 @@ const UpdateCategoryPage = async ({id} : UpdateCategoryPageProp) => {
 
   return (
     <div>
-      <UpdateCategoryForm category={category.data} />
+      <UpdateCategoryForm category={category.data.data} />
     </div>
   );
 };

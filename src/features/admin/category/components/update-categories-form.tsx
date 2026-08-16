@@ -38,27 +38,11 @@ import {
   updateCategorySchema,
 } from "../schema/update-categories.schema";
 import { Prisma } from "@/generated/prisma/client";
+import { CategoryDashboardItem } from "./dashboard-categories";
 
-type UpdateCategory = Prisma.CategoryGetPayload<{
-  select: {
-    id: true;
-    name: true;
-    description: true;
-    isActive: true;
-    sortOrder: true;
-    createdAt: true;
-    updatedAt: true;
-    categoryGroup: {
-      select: {
-        id: true;
-        name: true;
-      };
-    };
-  };
-}>;
 
 type UpdateCategoryFormProps = {
-  category: UpdateCategory;
+  category: CategoryDashboardItem;
 };
 
 export function UpdateCategoryForm({ category }: UpdateCategoryFormProps) {
@@ -73,7 +57,7 @@ export function UpdateCategoryForm({ category }: UpdateCategoryFormProps) {
     defaultValues: {
       id: category.id,
       name: category.name,
-      categoryGroupName: category.categoryGroup?.name,
+      categoryGroupName: category.groupName,
       description: category.description ?? "",
       isActive: category.isActive,
       sortOrder: category.sortOrder,
@@ -131,7 +115,7 @@ export function UpdateCategoryForm({ category }: UpdateCategoryFormProps) {
                 <FieldGroup className="space-y-5">
                   <Field>
                     <FieldLabel>Category</FieldLabel>
-                    <Input value={category.categoryGroup?.name} disabled />
+                    <Input value={category.groupName} disabled />
                   </Field>
                   {/* Email */}
                   <Controller
@@ -260,7 +244,7 @@ export function UpdateCategoryForm({ category }: UpdateCategoryFormProps) {
               <p className="text-sm text-muted-foreground"></p>
 
               <Link
-                href={dashboardPath}
+                href={categoriesdashboardPath}
                 className="text-sm font-medium text-sky-600 hover:text-sky-700"
               >
                 Back to Dashboard{" "}

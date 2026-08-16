@@ -180,7 +180,8 @@ export const QuestionScalarFieldEnum = {
   categoryId: 'categoryId',
   question: 'question',
   difficulty: 'difficulty',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type QuestionScalarFieldEnum = (typeof QuestionScalarFieldEnum)[keyof typeof QuestionScalarFieldEnum]

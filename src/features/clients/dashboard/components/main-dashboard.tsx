@@ -1,13 +1,33 @@
 import { notFound } from "next/navigation";
 import { FolderOpen } from "lucide-react";
-import { getAllCategoryGroups } from "@/features/admin/categoryGroup/query/get-all-category-groups";
-import { CategoryHeader } from "./categoy-header";
 import { CategoryGroupList } from "./category-groups-list";
+import { getCategoryGroups } from "../query/get-category-groups";
 import { DashboardHeadline } from "./dashboare-headline";
 
 const MainDashboard = async () => {
-  const categoryGroup = await getAllCategoryGroups();
-  if (!categoryGroup.data) {
+  const categoryGroup = await getCategoryGroups();
+  console.log("Category Group testing",categoryGroup)
+
+  if (categoryGroup.serverError) {
+    console.error("[CATEGORY_GROUP_DASHBOARD_ERROR]", {
+      serverError: categoryGroup.serverError,
+    });
+
+    throw new Error("Unable to load category groups.");
+  }
+  if (
+    !categoryGroup.data ||
+    !categoryGroup.data.success ||
+    !Array.isArray(categoryGroup.data.data)
+  ) {
+    console.error("[CATEGORY_GROUP_INVALID_RESPONSE]", {
+      response: categoryGroup.data,
+    });
+
+    throw new Error("Unable to load category groups.");
+  }
+  
+  if (!categoryGroup.data?.data) {
     notFound();
   }
   const categoryGroups = categoryGroup.data.data;
@@ -25,10 +45,9 @@ const MainDashboard = async () => {
       />{" "}
       <section className="relative mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
         {" "}
-        <DashboardHeadline />{" "}
         <div className="mt-12 rounded-3xl border border-black/5 bg-white/75 p-4 shadow-[0_24px_80px_rgba(15,23,42,0.08)] backdrop-blur-xl dark:border-white/10 dark:bg-zinc-900/75 sm:p-6 lg:p-8">
           {" "}
-          <CategoryHeader />{" "}
+          <DashboardHeadline />{" "}
           {hasCategories ? (
             <div className="mt-8 grid gap-5">
               {" "}

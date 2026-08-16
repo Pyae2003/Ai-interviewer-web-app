@@ -1,12 +1,10 @@
-import { adminDashboardPath, adminInterviewsPath, adminUserManagemant, categoriesdashboardPath, questionDashboardWithCategoryNamePath, questionsDashboardPath } from "@/constants/route";
+import { adminAnalyticsPath, adminDashboardPath, adminUserManagemant, categoriesdashboardPath, categoryGroupDashboardPath, questionsDashboardPath } from "@/constants/route";
 import {
   LayoutDashboard,
   Users,
   Briefcase,
   FileQuestion,
-  Mic,
   TrendingUp,
-  Settings,
 } from "lucide-react";
 
 export const navDataArray = [
@@ -24,7 +22,7 @@ export const navDataArray = [
   {
     icon: Briefcase,
     label: "Category Group",
-    path : categoriesdashboardPath
+    path : categoryGroupDashboardPath
   },
   {
     icon: Briefcase,
@@ -37,18 +35,9 @@ export const navDataArray = [
     path : questionsDashboardPath
   },
   {
-    icon: Mic,
-    label: "Interviews",
-    path : adminInterviewsPath
-  },
-  {
     icon: TrendingUp,
     label: "Analytics",
-    path : "admin/analytics"
+    path : adminAnalyticsPath
   },
-  {
-    icon: Settings,
-    label: "Settings",
-    path : "admin/settings"
-  },
+  
 ];

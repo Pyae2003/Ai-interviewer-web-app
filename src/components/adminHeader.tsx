@@ -38,16 +38,13 @@ export default function AdminHeader({ session , path , action }: HeaderProp) {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-xl border-b border-black/10">
-      {/* OUTER BOX */}
       <div className="mx-auto max-w-7xl px-4 py-3">
-        {/* INNER BOX CONTAINER */}
-        <div className="flex items-center justify-between rounded-2xl border border-black/10 bg-gradient-to-r from-sky-100 via-white to-yellow-100 px-4 py-3 shadow-sm">
-          {/* LEFT: BRAND BOX */}
+        <div className="flex items-center justify-between rounded-2xl border border-black/10 bg-linear-to-r from-sky-100 via-white to-yellow-100 px-4 py-3 shadow-sm">
           <Link
             href="/"
             className="flex items-center gap-3 rounded-xl bg-white px-3 py-2 shadow-sm border border-black/10"
           >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-sky-400 to-yellow-300 text-black shadow-md">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-sky-400 to-yellow-300 text-black shadow-md">
               <Bot size={18} />
             </div>
 
@@ -58,8 +55,6 @@ export default function AdminHeader({ session , path , action }: HeaderProp) {
               </p>
             </div>
           </Link>
-
-          {/* CENTER: NAV BOX (DESKTOP) */}
           <nav className="hidden md:flex items-center gap-2 rounded-xl border border-black/10 bg-white px-2 py-2 shadow-sm">
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -76,9 +71,7 @@ export default function AdminHeader({ session , path , action }: HeaderProp) {
             })}
           </nav>
 
-          {/* RIGHT: ACTION BOX */}
           <div className="flex items-center gap-2">
-            {/* THEME TOGGLE BOX */}
             <button
               onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
               className="flex h-10 w-10 items-center justify-center rounded-xl border border-black/10 bg-white shadow-sm hover:bg-yellow-100 transition"
@@ -90,7 +83,6 @@ export default function AdminHeader({ session , path , action }: HeaderProp) {
               )}
             </button>
 
-            {/* CTA BUTTON */}
             {session ? (
               <LogoutButton />
             ) : (
@@ -100,8 +92,6 @@ export default function AdminHeader({ session , path , action }: HeaderProp) {
                 }
               </Link>
             )}
-
-            {/* MOBILE MENU */}
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild className="md:hidden">
                 <button className="flex h-10 w-10 items-center justify-center rounded-xl border border-black/10 bg-white shadow-sm">
@@ -109,9 +99,8 @@ export default function AdminHeader({ session , path , action }: HeaderProp) {
                 </button>
               </SheetTrigger>
 
-              <SheetContent side="right" className="w-[300px] bg-white">
-                {/* MOBILE HEADER BOX */}
-                <div className="mb-6 rounded-xl border border-black/10 bg-gradient-to-r from-sky-100 to-yellow-100 p-4">
+              <SheetContent side="right" className="w-75 bg-white">
+                <div className="mb-6 rounded-xl border border-black/10 bg-linear-to-r from-sky-100 to-yellow-100 p-4">
                   <div className="flex items-center gap-2">
                     <Bot />
                     <span className="font-bold">AI Interviewer</span>
@@ -121,7 +110,6 @@ export default function AdminHeader({ session , path , action }: HeaderProp) {
                   </p>
                 </div>
 
-                {/* MOBILE NAV BOX */}
                 <div className="flex flex-col gap-2">
                   {navItems.map((item) => {
                     const Icon = item.icon;
@@ -139,8 +127,7 @@ export default function AdminHeader({ session , path , action }: HeaderProp) {
                   })}
                 </div>
 
-                {/* MOBILE CTA BOX */}
-                <div className="mt-6 rounded-xl border border-black/10 bg-gradient-to-r from-yellow-200 to-sky-200 p-4">
+                <div className="mt-6 rounded-xl border border-black/10 bg-linear-to-r from-yellow-200 to-sky-200 p-4">
                   <Link href={path} onClick={() => setOpen(false)}>
                     {action}
                   </Link>

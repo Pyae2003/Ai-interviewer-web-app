@@ -23,10 +23,6 @@ export function useProgress() {
         const remaining =
           MAX_PROGRESS - currentProgress;
 
-        /*
-         * Progress starts faster and gradually slows
-         * as it approaches 95%.
-         */
         const increment = Math.max(
           0.2,
           remaining * 0.055,

@@ -4,7 +4,7 @@ import LoginPage from "@/features/clients/auth/components/login-page";
 import { getSession } from "@/lib/get-Session";
 import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import {  UserPlus } from "lucide-react";
 export const dynamic = 'force-dynamic';
 export default async function Page() {
   const session = await getSession();
@@ -19,8 +19,11 @@ export default async function Page() {
       <Header
         path={signUpPath}
         action={
-          <Button className="bg-gradient-to-r from-sky-500 to-yellow-400 text-black hover:opacity-90">
-            <Plus className="mr-2 h-4 w-4" />
+          <Button
+            type="submit"
+            className="h-11 rounded-xl bg-sky-600 px-5 font-semibold text-white shadow-sm transition-colors hover:bg-sky-700 dark:bg-sky-600 dark:hover:bg-sky-500"
+          >
+            <UserPlus className="mr-2 h-4 w-4" aria-hidden="true" />
             Sign Up
           </Button>
         }

@@ -42,27 +42,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
 
-import { categoriesdashboardPath, dashboardPath } from "@/constants/route";
+import {dashboardPath, questionsDashboardPath } from "@/constants/route";
 import { createQuestion } from "../actions/create-questions";
 import {
   CreateQuestionInput,
   createQuestionSchema,
 } from "../schema/create-questions-schema";
+import { CategoryDashboardItem } from "../../category/components/dashboard-categories";
 
 export type CreateQuestionFormProps = {
-  categories: {
-    name: string;
-    id: string;
-    description: string | null;
-    isActive: boolean;
-    createdAt: Date;
-    updatedAt: Date;
-    sortOrder: number;
-    _count?: {
-      questions: number;
-      interviews: number;
-    };
-  }[];
+  categories: CategoryDashboardItem[]
 };
 
 const DIFFICULTY_OPTIONS = ["EASY", "MEDIUM", "HARD"] as const;
@@ -94,7 +83,7 @@ export function CreateQuestionForm({ categories }: CreateQuestionFormProps) {
     if (hasSucceeded) {
       toast.success(result.data?.message ?? "Question Created successfully");
 
-      router.replace(categoriesdashboardPath);
+      router.replace(questionsDashboardPath);
     }
 
     if (hasErrored) {

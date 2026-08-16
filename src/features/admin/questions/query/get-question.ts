@@ -1,52 +1,106 @@
 "use server";
 
 import { prisma } from "@/config";
+import { getSession } from "@/lib/get-Session";
 import { AppError } from "@/middleware";
-import { getQuestionByIdSchema } from "../schema/get-questionId-schema";
 
-export const getQuestionWithId = async (questionId: string) => {
-  const validatedId = getQuestionByIdSchema.safeParse({
-    id : questionId,
+import { getQuestionByIdSchema } from "../schema/get-questionId-schema";
+import { QuestionDashboardItem } from "../components/question-dashboard";
+
+export type GetQuestionByIdResponse = {
+  success: boolean;
+  message: string;
+  data: QuestionDashboardItem;
+};
+
+export const getQuestionById = async (
+  questionId: string,
+): Promise<GetQuestionByIdResponse> => {
+  const session = await getSession();
+
+  if (!session?.user?.id) {
+    throw new AppError(
+      "You must be signed in to view this question.",
+      "UNAUTHORIZED",
+      401,
+    );
+  }
+
+  if (session.user.role !== "admin") {
+    throw new AppError(
+      "You do not have permission to view this question.",
+      "FORBIDDEN",
+      403,
+    );
+  }
+
+  const validationResult = getQuestionByIdSchema.safeParse({
+    id: questionId,
   });
+
+  if (!validationResult.success) {
+    throw new AppError(
+      validationResult.error.issues[0]?.message ?? "Invalid question ID.",
+      "INVALID_QUESTION_ID",
+      400,
+    );
+  }
 
   try {
     const question = await prisma.question.findUnique({
       where: {
-        id : validatedId.data?.id
+        id: validationResult.data.id,
       },
+
       select: {
         id: true,
         question: true,
         difficulty: true,
+        createdAt: true,
+        updatedAt: true,
         category: {
           select: {
-            id:true,
+            id: true,
             name: true,
+            categoryGroup: {
+              select: {
+                name: true,
+              },
+            },
           },
         },
       },
     });
 
     if (!question) {
-      throw new AppError("Question not found", "QUESTION_NOT_FOUND", 404);
+      throw new AppError("Question not found.", "QUESTION_NOT_FOUND", 404);
     }
+
+    const data: QuestionDashboardItem = {
+      id: question.id,
+      question: question.question,
+      difficulty: question.difficulty,
+      categoryId: question.category.id,
+      categoryName: question.category.name,
+      createdAt: question.createdAt.toISOString(),
+      updatedAt: question.updatedAt.toISOString(),
+      categoryGroupName : question.category.categoryGroup!.name
+    };
 
     return {
       success: true,
-      data: question,
+      message: "Question fetched successfully.",
+      data,
     };
   } catch (error) {
-    // Known custom error
     if (error instanceof AppError) {
       throw error;
     }
 
-    // Prisma known errors (optional but production useful)
-    // Example: invalid UUID, DB error, etc.
-    console.error("GET_QUESTION_BY_ID_ERROR", error);
+    console.error("[GET_QUESTION_BY_ID_ERROR]", error);
 
     throw new AppError(
-      "Failed to fetch question",
+      "Failed to fetch question.",
       "QUESTION_FETCH_FAILED",
       500,
     );

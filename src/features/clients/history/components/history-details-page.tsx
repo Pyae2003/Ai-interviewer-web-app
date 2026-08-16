@@ -1,5 +1,5 @@
 import { getInterviewHistoryDetail } from "../query/get-interviews-details";
-import InterviewHistoryDetail from "./history-detail";
+import InterviewHistoryDetail from "./history-detail/interview-history-detail";
 
 type HistroyDetailPageProp = {
   interviewId: string;

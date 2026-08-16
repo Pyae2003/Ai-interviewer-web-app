@@ -170,7 +170,7 @@ export default function ProcessingPage({ interviewId }: ProcessingPageProps) {
 
           <div className="absolute -bottom-36 -right-32 h-96 w-96 rounded-full bg-yellow-200/35 blur-3xl dark:bg-yellow-700/10" />
 
-          <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/50 blur-3xl dark:bg-white/[0.02]" />
+          <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/50 blur-3xl dark:bg-white/2" />
         </div>
 
         <section className="relative z-10 w-full max-w-3xl">
@@ -225,7 +225,7 @@ export default function ProcessingPage({ interviewId }: ProcessingPageProps) {
               </div>
 
               {/* Linear progress */}
-              <div className="mt-8 w-full max-w-xl rounded-2xl border border-black/5 bg-white/65 p-4 shadow-sm dark:border-white/10 dark:bg-white/[0.03]">
+              <div className="mt-8 w-full max-w-xl rounded-2xl border border-black/5 bg-white/65 p-4 shadow-sm dark:border-white/10 dark:bg-white/3">
                 <div className="mb-3 flex items-center justify-between gap-4">
                   <span className="text-sm font-medium text-zinc-600 dark:text-zinc-300">
                     Analysis progress
@@ -239,7 +239,7 @@ export default function ProcessingPage({ interviewId }: ProcessingPageProps) {
                 <ProgressBar progress={safeProgress} />
               </div>
 
-              <div className="mt-6 flex items-center gap-2 rounded-full border border-black/5 bg-white/60 px-4 py-2 text-xs text-zinc-500 shadow-sm dark:border-white/10 dark:bg-white/[0.03] dark:text-zinc-400">
+              <div className="mt-6 flex items-center gap-2 rounded-full border border-black/5 bg-white/60 px-4 py-2 text-xs text-zinc-500 shadow-sm dark:border-white/10 dark:bg-white/3 dark:text-zinc-400">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-30" />
 

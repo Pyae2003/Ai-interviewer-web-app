@@ -87,7 +87,6 @@ export default function ProgressBar({
           </span>
         </div>
 
-        {/* Progress track */}
         <div className="relative h-2.5 w-full overflow-hidden rounded-full bg-zinc-200/80 ring-1 ring-black/[0.03] dark:bg-zinc-800 dark:ring-white/[0.04]">
           <motion.div
             initial={{

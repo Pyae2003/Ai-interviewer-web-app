@@ -154,9 +154,9 @@ model Category {
   questions       Question[]
   interviews      Interview[]
 
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @default(now()) @updatedAt
-  categoryGroup   CategoryGroup? @relation(fields: [categoryGroupId], references: [id])
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+  categoryGroup CategoryGroup? @relation(fields: [categoryGroupId], references: [id])
 }
 
 model Question {
@@ -169,6 +169,7 @@ model Question {
   difficulty Difficulty
 
   createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
   interviewAnswers  InterviewAnswer[]
   interviewQuestion InterviewQuestion[]
 }

@@ -40,7 +40,7 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
-import { categoriesdashboardPath, dashboardPath } from "@/constants/route";
+import {categoryGroupDashboardPath } from "@/constants/route";
 import { createCategoryGroup } from "../actions/create-category-groups";
 import {
   CreateCategoryGroupInput,
@@ -54,7 +54,7 @@ export function CreateCategoryGroupForm() {
   const { execute, status } = useAction(createCategoryGroup, {
     onSuccess: ({ data }) => {
       toast.success(data?.message ?? "Category group created successfully");
-      router.push(categoriesdashboardPath);
+      router.push(categoryGroupDashboardPath);
       router.refresh();
     },
     onError: ({ error }) => {
@@ -69,6 +69,7 @@ export function CreateCategoryGroupForm() {
     defaultValues: {
       name: "",
       slug: "",
+      description : "",
       type: CategoryGroupType.LANGUAGE,
       isActive: true,
     },
@@ -153,6 +154,25 @@ export function CreateCategoryGroupForm() {
                     )}
                   />
                   <Controller
+                    name="description"
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel>Enter Category Group Name </FieldLabel>
+
+                        <Input
+                          {...field}
+                          type="text"
+                          placeholder="Description ..... "
+                        />
+
+                        {fieldState.error && (
+                          <FieldError errors={[fieldState.error]} />
+                        )}
+                      </Field>
+                    )}
+                  />
+                  <Controller
                     name="type"
                     control={form.control}
                     render={({ field, fieldState }) => (
@@ -178,13 +198,9 @@ export function CreateCategoryGroupForm() {
                           <SelectContent>
                             <SelectItem value="LANGUAGE">Language</SelectItem>
                             <SelectItem value="POSITION">Position</SelectItem>
-                            <SelectItem value="FRAMEWORK">Framework</SelectItem>
                             <SelectItem value="DATABASE">Database</SelectItem>
-                            <SelectItem value="DEVOPS">DevOps</SelectItem>
-                            <SelectItem value="CLOUD">Cloud</SelectItem>
-                            <SelectItem value="MOBILE">Mobile</SelectItem>
-                            <SelectItem value="AI">AI</SelectItem>
                             <SelectItem value="OTHER">Other</SelectItem>
+                            
                           </SelectContent>
                         </Select>
                       </Field>
@@ -247,7 +263,7 @@ export function CreateCategoryGroupForm() {
               <p className="text-sm text-muted-foreground"></p>
 
               <Link
-                href={dashboardPath}
+                href={categoryGroupDashboardPath}
                 className="text-sm font-medium text-sky-600 hover:text-sky-700"
               >
                 Back to Dashboard{" "}

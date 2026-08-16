@@ -1,9 +1,9 @@
 import Header from "@/components/header";
 import { Button } from "@/components/ui/button";
 import { loginPath } from "@/constants/route";
-import WelcomeProfilePage from "@/features/clients/dashboard/components/first-UI-Page";
+import WelcomeProfilePage from "@/features/clients/dashboard/components/welcome-page";
 import { getSession } from "@/lib/get-Session";
-import { Plus } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 export const dynamic = "force-dynamic";
 export default async function Home() {
   const session = await getSession();
@@ -23,17 +23,16 @@ export default async function Home() {
       <Header
         user={user ?? undefined}
         path={loginPath}
-        action={
-          !user ? (
-            <Button className="bg-linear-to-r from-sky-500 to-yellow-400 text-black hover:opacity-90">
-              <Plus className="mr-2 h-4 w-4" />
-              Get Started
-            </Button>
-          ) : null
-        }
+       action={
+  !user ? (
+    <Button className="h-11 rounded-xl bg-sky-600 px-5 font-semibold text-white shadow-sm transition-colors hover:bg-sky-700 dark:bg-sky-600 dark:hover:bg-sky-500">
+      Get Started
+      <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+    </Button>
+  ) : null
+}
       />
 
-      {/* MAIN CONTENT */}
       <main>
         <WelcomeProfilePage />
       </main>

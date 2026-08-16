@@ -1,5 +1,5 @@
 import { getInterviewQuestions } from "../query/fetch-mix-questioins";
-import InterViewsClientAnswering from "./interviews-answering";
+import InterviewsClientAnswering from "./interview-answering/ interviews-client-answering";
 
 type interviewAnsweringPageProp = {
   interviewId: string;
@@ -13,7 +13,7 @@ const InterviewAnsweringPage = async ({
 
   return (
     <div>
-      <InterViewsClientAnswering
+      <InterviewsClientAnswering
         interview_Id={interview_Id}
         category={category}
         questions={questions}

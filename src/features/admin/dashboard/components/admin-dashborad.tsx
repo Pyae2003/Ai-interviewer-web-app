@@ -9,30 +9,75 @@ import {
   Search,
 } from "lucide-react";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 import { Card, CardContent } from "@/components/ui/card";
-
 import { Input } from "@/components/ui/input";
+
 import { RecentInterview } from "../actions/recent-interviews";
-import RecentInterviewsPage from "./recent-interviews-page";
 import { TopCategory } from "../actions/get-top-categories";
+import RecentInterviewsPage from "./recent-interviews-page";
 
 type AdminDashboardProp = {
   result: {
     users: number;
-
     admins: number;
-
     interviews: number;
-
     questions: number;
-
     categories: number;
   };
   recentInterviews: RecentInterview[];
   topCategories: TopCategory[];
 };
+
+type AnimatedHeadlineProps = {
+  text: string;
+};
+
+function AnimatedHeadline({ text }: AnimatedHeadlineProps) {
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <h1
+      aria-label={text}
+      className="text-2xl font-bold tracking-tight text-zinc-900"
+    >
+      <span aria-hidden="true" className="inline-flex overflow-hidden py-1">
+        {text.split("").map((character, index) => (
+          <motion.span
+            key={`${character}-${index}`}
+            className="inline-block"
+            initial={
+              shouldReduceMotion
+                ? false
+                : {
+                    opacity: 0,
+                    y: 8,
+                  }
+            }
+            animate={{
+              opacity: 1,
+              y: 0,
+            }}
+            transition={
+              shouldReduceMotion
+                ? {
+                    duration: 0,
+                  }
+                : {
+                    duration: 0.35,
+                    delay: index * 0.035,
+                    ease: [0.22, 1, 0.36, 1],
+                  }
+            }
+          >
+            {character === " " ? "\u00A0" : character}
+          </motion.span>
+        ))}
+      </span>
+    </h1>
+  );
+}
 
 export default function AdminDashboard({
   result,
@@ -61,15 +106,15 @@ export default function AdminDashboard({
       icon: Briefcase,
     },
   ];
+
   return (
     <div>
-      {/* CONTENT */}
       <main className="flex-1">
         {/* HEADER */}
         <header className="sticky top-0 z-30 border-b bg-white/80 backdrop-blur">
           <div className="flex items-center justify-between px-6 py-4">
             <div>
-              <h1 className="text-2xl font-bold">Dashboard</h1>
+              <AnimatedHeadline text="Dashboard" />
 
               <p className="text-sm text-muted-foreground">
                 Welcome back, Admin
@@ -83,7 +128,11 @@ export default function AdminDashboard({
                 <Input placeholder="Search..." className="w-72 pl-9" />
               </div>
 
-              <button className="rounded-xl border p-2 hover:bg-zinc-100">
+              <button
+                type="button"
+                aria-label="View notifications"
+                className="rounded-xl border p-2 transition-colors hover:bg-zinc-100"
+              >
                 <Bell className="h-5 w-5" />
               </button>
             </div>
@@ -109,7 +158,9 @@ export default function AdminDashboard({
                     y: 0,
                   }}
                   transition={{
+                    duration: 0.4,
                     delay: index * 0.1,
+                    ease: "easeOut",
                   }}
                 >
                   <Card className="overflow-hidden border-0 shadow-md transition-all hover:-translate-y-1 hover:shadow-xl">
@@ -125,8 +176,8 @@ export default function AdminDashboard({
                           </h3>
                         </div>
 
-                        <div className="rounded-2xl bg-linear-to-br from-sky-400 to-yellow-300 p-3">
-                          <Icon className="h-6 w-6 text-black" />
+                        <div className="rounded-2xl bg-sky-100 p-3">
+                          <Icon className="h-6 w-6 text-sky-700" />
                         </div>
                       </div>
                     </CardContent>
@@ -136,7 +187,7 @@ export default function AdminDashboard({
             })}
           </div>
 
-          {/* TABLE + CATEGORY */}
+          {/* TABLE AND CATEGORIES */}
           <div className="grid gap-6 xl:grid-cols-3">
             <Card className="xl:col-span-2">
               <CardContent className="p-6">
@@ -146,13 +197,15 @@ export default function AdminDashboard({
 
                 <div className="space-y-3">
                   {recentInterviews.length === 0 ? (
-                    <div className="flex interviews-center justify-between rounded-xl border bg-white p-4 transition-all hover:border-sky-200 hover:shadow-sm">
-                      {" "}
-                      No Interviews yet!{" "}
+                    <div className="flex items-center justify-between rounded-xl border bg-white p-4 transition-all hover:border-sky-200 hover:shadow-sm">
+                      No interviews yet!
                     </div>
                   ) : (
                     recentInterviews.map((item) => (
-                      <RecentInterviewsPage interview={item} key={item.id} />
+                      <RecentInterviewsPage
+                        key={item.id}
+                        interview={item}
+                      />
                     ))
                   )}
                 </div>
@@ -168,7 +221,7 @@ export default function AdminDashboard({
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">
-                          Not Top Categories yet!
+                          No top categories yet!
                         </span>
                       </div>
                     </div>
@@ -187,7 +240,7 @@ export default function AdminDashboard({
 
                         <div className="h-2 overflow-hidden rounded-full bg-zinc-200">
                           <div
-                            className="h-full rounded-full bg-linear-to-r from-sky-400 to-yellow-300 transition-all duration-700"
+                            className="h-full rounded-full bg-sky-500 transition-all duration-700"
                             style={{
                               width: `${item.percentage}%`,
                             }}

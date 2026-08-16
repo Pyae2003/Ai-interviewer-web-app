@@ -5,16 +5,12 @@ import { getSession } from "@/lib/get-Session";
 import { actionClient } from "@/lib/safe-action";
 import { AppError } from "@/middleware";
 import { getCategoryGroupByIdSchema } from "../schema/get-category-group-by-id";
-
-
-type DeleteCategoryGroupResponse = {
-  success: boolean;
-  message: string;
-};
+import { revalidatePath } from "next/cache";
+import { categoryGroupDashboardPath } from "@/constants/route";
 
 export const deleteCategoryGroup = actionClient
   .inputSchema(getCategoryGroupByIdSchema)
-  .action(async ({ parsedInput }): Promise<DeleteCategoryGroupResponse> => {
+  .action(async ({ parsedInput }) : Promise<void> => {
     const session = await getSession();
 
     if (!session?.user?.id) {
@@ -65,15 +61,12 @@ export const deleteCategoryGroup = actionClient
         });
       });
 
-      return {
-        success: true,
-        message: "Category group deleted successfully.",
-      };
+      revalidatePath(categoryGroupDashboardPath);
     } catch (error: any) {
       if (error instanceof AppError) {
         throw error;
-      };
-      
+      }
+
       if (error?.code === "P2003") {
         throw new AppError(
           "This category group is being used and cannot be deleted.",

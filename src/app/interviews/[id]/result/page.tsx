@@ -1,3 +1,5 @@
+import Header from "@/components/header";
+import { loginPath } from "@/constants/route";
 import InterviewsResultPage from "@/features/clients/interviews/components/interviews-result-page";
 import { getSession } from "@/lib/get-Session";
 import { redirect } from "next/navigation";
@@ -15,13 +17,22 @@ export default async function Page({ params }: Props) {
     redirect("/login");
   }
 
-  const {id} = await params;
+  const { id } = await params;
   if (!id) {
     redirect("/dashboard");
   }
 
   return (
     <div>
+      <Header
+        path={loginPath}
+        user={{
+          id: session.user.id,
+          name: session.user.name ?? "User",
+          email: session.user.email ?? "",
+          image: session.user.image ?? "",
+        }}
+      />{" "}
       <InterviewsResultPage id={id} />
     </div>
   );

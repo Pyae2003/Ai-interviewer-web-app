@@ -34,29 +34,17 @@ import { Toaster } from "@/components/ui/sonner";
 
 import { categoriesdashboardPath, dashboardPath } from "@/constants/route";
 
-import { Prisma } from "@/generated/prisma/client";
 import { updateQuestion } from "../actions/update-question";
 import {
   UpdateQuestionInput,
   updateQuestionSchema,
 } from "../schema/edit-questions-schema";
+import { QuestionDashboardItem } from "./question-dashboard";
 
-type QuestionProps = Prisma.QuestionGetPayload<{
-  select: {
-    id: true;
-    question: true;
-    difficulty: true;
-    category: {
-      select: {
-        id: true;
-        name: true;
-      };
-    };
-  };
-}>;
+
 
 type UpdateQuestionFormProps = {
-  question: QuestionProps;
+  question: QuestionDashboardItem;
 };
 
 const DIFFICULTY_OPTIONS = ["EASY", "MEDIUM", "HARD"] as const;
@@ -73,7 +61,7 @@ export function UpdateQuestionForm({ question }: UpdateQuestionFormProps) {
     resolver: zodResolver(updateQuestionSchema),
     defaultValues: {
       id: question.id,
-      categoryName: question.category.name,
+      categoryName: question.categoryName,
       question: question.question,
       difficulty: question.difficulty,
     },
@@ -100,7 +88,7 @@ export function UpdateQuestionForm({ question }: UpdateQuestionFormProps) {
 
   const handleReset = () => {
     form.reset({
-      categoryName: question.category.name,
+      categoryName: question.categoryName,
       question: question.question,
       difficulty: question.difficulty,
     });
@@ -134,7 +122,7 @@ export function UpdateQuestionForm({ question }: UpdateQuestionFormProps) {
                   {/* CATEGORY */}
                   <Field>
                     <FieldLabel>Category</FieldLabel>
-                    <Input value={question.category.name} disabled />
+                    <Input value={question.categoryName} disabled />
                   </Field>
 
                   {/* QUESTION */}
@@ -154,7 +142,6 @@ export function UpdateQuestionForm({ question }: UpdateQuestionFormProps) {
                     )}
                   />
 
-                  {/* DIFFICULTY (FIXED → RADIO STYLE CHECKBOX) */}
                   <Controller
                     name="difficulty"
                     control={form.control}

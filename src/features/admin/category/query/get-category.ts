@@ -6,11 +6,31 @@ import { prisma } from "@/config";
 import { AppError } from "@/middleware";
 import { actionClient } from "@/lib/safe-action";
 import { getCategoryByIdSchema } from "../schema/get-categoryId.schema";
+import { getSession } from "@/lib/get-Session";
+import { CategoryDashboardItem } from "../components/dashboard-categories";
 
 export const getCategoryById = actionClient
   .inputSchema(getCategoryByIdSchema)
   .action(async ({ parsedInput }) => {
     const { id } = parsedInput;
+    const session = await getSession();
+
+      if (!session?.user?.id) {
+        throw new AppError(
+          "You must be signed in to view this category.",
+          "UNAUTHORIZED",
+          401,
+        );
+      }
+
+      if (session.user.role !== "admin") {
+        throw new AppError(
+          "You do not have permission to view this category.",
+          "FORBIDDEN",
+          403,
+        );
+      }
+
     try {
       const category = await prisma.category.findUnique({
         where: {
@@ -29,7 +49,13 @@ export const getCategoryById = actionClient
               id : true,
               name : true,
             }
-          }
+          },
+           _count: {
+              select: {
+                questions: true,
+                interviews: true,
+              },
+            },
         },
       });
 
@@ -41,7 +67,24 @@ export const getCategoryById = actionClient
         throw new AppError("Category is inactive", "CATEGORY_INACTIVE", 403);
       }
 
-      return category;
+          const data: CategoryDashboardItem = {
+          id: category.id,
+          name: category.name,
+          description: category.description,
+          groupName: category.categoryGroup!.name,
+          questionCount: category._count.questions,
+          interviewCount: category._count.interviews,
+          sortOrder: category.sortOrder,
+          isActive: category.isActive,
+          createdAt: category.createdAt.toISOString(),
+          updatedAt: category.updatedAt.toISOString(),
+        };
+
+        return {
+          success: true,
+          message: "Category fetched successfully.",
+          data,
+        };
     } catch (error) {
       if (error instanceof z.ZodError) {
         throw new AppError(

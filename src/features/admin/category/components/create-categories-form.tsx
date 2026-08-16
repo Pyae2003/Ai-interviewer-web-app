@@ -46,10 +46,10 @@ import {
   createCategorySchema,
 } from "../schema/create-categories.schema";
 import { createCategory } from "../actions/create-categorie";
-import { CategoryGroup } from "@/generated/prisma/client";
+import { CategoryGroupListItem } from "../../categoryGroup/query/get-all-category-groups";
 
 type Props = {
-  groups: CategoryGroup[];
+  groups: CategoryGroupListItem[];
 };
 
 export function CreateCategoriesForm({ groups }: Props) {
