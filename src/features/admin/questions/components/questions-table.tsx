@@ -16,7 +16,7 @@ import {
 
 import { formatDate } from "@/lib/format-date";
 import DeleteButton from "@/components/delete-button";
-import { QuestionDashboardItem } from "./question-dashboard";
+import { QuestionDashboardItem } from "./questions-dashboard";
 import { deleteQuestion } from "../actions/delete-question";
 import { editQuestionPath, viewDetailQuestionPath } from "@/constants/route";
 import { getDifficultyClasses } from "@/lib/get-difficulty-classes";
@@ -83,9 +83,9 @@ const QuestionsTable = ({ filteredQuestions }: QuestionsTableProp) => {
                   shouldReduceMotion
                     ? false
                     : {
-                        opacity: 0,
-                        y: 8,
-                      }
+                      opacity: 0,
+                      y: 8,
+                    }
                 }
                 animate={{
                   opacity: 1,

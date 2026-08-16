@@ -7,6 +7,7 @@ export const verifyOtpPath = "/verify-otp"
 export const editProfilePath = "/profile/edit-profile"
 export const profilePath = "/profile"
 
+export const verifyEmailPath = "/verify-email";
 export const categoryGroupPath = (slug : string) => `/${slug}`
 export const categoryGroupDashboardPath = "/admin/category-groups"
 

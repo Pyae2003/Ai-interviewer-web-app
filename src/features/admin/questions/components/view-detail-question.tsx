@@ -15,7 +15,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 import { formatDate } from "@/lib/format-date";
-import { QuestionDashboardItem } from "./question-dashboard";
+import { QuestionDashboardItem } from "./questions-dashboard";
 import { getDifficultyClasses } from "@/lib/get-difficulty-classes";
 import { formatLabel } from "@/lib/format-label";
 
@@ -120,13 +120,13 @@ export default function ViewDetailQuestion({
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300">
               <Group className="h-5 w-5" />
             </div>
-             <div className="min-w-0">
+            <div className="min-w-0">
               <p className="text-sm text-muted-foreground">
                 Category Groups
               </p>
 
               <p className="truncate font-semibold">
-                {question.categoryGroupName?.slice(0,12)}
+                {question.categoryGroupName?.slice(0, 12)}
               </p>
             </div>
           </CardContent>

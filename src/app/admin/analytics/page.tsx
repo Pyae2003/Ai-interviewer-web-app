@@ -1,5 +1,5 @@
 import AnalyticsDashboardPage from '@/features/admin/analytics/components/analytics-dashboard-page'
-import React from 'react'
+export const dynamic = "force-dynamic";
 
 const page = () => {
   return (

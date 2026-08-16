@@ -39,7 +39,7 @@ import {
   UpdateQuestionInput,
   updateQuestionSchema,
 } from "../schema/edit-questions-schema";
-import { QuestionDashboardItem } from "./question-dashboard";
+import { QuestionDashboardItem } from "./questions-dashboard";
 
 
 

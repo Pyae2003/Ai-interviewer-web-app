@@ -5,7 +5,7 @@ import { getSession } from "@/lib/get-Session";
 import { AppError } from "@/middleware";
 
 import { getQuestionByIdSchema } from "../schema/get-questionId-schema";
-import { QuestionDashboardItem } from "../components/question-dashboard";
+import { QuestionDashboardItem } from "../components/questions-dashboard";
 
 export type GetQuestionByIdResponse = {
   success: boolean;
@@ -84,7 +84,7 @@ export const getQuestionById = async (
       categoryName: question.category.name,
       createdAt: question.createdAt.toISOString(),
       updatedAt: question.updatedAt.toISOString(),
-      categoryGroupName : question.category.categoryGroup!.name
+      categoryGroupName: question.category.categoryGroup!.name,
     };
 
     return {

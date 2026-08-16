@@ -46,7 +46,7 @@ export const signUpUser = actionClient
 
       return {
         success: true,
-        message: "Account created successfully",
+        message: "Account created. Verification code sent.",
         data: {
           userId: result.user.id,
           email: result.user.email,

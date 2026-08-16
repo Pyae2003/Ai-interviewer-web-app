@@ -1,14 +1,14 @@
 import { getAllQuestions } from "../query/get-questions"
-import QuestionDashboard from "./question-dashboard"
+import QuestionDashboard from "./questions-dashboard"
 
 
-const QuestionDashboardPage = async() => {
+const QuestionDashboardPage = async () => {
 
-    const questions = await getAllQuestions();
-    
+  const questions = await getAllQuestions();
+
   return (
     <div>
-        <QuestionDashboard  questions={questions.data} />
+      <QuestionDashboard questions={questions.data} />
     </div>
   )
 }

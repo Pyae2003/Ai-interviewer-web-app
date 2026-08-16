@@ -1,7 +1,8 @@
 "use server";
 
-import { actionClient } from "@/lib/safe-action";
+import { prisma } from "@/config";
 import { auth } from "@/lib/auth";
+import { actionClient } from "@/lib/safe-action";
 import { AppError } from "@/middleware";
 
 import { verifyOtpSchema } from "../schema/verify-otp.schema";
@@ -17,6 +18,7 @@ export const verifyOtp = actionClient
     const { email, otp } = parsedInput;
 
     try {
+      // 1. Verify OTP through Better Auth
       const result = await auth.api.checkVerificationOTP({
         body: {
           email,
@@ -33,20 +35,60 @@ export const verifyOtp = actionClient
         );
       }
 
+      // 2. Find user
+      const user = await prisma.user.findUnique({
+        where: {
+          email,
+        },
+        select: {
+          id: true,
+          emailVerified: true,
+        },
+      });
+
+      if (!user) {
+        throw new AppError(
+          "User account not found.",
+          "USER_NOT_FOUND",
+          404,
+        );
+      }
+
+      // 3. Update only if not already verified
+      if (!user.emailVerified) {
+        await prisma.user.update({
+          where: {
+            id: user.id,
+          },
+          data: {
+            emailVerified: true,
+          },
+        });
+      }
+
       return {
         success: true,
-        message: "Email verified successfully.",
+        message: "Your email has been verified successfully.",
       };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[VERIFY_OTP_ERROR]", {
         email,
-        code: error?.code,
-        message: error?.message,
+        code: error instanceof Error ? error.name : undefined,
+        message: error instanceof Error ? error.message : String(error),
         timestamp: new Date().toISOString(),
       });
 
-      const code = error?.code;
-      const message = String(error?.message ?? "").toLowerCase();
+      const code =
+        typeof error === "object" &&
+        error !== null &&
+        "code" in error
+          ? String(error.code)
+          : undefined;
+
+      const message =
+        error instanceof Error
+          ? error.message.toLowerCase()
+          : String(error).toLowerCase();
 
       if (
         code === "OTP_EXPIRED" ||
@@ -79,6 +121,16 @@ export const verifyOtp = actionClient
           "RATE_LIMITED",
           429,
         );
+      }
+
+      if (code === "USER_NOT_FOUND") {
+        throw error;
+      }
+
+      if (
+        error instanceof AppError
+      ) {
+        throw error;
       }
 
       throw new AppError(

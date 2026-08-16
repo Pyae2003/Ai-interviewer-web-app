@@ -1,10 +1,9 @@
 import {
-  Difficulty,
-  InterviewAnswer,
+ 
   InterviewStatus,
   Prisma,
 } from "@/generated/prisma/client";
-import { QuestionResult } from "../../history/components/history-detail";
+import { QuestionResult } from "../../history/types/ interview-history.types";
 
 export type Category = Prisma.CategoryGetPayload<{
   select: {

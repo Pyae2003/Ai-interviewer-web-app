@@ -1,10 +1,16 @@
-import { env, prisma } from "@/config";
+import {  prisma } from "@/config";
+import { createHmac } from "node:crypto";
 import { admin, emailOTP, lastLoginMethod } from "better-auth/plugins";
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { sendResetPasswordEmail } from "./send-email";
 import { sendVerificationEmail } from "./send-verfication-email";
+const otpSecret = process.env.OTP_HASH_SECRET;
+
+if (!otpSecret) {
+  throw new Error("OTP_HASH_SECRET is not configured.");
+}
 
 export const auth = betterAuth({
   baseURL: process.env.BETTER_AUTH_URL!,
@@ -73,13 +79,26 @@ export const auth = betterAuth({
       overrideDefaultEmailVerification: true,
 
       sendVerificationOnSignUp: true,
-
+      storeOTP: {
+        hash: async (otp) => {
+          return createHmac("sha256", otpSecret)
+            .update(otp)
+            .digest("hex");
+        },
+      },
       async sendVerificationOTP({ email, otp, type }) {
-        await sendVerificationEmail({
-          email,
-          otp,
-          type,
-        });
+       try {
+            await sendVerificationEmail({
+              email,
+              otp,
+              type
+            });
+          } catch (error) {
+            console.error(
+              "[SEND_VERIFICATION_OTP_EMAIL_ERROR]",
+              error,
+            );
+          }
       },
     }),
   ],

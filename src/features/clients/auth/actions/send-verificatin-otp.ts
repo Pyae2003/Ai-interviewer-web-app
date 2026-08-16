@@ -42,11 +42,11 @@ export const sendVerificationOTP = actionClient
         }
 
         await auth.api.sendVerificationOTP({
-          body: {
-            email,
-            type: "email-verification",
-          },
-        });
+        body: {
+          email,
+          type: "email-verification",
+        },
+      });
 
         return {
           success: true,

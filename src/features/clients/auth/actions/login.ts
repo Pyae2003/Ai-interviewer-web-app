@@ -73,7 +73,7 @@ export const loginUser = actionClient
       });
 
       throw new AppError(
-        "Invalid email or password",
+        error as string || "Invalid email or password",
         "LOGIN_FAILED",
         401,
       );

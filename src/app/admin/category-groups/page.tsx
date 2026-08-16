@@ -1,5 +1,5 @@
 import CategoryGroupDashboardPage from '@/features/admin/categoryGroup/components/category-dashboard-page'
-import React from 'react'
+export const dynamic = "force-dynamic";
 
 const page = () => {
   return (

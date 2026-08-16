@@ -17,7 +17,6 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
-import { AppError } from '../middleware/error.middlewar';
 
 type DeleteButtonProps = {
   id: string;
@@ -41,7 +40,7 @@ export default function DeleteButton({
     } catch (error) {
       console.error("DELETE_ERROR", error);
 
-       toast.error(error.message || "Failed to delete item",{position : "top-center"});
+      toast.error(error as string || "Failed to delete item",{position : "top-center"});
     } finally {
       setIsLoading(false);
     }
