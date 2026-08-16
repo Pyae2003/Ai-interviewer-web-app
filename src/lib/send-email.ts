@@ -24,7 +24,6 @@ export async function sendResetPasswordEmail({
   try {
     const { data, error } = await resend.emails.send({
       from: "AI Interviewer <noreply@ai-interviewer.site>",
-
       to,
 
       subject: "Reset your AI Interviewer password",

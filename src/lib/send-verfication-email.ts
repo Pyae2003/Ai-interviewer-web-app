@@ -22,7 +22,7 @@ export async function sendVerificationEmail({ email, otp, type }: Props) {
     const subject = subjects[type];
 
     const { data, error } = await resend.emails.send({
-      from: "AI Interviewer <onboarding@resend.dev>",
+      from: "AI Interviewer <noreply@ai-interviewer.site>",
       to: email,
 
       subject,
