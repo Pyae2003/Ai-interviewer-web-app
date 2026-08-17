@@ -20,6 +20,7 @@ export const auth = betterAuth({
 
   emailAndPassword: {
     enabled: true,
+    requireEmailVerification: true,
     sendResetPassword: async ({ user, url }) => {
       await sendResetPasswordEmail({
         to: user.email,
@@ -85,6 +86,11 @@ export const auth = betterAuth({
         },
       },
       async sendVerificationOTP({ email, otp, type }) {
+        console.log("🔥🔥 OTP CALLBACK CALLED", {
+          email,
+          otp,
+          type,
+        });
         try {
           await sendVerificationEmail({
             email,

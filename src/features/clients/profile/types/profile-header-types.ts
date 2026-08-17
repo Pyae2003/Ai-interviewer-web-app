@@ -10,6 +10,7 @@ export type ProfileHeaderProps = Readonly<{
   name: string;
   email: string;
   role: string;
+  emailVerified : boolean;
   image: string | null;
   joined: Date;
   totalInterviews: number;

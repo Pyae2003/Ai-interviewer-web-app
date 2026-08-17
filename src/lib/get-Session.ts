@@ -10,6 +10,7 @@ export const getSession = async () => {
 
     const session = await auth.api.getSession({
       headers: h,
+      
     });
 
     // console.log("session:", session);

@@ -50,6 +50,7 @@ async function seedAdmin() {
     },
     data: {
       role: "admin",
+      emailVerified : true
     },
   });
 

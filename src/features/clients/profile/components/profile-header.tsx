@@ -18,6 +18,7 @@ export default function ProfileHeader(props: ProfileHeaderProps) {
     performance,
     email,
     role,
+    emailVerified,
     joined,
     lastInterview,
     totalInterviews,
@@ -57,6 +58,7 @@ export default function ProfileHeader(props: ProfileHeaderProps) {
             name={name}
             image={image}
             performance={performance}
+            emailVerified={emailVerified}
           />
 
           <Button

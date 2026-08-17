@@ -19,9 +19,7 @@ type SignUpResponse = {
 export const signUpUser = actionClient
   .inputSchema(signUpSchema)
   .action(async ({ parsedInput }): Promise<SignUpResponse> => {
-    const email = parsedInput.email
-      .trim()
-      .toLowerCase();
+    const email = parsedInput.email.trim().toLowerCase();
 
     const name = parsedInput.name.trim();
 
@@ -37,12 +35,20 @@ export const signUpUser = actionClient
       });
 
       if (!result?.user) {
-        throw new AppError(
-          "Unable to create account",
-          "SIGNUP_FAILED",
-          400,
-        );
+        throw new AppError("Unable to create account", "SIGNUP_FAILED", 400);
       }
+      console.log("2️⃣ User created:", result.user.email);
+
+      console.log("3️⃣ Sending verification OTP...");
+
+      await auth.api.sendVerificationOTP({
+        body: {
+          email: result.user.email,
+          type: "email-verification",
+        },
+      });
+
+      console.log("4️⃣ Verification OTP sent");
 
       return {
         success: true,
@@ -57,19 +63,12 @@ export const signUpUser = actionClient
       console.error("[SIGNUP_ERROR]", {
         email,
         timestamp: new Date().toISOString(),
-        error:
-          error instanceof Error
-            ? error.message
-            : "Unknown error",
+        error: error instanceof Error ? error.message : "Unknown error",
       });
 
-      const message =
-        error?.message?.toLowerCase?.() ?? "";
+      const message = error?.message?.toLowerCase?.() ?? "";
 
-      if (
-        message.includes("already") ||
-        message.includes("exists")
-      ) {
+      if (message.includes("already") || message.includes("exists")) {
         throw new AppError(
           "An account with this email already exists",
           "EMAIL_ALREADY_EXISTS",
@@ -77,10 +76,6 @@ export const signUpUser = actionClient
         );
       }
 
-      throw new AppError(
-        "Failed to create account",
-        "SIGNUP_FAILED",
-        500,
-      );
+      throw new AppError("Failed to create account", "SIGNUP_FAILED", 500);
     }
   });

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, MotionConfig } from "framer-motion";
-import { Mic } from "lucide-react";
+import { UserRoundPen } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { AnimatedInterviewTitle } from "./ animated-interview-title";
@@ -83,7 +83,7 @@ export function InterviewHeader({
                       ease: "easeInOut",
                     }}
                   >
-                    <Mic className="size-6" aria-hidden="true" />
+                    <UserRoundPen className="size-6" aria-hidden="true" />
                   </motion.div>
                 </div>
               </motion.div>

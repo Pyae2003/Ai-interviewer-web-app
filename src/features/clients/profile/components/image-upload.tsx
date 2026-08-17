@@ -28,7 +28,7 @@ export default function ImageUpload({
     onClientUploadComplete: (files) => {
       if (!files?.length) return;
 
-      onChange(files[0].url);
+      onChange(files[0].ufsUrl);
 
       toast.success("Profile image uploaded.");
     },

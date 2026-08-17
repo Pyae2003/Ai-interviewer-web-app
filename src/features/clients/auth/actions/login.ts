@@ -37,11 +37,7 @@ export const loginUser = actionClient
       });
 
       if (!result?.user) {
-        throw new AppError(
-          "Invalid email or password",
-          "LOGIN_FAILED",
-          401,
-        );
+        throw new AppError("Invalid email or password", "LOGIN_FAILED", 401);
       }
 
       // Block admin accounts from user login
@@ -50,11 +46,7 @@ export const loginUser = actionClient
           headers: requestHeaders,
         });
 
-        throw new AppError(
-          "Invalid email or password",
-          "LOGIN_FAILED",
-          401,
-        );
+        throw new AppError("Invalid email or password", "LOGIN_FAILED", 401);
       }
 
       return {
@@ -73,7 +65,7 @@ export const loginUser = actionClient
       });
 
       throw new AppError(
-        error as string || "Invalid email or password",
+        error instanceof Error ? error.message : "Invalid email or password",
         "LOGIN_FAILED",
         401,
       );

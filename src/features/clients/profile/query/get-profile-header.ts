@@ -11,6 +11,7 @@ export type ProfileHeaderResponse = {
     name: string;
     email: string;
     role: string;
+    emailVerified : boolean;
     image: string | null;
     joined: Date;
 
@@ -50,6 +51,7 @@ export async function getProfileHeader(): Promise<ProfileHeaderResponse> {
             id: true,
             name: true,
             email: true,
+            emailVerified : true,
             role: true,
             image: true,
             banned: true,
@@ -141,6 +143,8 @@ export async function getProfileHeader(): Promise<ProfileHeaderResponse> {
         role: user.role ?? "USER",
 
         image: user.image,
+
+        emailVerified: user.emailVerified,
 
         joined: user.createdAt,
 

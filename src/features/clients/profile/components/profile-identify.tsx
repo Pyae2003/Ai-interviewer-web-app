@@ -1,15 +1,15 @@
-import { BadgeCheck } from "lucide-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ProfileHeaderProps } from "../types/profile-header-types";
 import { performanceStyles } from "../actions/performance-style";
+import { EmailVerificationBadge } from "./email-verification-badge";
 
 
 
 type ProfileIdentityProps = Pick<
   ProfileHeaderProps,
-  "id" | "name" | "image" | "performance"
+  "id" | "name" | "image" | "performance" | "emailVerified"
 >;
 
 export function ProfileIdentity({
@@ -17,6 +17,7 @@ export function ProfileIdentity({
   name,
   image,
   performance,
+  emailVerified
 }: ProfileIdentityProps) {
   const trimmedName = name.trim() || "User";
   const initial = trimmedName.charAt(0).toUpperCase();
@@ -48,13 +49,7 @@ export function ProfileIdentity({
         </h1>
 
         <div className="mt-3 flex flex-wrap justify-center gap-2 sm:justify-start">
-          <Badge
-            variant="outline"
-            className="rounded-full border-emerald-200 bg-emerald-50 px-2.5 py-1 text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/50 dark:text-emerald-400"
-          >
-            <BadgeCheck className="mr-1.5 size-3.5" aria-hidden="true" />
-            Verified
-          </Badge>
+          <EmailVerificationBadge emailVerified={emailVerified} />
 
           <Badge
             variant="outline"
