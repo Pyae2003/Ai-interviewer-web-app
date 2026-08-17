@@ -24,9 +24,7 @@ export async function sendVerificationEmail({ email, otp, type }: Props) {
     const { data, error } = await resend.emails.send({
       from: "AI Interviewer <noreply@ai-interviewer.site>",
       to: email,
-
       subject,
-
       react: VerifyEmailTemplate({
         otp,
       }),

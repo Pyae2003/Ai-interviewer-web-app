@@ -1,8 +1,6 @@
 "use client";
 
 import { MotionConfig } from "framer-motion";
-
-import { SignUpBrand } from "./sign-up-brand";
 import { SignUpCard } from "./sign-up-card";
 
 export function SignUpForm() {

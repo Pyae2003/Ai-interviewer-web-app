@@ -1,11 +1,10 @@
 "use server";
 
-import { actionClient } from "@/lib/safe-action";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/config";
+import { auth } from "@/lib/auth";
+import { actionClient } from "@/lib/safe-action";
 import { AppError } from "@/middleware";
 import { signUpSchema } from "../schema/signup-schema";
-
 
 type SendVerificationOtpResponse = {
   success: boolean;
@@ -13,14 +12,16 @@ type SendVerificationOtpResponse = {
 };
 
 export const sendVerificationOTP = actionClient
-  .inputSchema(signUpSchema.pick({
-    email: true,
-  }))
+  .inputSchema(
+    signUpSchema.pick({
+      email: true,
+    }),
+  )
   .action(
     async ({
       parsedInput,
     }): Promise<SendVerificationOtpResponse> => {
-      const { email } = parsedInput;
+      const email = parsedInput.email.trim().toLowerCase();
 
       try {
         const existingUser = await prisma.user.findUnique({
@@ -40,14 +41,12 @@ export const sendVerificationOTP = actionClient
             409,
           );
         }
-
         await auth.api.sendVerificationOTP({
-        body: {
-          email,
-          type: "email-verification",
-        },
-      });
-
+          body: {
+            email,
+            type: "email-verification",
+          },
+        });
         return {
           success: true,
           message:
@@ -57,9 +56,8 @@ export const sendVerificationOTP = actionClient
         if (error instanceof AppError) {
           throw error;
         }
-
         console.error(
-          "[SEND_VERIFICATION_OTP]",
+          "[SEND_VERIFICATION_OTP_ERROR]",
           {
             email,
             error,
@@ -68,7 +66,7 @@ export const sendVerificationOTP = actionClient
         );
 
         throw new AppError(
-          "Unable to send verification code.",
+          "Unable to send verification code. Please try again later.",
           "SEND_VERIFICATION_FAILED",
           500,
         );

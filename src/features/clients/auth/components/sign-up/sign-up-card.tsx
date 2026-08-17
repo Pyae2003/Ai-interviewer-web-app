@@ -29,10 +29,7 @@ export function SignUpCard() {
 
   const { execute, isExecuting } = useAction(signUpUser, {
     onSuccess: ({ data, input }) => {
-      /*
-       * Prefer the email returned by the server.
-       * Fall back to the validated action input.
-       */
+
       const email = data.data?.email ?? input.email;
 
       if (!email) {

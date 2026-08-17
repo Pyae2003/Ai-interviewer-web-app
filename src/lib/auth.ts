@@ -1,4 +1,4 @@
-import {  prisma } from "@/config";
+import { prisma } from "@/config";
 import { createHmac } from "node:crypto";
 import { admin, emailOTP, lastLoginMethod } from "better-auth/plugins";
 import { betterAuth } from "better-auth";
@@ -81,24 +81,24 @@ export const auth = betterAuth({
       sendVerificationOnSignUp: true,
       storeOTP: {
         hash: async (otp) => {
-          return createHmac("sha256", otpSecret)
-            .update(otp)
-            .digest("hex");
+          return createHmac("sha256", otpSecret).update(otp).digest("hex");
         },
       },
       async sendVerificationOTP({ email, otp, type }) {
-       try {
-            await sendVerificationEmail({
-              email,
-              otp,
-              type
-            });
-          } catch (error) {
-            console.error(
-              "[SEND_VERIFICATION_OTP_EMAIL_ERROR]",
-              error,
-            );
-          }
+        try {
+          await sendVerificationEmail({
+            email,
+            otp,
+            type,
+          });
+        } catch (error) {
+          console.error("[SEND_VERIFICATION_OTP_EMAIL_ERROR]", {
+            email,
+            type,
+            error,
+          });
+          throw error;
+        }
       },
     }),
   ],
