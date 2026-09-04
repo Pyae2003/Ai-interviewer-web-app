@@ -3,6 +3,8 @@ import { loginPath } from "@/constants/route";
 import HomePostPage from "@/features/clients/post-blog/components/home-post-page";
 import { getSession } from "@/lib/get-Session";
 import { redirect } from "next/navigation";
+export const dynamic = "force-dynamic";
+
 
 const page = async () => {
     const session = await getSession();

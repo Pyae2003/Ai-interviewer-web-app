@@ -4,8 +4,8 @@ import { prisma } from "@/config";
 import { getSession } from "@/lib/get-Session";
 import { actionClient } from "@/lib/safe-action";
 import { AppError } from "@/middleware";
+import { createReplySchema } from "../schema/replay.schema";
 
-import { createReplySchema } from "../schema";
 
 export const createReply = actionClient
   .inputSchema(createReplySchema)

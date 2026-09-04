@@ -16,7 +16,7 @@ export default async function EditPostFormPage({
     notFound();
   }
 
-  const result = await getPostById({ postId });
+  const result = await getPostById( postId );
 
   if (!result || !result.data) {
     notFound();
@@ -41,7 +41,7 @@ export default async function EditPostFormPage({
           </p>
         </header>
 
-        <EditPostForm post={result.data.data} />
+        <EditPostForm post={result.data} />
       </section>
     </main>
   );
