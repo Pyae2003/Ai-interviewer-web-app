@@ -38,6 +38,10 @@ model User {
   banReason  String?
   banExpires DateTime?
 
+  communityPosts CommunityPost[]
+  postReactions  PostReaction[]
+  postComments   PostComment[]
+
   @@unique([email])
   @@map("user")
 }
@@ -190,6 +194,8 @@ model Interview {
 
   answers InterviewAnswer[]
 
+  communityPost CommunityPost?
+
   createdAt DateTime @default(now())
 }
 
@@ -232,4 +238,76 @@ model InterviewQuestion {
   question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
+}
+
+enum ReactionType {
+  LIKE
+  LOVE
+  HAHA
+  WOW
+  SAD
+  ANGRY
+}
+
+model CommunityPost {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  caption String   @db.Text
+  images  String[] @default([])
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  interviewId String?    @unique
+  interview   Interview? @relation(fields: [interviewId], references: [id], onDelete: SetNull)
+
+  reactions PostReaction[]
+  comments  PostComment[]
+
+  @@index([authorId])
+  @@index([createdAt])
+  @@index([interviewId])
+}
+
+model PostReaction {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  type ReactionType
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  postId String
+  post   CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+  @@index([postId])
+  @@index([userId])
+}
+
+model PostComment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  content String @db.Text
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  postId String
+  post   CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  parentId String?
+  parent   PostComment? @relation("CommentReplies",fields: [parentId],references: [id],onDelete: Cascade)
+
+  replies PostComment[] @relation("CommentReplies")
+
+  @@index([postId, createdAt])
+  @@index([userId])
+  @@index([parentId])
+
 }

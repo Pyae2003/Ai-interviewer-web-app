@@ -49,3 +49,15 @@ export const CategoryGroupType = {
 } as const
 
 export type CategoryGroupType = (typeof CategoryGroupType)[keyof typeof CategoryGroupType]
+
+
+export const ReactionType = {
+  LIKE: 'LIKE',
+  LOVE: 'LOVE',
+  HAHA: 'HAHA',
+  WOW: 'WOW',
+  SAD: 'SAD',
+  ANGRY: 'ANGRY'
+} as const
+
+export type ReactionType = (typeof ReactionType)[keyof typeof ReactionType]

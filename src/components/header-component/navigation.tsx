@@ -2,6 +2,7 @@
 
 import {
   BookOpen,
+  House,
   LayoutDashboard,
   LucideIcon,
   User,
@@ -38,6 +39,11 @@ const NAVIGATION_ITEMS: readonly NavigationItem[] = [
     href: "/profile",
     icon: User,
   },
+  {
+    label : "Blog",
+    href :"/blog",
+    icon : House
+  }
 ]
 
 export function Navigation({

@@ -1,10 +1,11 @@
-import { adminAnalyticsPath, adminDashboardPath, adminUserManagemant, categoriesdashboardPath, categoryGroupDashboardPath, questionsDashboardPath } from "@/constants/route";
+import { adminAnalyticsPath, adminBlogControlPath, adminDashboardPath, adminUserManagemant, categoriesdashboardPath, categoryGroupDashboardPath, questionsDashboardPath } from "@/constants/route";
 import {
   LayoutDashboard,
   Users,
   Briefcase,
   FileQuestion,
   TrendingUp,
+  NotebookPen,
 } from "lucide-react";
 
 export const navDataArray = [
@@ -13,6 +14,11 @@ export const navDataArray = [
     label: "Dashboard",
     path :adminDashboardPath,
     active: true,
+  },
+  {
+    icon : NotebookPen,
+    label : "User Blog Control",
+    path : adminBlogControlPath
   },
   {
     icon: Users,

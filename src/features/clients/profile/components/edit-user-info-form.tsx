@@ -108,7 +108,7 @@ function AnimatedHeadline() {
           variants={headlineWordVariants}
           className={
             word.highlighted
-              ? "inline-block bg-linear-to-r from-sky-500 to-yellow-500 bg-clip-text text-transparent"
+              ? "inline-block bg-linear-to-r from-sky-50 bg-clip-text text-transparent"
               : "mr-[0.22em] inline-block"
           }
         >

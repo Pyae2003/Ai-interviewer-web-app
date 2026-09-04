@@ -13,10 +13,16 @@ function createClient() {
 
   return new OpenAI({
     apiKey,
-    baseURL: "https://api.freemodel.dev/v1",
+    baseURL: "https://openrouter.ai/api/v1",
     timeout: 30_000,
     maxRetries: 2,
-  });
+    defaultHeaders: {
+    "HTTP-Referer":
+      process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
+    "X-OpenRouter-Title": "Interview Evaluation App",
+  },
+  },
+);
 }
 
 export const openai = global.openai ?? createClient();

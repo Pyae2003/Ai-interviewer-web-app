@@ -1,0 +1,30 @@
+import Header from "@/components/header";
+import { loginPath } from "@/constants/route";
+import HomePostPage from "@/features/clients/post-blog/components/home-post-page";
+import { getSession } from "@/lib/get-Session";
+import { redirect } from "next/navigation";
+
+const page = async () => {
+    const session = await getSession();
+
+    if (!session?.user?.id) {
+        redirect(loginPath);
+    };
+
+    return (
+        <div>
+            <Header
+                path={loginPath}
+                user={{
+                    id: session.user.id,
+                    name: session.user.name ?? "User",
+                    email: session.user.email ?? "",
+                    image: session.user.image ?? "",
+                }}
+            />
+            <HomePostPage />
+        </div>
+    )
+}
+
+export default page

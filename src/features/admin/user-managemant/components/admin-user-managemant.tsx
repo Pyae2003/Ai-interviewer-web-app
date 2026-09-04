@@ -305,10 +305,6 @@ export default function UserManagementPage({
                             </Link>
                           </DropdownMenuItem>
 
-                          <DropdownMenuItem>
-                            <Pencil className="mr-2 h-4 w-4" />
-                            Edit
-                          </DropdownMenuItem>
 
                           {user.banned ? (
                             <DropdownMenuItem
@@ -327,11 +323,6 @@ export default function UserManagementPage({
                               Ban User
                             </DropdownMenuItem>
                           )}
-
-                          <DropdownMenuItem className="text-red-600 focus:text-red-600">
-                            <Trash className="mr-2 h-4 w-4" />
-                            Delete
-                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </td>

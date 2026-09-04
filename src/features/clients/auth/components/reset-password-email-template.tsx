@@ -3,11 +3,11 @@ import {
   Button,
   Container,
   Head,
-  Html,
+  Heading,
   Hr,
+  Html,
   Link,
   Preview,
-  Heading,
   Section,
   Text,
 } from "react-email";
@@ -21,31 +21,36 @@ export const ResetPasswordEmailTemplate = ({
   userFirstname,
   resetPasswordLink,
 }: ResetPasswordEmailTemplateProps) => {
+  const name = userFirstname?.trim() || "there";
+
   return (
     <Html>
       <Head />
+
       <Preview>Reset your AI Interviewer password</Preview>
+
       <Body
         style={{
           backgroundColor: "#f8fafc",
-          fontFamily: "Inter, Arial, sans-serif",
+          fontFamily: "Arial, Helvetica, sans-serif",
           padding: "40px 0",
+          margin: 0,
         }}
       >
         <Container
           style={{
             maxWidth: "600px",
-            background: "#ffffff",
+            backgroundColor: "#ffffff",
             borderRadius: "16px",
             margin: "0 auto",
             overflow: "hidden",
             border: "1px solid #e5e7eb",
           }}
         >
-          {" "}
+          {/* Header */}
           <Section
             style={{
-              background: "linear-gradient(90deg,#0ea5e9,#facc15)",
+              backgroundColor: "#0ea5e9",
               padding: "32px",
               textAlign: "center",
             }}
@@ -54,87 +59,168 @@ export const ResetPasswordEmailTemplate = ({
               style={{
                 color: "#ffffff",
                 margin: 0,
+                fontSize: "28px",
+                fontWeight: "700",
               }}
             >
               AI Interviewer
             </Heading>
+
             <Text
               style={{
                 color: "#ffffff",
-                marginTop: "8px",
+                margin: "8px 0 0",
+                fontSize: "15px",
               }}
             >
               Secure Password Reset
             </Text>
           </Section>
-          <Section style={{ padding: "40px" }}>
+
+          {/* Content */}
+          <Section
+            style={{
+              padding: "40px",
+            }}
+          >
             <Heading
               style={{
                 color: "#111827",
                 fontSize: "28px",
+                lineHeight: "36px",
+                margin: "0 0 24px",
               }}
             >
               Reset Your Password
             </Heading>
 
-            <Text>
-              Hi <strong>{userFirstname}</strong>,
+            <Text
+              style={{
+                color: "#374151",
+                fontSize: "16px",
+                lineHeight: "24px",
+              }}
+            >
+              Hi <strong>{name}</strong>,
             </Text>
 
-            <Text>
+            <Text
+              style={{
+                color: "#374151",
+                fontSize: "16px",
+                lineHeight: "24px",
+              }}
+            >
               We received a request to reset the password for your AI
               Interviewer account.
             </Text>
 
-            <Text>Click the button below to create a new password.</Text>
-
-            <Button
-              href={resetPasswordLink}
+            <Text
               style={{
-                backgroundColor: "#0ea5e9",
-                color: "#fff",
-                padding: "14px 32px",
-                borderRadius: "10px",
-                textDecoration: "none",
-                display: "inline-block",
-                fontWeight: "600",
-                marginTop: "20px",
+                color: "#374151",
+                fontSize: "16px",
+                lineHeight: "24px",
               }}
             >
-              Reset Password
-            </Button>
+              Click the button below to create a new password.
+            </Text>
+
+            <Section
+              style={{
+                textAlign: "center",
+                padding: "10px 0 20px",
+              }}
+            >
+              <Button
+                href={resetPasswordLink}
+                style={{
+                  backgroundColor: "#0ea5e9",
+                  color: "#ffffff",
+                  padding: "14px 32px",
+                  borderRadius: "10px",
+                  textDecoration: "none",
+                  fontWeight: "600",
+                  fontSize: "15px",
+                }}
+              >
+                Reset Password
+              </Button>
+            </Section>
 
             <Text
               style={{
-                marginTop: "28px",
+                marginTop: "20px",
                 color: "#dc2626",
                 fontWeight: "600",
+                fontSize: "14px",
               }}
             >
               This link expires in 30 minutes.
             </Text>
 
-            <Hr />
+            <Hr
+              style={{
+                borderColor: "#e5e7eb",
+                margin: "28px 0",
+              }}
+            />
 
-            <Text>
-              If the button doesn&apos;t work, copy and paste this link into your
-              browser:
+            <Text
+              style={{
+                color: "#374151",
+                fontSize: "14px",
+                lineHeight: "22px",
+              }}
+            >
+              If the button doesn&apos;t work, copy and paste this link into
+              your browser:
             </Text>
 
-            <Link href={resetPasswordLink}>{resetPasswordLink}</Link>
+            <Link
+              href={resetPasswordLink}
+              style={{
+                color: "#0ea5e9",
+                fontSize: "13px",
+                lineHeight: "20px",
+                wordBreak: "break-all",
+              }}
+            >
+              {resetPasswordLink}
+            </Link>
 
-            <Hr />
+            <Hr
+              style={{
+                borderColor: "#e5e7eb",
+                margin: "28px 0",
+              }}
+            />
 
-            <Text>
-              If you didn&apos;t request a password reset, simply ignore this email.
-              Your password will remain unchanged.
+            <Text
+              style={{
+                color: "#6b7280",
+                fontSize: "14px",
+                lineHeight: "22px",
+              }}
+            >
+              If you didn&apos;t request a password reset, simply ignore this
+              email. Your password will remain unchanged.
             </Text>
 
-            <Text>Never share this email or reset link with anyone.</Text>
+            <Text
+              style={{
+                color: "#6b7280",
+                fontSize: "14px",
+                lineHeight: "22px",
+              }}
+            >
+              Never share this email or reset link with anyone.
+            </Text>
           </Section>
+
+          {/* Footer */}
           <Section
             style={{
-              background: "#f9fafb",
+              backgroundColor: "#f9fafb",
               padding: "24px",
               textAlign: "center",
             }}
@@ -143,12 +229,19 @@ export const ResetPasswordEmailTemplate = ({
               style={{
                 color: "#6b7280",
                 fontSize: "13px",
+                margin: "0 0 8px",
               }}
             >
               Need help?
             </Text>
 
-            <Link href="mailto:support@aiinterviewer.com">
+            <Link
+              href="mailto:support@aiinterviewer.com"
+              style={{
+                color: "#0ea5e9",
+                fontSize: "14px",
+              }}
+            >
               support@aiinterviewer.com
             </Link>
 
@@ -169,7 +262,9 @@ export const ResetPasswordEmailTemplate = ({
 };
 
 ResetPasswordEmailTemplate.PreviewProps = {
-  resetPasswordLink: "https://www.dropbox.com",
+  userFirstname: "Pyae",
+  resetPasswordLink:
+    "https://aiinterviewer.example/reset-password/example-token",
 } as ResetPasswordEmailTemplateProps;
 
 export default ResetPasswordEmailTemplate;

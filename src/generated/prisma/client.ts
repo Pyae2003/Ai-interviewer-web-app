@@ -91,3 +91,18 @@ export type InterviewAnswer = Prisma.InterviewAnswerModel
  * 
  */
 export type InterviewQuestion = Prisma.InterviewQuestionModel
+/**
+ * Model CommunityPost
+ * 
+ */
+export type CommunityPost = Prisma.CommunityPostModel
+/**
+ * Model PostReaction
+ * 
+ */
+export type PostReaction = Prisma.PostReactionModel
+/**
+ * Model PostComment
+ * 
+ */
+export type PostComment = Prisma.PostCommentModel

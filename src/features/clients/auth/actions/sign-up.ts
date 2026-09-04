@@ -41,12 +41,12 @@ export const signUpUser = actionClient
 
       console.log("3️⃣ Sending verification OTP...");
 
-      await auth.api.sendVerificationOTP({
-        body: {
-          email: result.user.email,
-          type: "email-verification",
-        },
-      });
+      // await auth.api.sendVerificationOTP({
+      //   body: {
+      //     email: result.user.email,
+      //     type: "email-verification",
+      //   },
+      // });
 
       console.log("4️⃣ Verification OTP sent");
 

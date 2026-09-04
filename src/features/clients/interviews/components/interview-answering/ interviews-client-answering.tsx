@@ -122,8 +122,6 @@ export default function InterviewsClientAnswering({
         setCurrentIndex((previousIndex) =>
           Math.min(questions.length - 1, previousIndex + 1),
         );
-
-        toast.success("Answer saved.");
         return;
       }
 

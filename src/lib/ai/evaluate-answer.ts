@@ -18,15 +18,18 @@ export async function evaluateOneAnswer(
     const prompt = buildEvaluationPrompt(input);
 
     const rawResponse = await withRetry(async () => {
-      const response = await openai.responses.create({
-        model: "gpt-4.1-mini",
+      const response = await openai.chat.completions.create({
+        model: "openai/gpt-4o-mini",
         temperature: 0.2,
-        input: [
+        response_format: {
+          type: "json_object",
+        },
+        messages: [
           {
             role: "system",
             content: [
               {
-                type: "input_text",
+                type: "text",
                 text: `
 You are a senior software engineering interviewer.
 
@@ -45,7 +48,7 @@ Do NOT include additional text.
             role: "user",
             content: [
               {
-                type: "input_text",
+                type: "text",
                 text: prompt,
               },
             ],
@@ -53,7 +56,7 @@ Do NOT include additional text.
         ],
       });
 
-      return response.output_text;
+      return response.choices[0]?.message?.content;
     });
 
     if (!rawResponse?.trim()) {
@@ -71,22 +74,22 @@ Do NOT include additional text.
       parsed = JSON.parse(cleaned);
     } catch {
       throw new Error("OpenAI returned invalid JSON.");
-    };
+    }
 
     const mainData = EvaluationSchema.parse(parsed);
-    console.log("Ai return data :" , mainData)
+    console.log("Ai return data :", mainData);
 
     return mainData;
   } catch (error) {
     handleOpenAIError(error);
-
-    return {
-      score: 0,
-      feedback: "Unable to evaluate the answer.",
-      idealAnswer: "",
-      strengths: "",
-      weaknesses: "AI evaluation failed.",
-      missingPoints: "System error.",
-    };
+    throw error;
+    // return {
+    //   score: 0,
+    //   feedback: "Unable to evaluate the answer.",
+    //   idealAnswer: "",
+    //   strengths: "",
+    //   weaknesses: "AI evaluation failed.",
+    //   missingPoints: "System error.",
+    // };
   }
 }

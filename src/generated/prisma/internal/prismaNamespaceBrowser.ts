@@ -60,7 +60,10 @@ export const ModelName = {
   Question: 'Question',
   Interview: 'Interview',
   InterviewAnswer: 'InterviewAnswer',
-  InterviewQuestion: 'InterviewQuestion'
+  InterviewQuestion: 'InterviewQuestion',
+  CommunityPost: 'CommunityPost',
+  PostReaction: 'PostReaction',
+  PostComment: 'PostComment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -227,6 +230,43 @@ export const InterviewQuestionScalarFieldEnum = {
 } as const
 
 export type InterviewQuestionScalarFieldEnum = (typeof InterviewQuestionScalarFieldEnum)[keyof typeof InterviewQuestionScalarFieldEnum]
+
+
+export const CommunityPostScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  caption: 'caption',
+  images: 'images',
+  authorId: 'authorId',
+  interviewId: 'interviewId'
+} as const
+
+export type CommunityPostScalarFieldEnum = (typeof CommunityPostScalarFieldEnum)[keyof typeof CommunityPostScalarFieldEnum]
+
+
+export const PostReactionScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  type: 'type',
+  userId: 'userId',
+  postId: 'postId'
+} as const
+
+export type PostReactionScalarFieldEnum = (typeof PostReactionScalarFieldEnum)[keyof typeof PostReactionScalarFieldEnum]
+
+
+export const PostCommentScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  content: 'content',
+  userId: 'userId',
+  postId: 'postId',
+  parentId: 'parentId'
+} as const
+
+export type PostCommentScalarFieldEnum = (typeof PostCommentScalarFieldEnum)[keyof typeof PostCommentScalarFieldEnum]
 
 
 export const SortOrder = {

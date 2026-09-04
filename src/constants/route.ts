@@ -50,4 +50,10 @@ export const createCategoryGroupPath =  `/admin/category-groups/create-category-
 export const updateCategoryGroupPath = (params : string) => `/admin/category-groups/update-category-groups/${params}`
 export const viewDetailCategoryGroupPath = (params : string) => `/admin/category-groups/view-details/${params}`
 
+export const createBlogPath = `/blog/create-blog`;
+export const editBlogPath = (params : string) => `/blog/edit-blog/${params}`
+export const detailsBlogPath = (params : string) => `/blog/details/${params}`
+
+export const adminBlogControlPath = `/admin/blog-control`
+
 
