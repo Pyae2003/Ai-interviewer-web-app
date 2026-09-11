@@ -9,6 +9,7 @@ import { Mic } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { navDataArray } from "@/features/admin/dashboard/query/nav-data";
 import { LogoutButton } from "@/components/logout";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 type AdminDashboardProps = {
   children: ReactNode;
@@ -155,6 +156,8 @@ export default function AdminDashboard({
 
           <div className="mt-3">
             <LogoutButton />
+            <ThemeToggle />
+            
           </div>
         </div>
       </aside>
