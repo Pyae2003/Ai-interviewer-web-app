@@ -1,6 +1,8 @@
 import { env, prisma } from "@/config";
 import { auth } from "@/lib/auth";
 import { seedCategories } from "./seedCategories";
+import { CategoryGroupType } from "@/generated/prisma/enums";
+
 
 async function seedAdmin() {
   const adminEmail = env.ADMIN_EMAIL;
@@ -23,7 +25,6 @@ async function seedAdmin() {
     },
   });
 
-
   if (existingAdmin) {
     console.log(`✅ Admin already exists (${adminEmail})`);
 
@@ -43,14 +44,14 @@ async function seedAdmin() {
   if (!createdUser?.user?.id) {
     throw new Error("Failed to create admin user");
   }
-  
+
   await prisma.user.update({
     where: {
       id: createdUser.user.id,
     },
     data: {
       role: "admin",
-      emailVerified : true
+      emailVerified: true,
     },
   });
 
@@ -62,7 +63,7 @@ async function main() {
 }
 
 main()
-  .then(async() => {
+  .then(async () => {
     await seedCategories();
   })
   .catch((error) => {

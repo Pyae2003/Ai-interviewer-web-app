@@ -48,7 +48,7 @@ export async function getAllPosts(): Promise<ResponseGetAllPosts> {
             },
           },
           images: true,
-        
+
           _count: {
             select: {
               reactions: true,
@@ -56,7 +56,6 @@ export async function getAllPosts(): Promise<ResponseGetAllPosts> {
             },
           },
 
-    
           reactions: {
             where: {
               userId,
@@ -90,28 +89,6 @@ export async function getAllPosts(): Promise<ResponseGetAllPosts> {
                   image: true,
                 },
               },
-
-              replies: {
-                orderBy: {
-                  createdAt: "asc",
-                },
-
-                select: {
-                  id: true,
-                  content: true,
-                  createdAt: true,
-                  updatedAt: true,
-                  parentId: true,
-
-                  user: {
-                    select: {
-                      id: true,
-                      name: true,
-                      image: true,
-                    },
-                  },
-                },
-              },
             },
           },
         },
@@ -120,104 +97,72 @@ export async function getAllPosts(): Promise<ResponseGetAllPosts> {
       prisma.communityPost.count(),
     ]);
 
-  
-    const reactionGroups =
-      await prisma.postReaction.groupBy({
-        by: ["postId", "type"],
+    const reactionGroups = await prisma.postReaction.groupBy({
+      by: ["postId", "type"],
 
-        _count: {
-          type: true,
-        },
-      });
-    const reactionMap = new Map<
-      string,
-      Map<ReactionType, number>
-    >();
+      _count: {
+        type: true,
+      },
+    });
+    const reactionMap = new Map<string, Map<ReactionType, number>>();
 
     for (const reaction of reactionGroups) {
       if (!reactionMap.has(reaction.postId)) {
-        reactionMap.set(
-          reaction.postId,
-          new Map<ReactionType, number>(),
-        );
+        reactionMap.set(reaction.postId, new Map<ReactionType, number>());
       }
 
       reactionMap
         .get(reaction.postId)!
-        .set(
-          reaction.type,
-          reaction._count.type,
-        );
+        .set(reaction.type, reaction._count.type);
     }
 
-    /*
-     * =========================================
-     * FORMAT POSTS
-     * =========================================
-     */
-    const formattedPosts: CommunityPost[] =
-      posts.map((post) => {
-        const postReactionMap =
-          reactionMap.get(post.id);
+    const formattedPosts: CommunityPost[] = posts.map((post) => {
+      const postReactionMap = reactionMap.get(post.id);
 
-        const reactions = postReactionMap
-          ? Array.from(
-              postReactionMap.entries(),
-            ).map(([type, count]) => ({
-              type,
-              count,
-            }))
-          : [];
+      const reactions = postReactionMap
+        ? Array.from(postReactionMap.entries()).map(([type, count]) => ({
+            type,
+            count,
+          }))
+        : [];
 
-        return {
-          id: post.id,
+      return {
+        id: post.id,
 
-       
-          author: {
-            id: post.author.id,
-            name: post.author.name,
-            image: post.author.image,
-          },
-          createdAt:
-            post.createdAt.toISOString(),
+        author: {
+          id: post.author.id,
+          name: post.author.name,
+          image: post.author.image,
+        },
+        createdAt: post.createdAt.toISOString(),
 
-          caption: post.caption,
-          images: post.images,
+        caption: post.caption,
+        images: post.images,
 
-          reactionCount:
-            post._count.reactions,
+        reactionCount: post._count.reactions,
 
-          currentUserReaction:
-            post.reactions[0]?.type ?? null,
+        currentUserReaction: post.reactions[0]?.type ?? null,
 
-          reactions,
+        reactions,
 
-          commentCount:
-            post._count.comments,
+        commentCount: post._count.comments,
 
-          comments: post.comments,
+        comments: post.comments,
 
-          totalPosts,
-        };
-      });
+        totalPosts,
+      };
+    });
 
     return {
       success: true,
       data: formattedPosts,
     };
   } catch (error) {
-    console.error(
-      "[GET_ALL_COMMUNITY_POSTS_ERROR]",
-      {
-        userId,
-        timestamp:
-          new Date().toISOString(),
-        error:
-          error instanceof Error
-            ? error.message
-            : error,
-      },
-    );
+    console.error("[GET_ALL_COMMUNITY_POSTS_ERROR]", {
+      userId,
+      timestamp: new Date().toISOString(),
+      error: error instanceof Error ? error.message : error,
+    });
 
     if (error instanceof AppError) {
       throw error;

@@ -302,9 +302,7 @@ model PostComment {
   post   CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   parentId String?
-  parent   PostComment? @relation("CommentReplies",fields: [parentId],references: [id],onDelete: Cascade)
 
-  replies PostComment[] @relation("CommentReplies")
 
   @@index([postId, createdAt])
   @@index([userId])

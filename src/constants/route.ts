@@ -1,7 +1,7 @@
 
 export const signUpPath = "/sign-up"
 export const loginPath = "/login"
-export const dashboardPath = "/dashboard"
+export const dashboardPath = "/interview-portal"
 export const resetPasswordPath = "/reset-password"
 export const verifyOtpPath = "/verify-otp"
 export const editProfilePath = "/profile/edit-profile"
@@ -51,6 +51,7 @@ export const updateCategoryGroupPath = (params : string) => `/admin/category-gro
 export const viewDetailCategoryGroupPath = (params : string) => `/admin/category-groups/view-details/${params}`
 
 export const createBlogPath = `/blog/create-blog`;
+export const blogPath = `/blog`
 export const editBlogPath = (params : string) => `/blog/edit-blog/${params}`
 export const detailsBlogPath = (params : string) => `/blog/details/${params}`
 

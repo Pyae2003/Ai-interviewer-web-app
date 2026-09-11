@@ -24,7 +24,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { detailsBlogPath } from "@/constants/route";
-import { deletePost } from "@/features/clients/post-blog/actions/delete-post";
 import { PostDate } from "./post-date";
 import { BlogActions } from "./blog-actions";
 import { EmptyState } from "./empty-state";
@@ -32,6 +31,7 @@ import { Engagement, formatCount } from "./engagement";
 import { StatCard } from "./stat-card";
 import { Author } from "./author";
 import { TableHeading } from "./table-heading";
+import { deletePost } from "../actions/delete-blog";
 
 export type Blog = {
   id: string;
@@ -125,14 +125,7 @@ export default function AdminBlogsPage({ blogs }: AdminBlogsPageProps) {
               <span className="flex size-10 items-center justify-center rounded-full bg-sky-100 text-sky-700 dark:bg-sky-900/60 dark:text-sky-300">
                 <FileText className="size-5" aria-hidden="true" />
               </span>
-              <div>
-                <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
-                  Total blogs
-                </p>
-                <p className="text-xl font-bold text-slate-950 dark:text-white">
-                  {formatCount(blogs.length)}
-                </p>
-              </div>
+              
             </div>
           </div>
         </header>

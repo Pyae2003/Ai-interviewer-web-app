@@ -5,18 +5,12 @@ import { getSession } from "@/lib/get-Session";
 import { AppError } from "@/middleware";
 import { CommunityPost } from "../components/home-post";
 
-export async function getPostById(
-  id: string,
-): Promise<{
+export async function getPostById(id: string): Promise<{
   success: true;
   data: CommunityPost;
 }> {
   if (!id?.trim()) {
-    throw new AppError(
-      "Post ID is required",
-      "POST_ID_REQUIRED",
-      400,
-    );
+    throw new AppError("Post ID is required", "POST_ID_REQUIRED", 400);
   }
 
   const session = await getSession();
@@ -86,43 +80,14 @@ export async function getPostById(
                 image: true,
               },
             },
-
-            replies: {
-              orderBy: {
-                createdAt: "asc",
-              },
-
-              select: {
-                id: true,
-                content: true,
-                createdAt: true,
-                updatedAt: true,
-                parentId: true,
-
-                user: {
-                  select: {
-                    id: true,
-                    name: true,
-                    image: true,
-                  },
-                },
-              },
-            },
           },
         },
       },
     });
 
     if (!post) {
-      throw new AppError(
-        "Post not found",
-        "POST_NOT_FOUND",
-        404,
-      );
+      throw new AppError("Post not found", "POST_NOT_FOUND", 404);
     }
-
-    // Check post owner
-    const isOwner = userId === post.author.id;
 
     const result: CommunityPost = {
       id: post.id,
@@ -144,13 +109,11 @@ export async function getPostById(
 
       commentCount: post._count.comments,
 
-      currentUserReaction:
-        post.reactions?.[0]?.type ?? null,
+      currentUserReaction: post.reactions?.[0]?.type ?? null,
 
       reactions: [],
 
       comments: post.comments,
-
     };
 
     return {
@@ -161,20 +124,13 @@ export async function getPostById(
     console.error("[GET_POST_BY_ID_ERROR]", {
       id,
       userId,
-      error:
-        error instanceof Error
-          ? error.message
-          : error,
+      error: error instanceof Error ? error.message : error,
     });
 
     if (error instanceof AppError) {
       throw error;
     }
 
-    throw new AppError(
-      "Failed to load post",
-      "GET_POST_FAILED",
-      500,
-    );
+    throw new AppError("Failed to load post", "GET_POST_FAILED", 500);
   }
 }

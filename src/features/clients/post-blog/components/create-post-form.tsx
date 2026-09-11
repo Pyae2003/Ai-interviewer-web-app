@@ -75,8 +75,6 @@ export function CreatePostForm({ interviewId }: CreatePostFormProps) {
 
   useEffect(() => {
     if (hasSucceeded) {
-      toast.success(result.data?.message ?? "Post created successfully!");
-
       resetForm();
 
       router.push("/blog");

@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { LogoutButton } from "./logout";
+import { blogPath, dashboardPath } from "@/constants/route";
 
 type UserProfileProps = {
   id: string;
@@ -192,7 +193,7 @@ export default function UserProfile({
             asChild
             className="cursor-pointer rounded-xl px-3 py-2.5 focus:bg-sky-50 focus:text-zinc-950 dark:focus:bg-sky-950/50 dark:focus:text-white"
           >
-            <Link href="/dashboard">
+            <Link href={dashboardPath}>
               <span className="mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-sky-50 text-sky-600 dark:bg-sky-950 dark:text-sky-400">
                 <LayoutDashboard
                   className="h-4 w-4"
@@ -202,7 +203,7 @@ export default function UserProfile({
 
               <span className="flex flex-col">
                 <span className="text-sm font-medium">
-                  Dashboard
+                  Interview Portal
                 </span>
 
                 <span className="text-xs text-muted-foreground">
@@ -240,7 +241,7 @@ export default function UserProfile({
             asChild
             className="cursor-pointer rounded-xl px-3 py-2.5 focus:bg-zinc-100 focus:text-zinc-950 dark:focus:bg-zinc-800 dark:focus:text-white"
           >
-            <Link href="/settings">
+            <Link href={blogPath}>
               <span className="mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
                 <Settings
                   className="h-4 w-4"
@@ -250,7 +251,7 @@ export default function UserProfile({
 
               <span className="flex flex-col">
                 <span className="text-sm font-medium">
-                  Settings
+                  Blog
                 </span>
 
                 <span className="text-xs text-muted-foreground">

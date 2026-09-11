@@ -25,8 +25,8 @@ type NavigationItem = {
 
 const NAVIGATION_ITEMS: readonly NavigationItem[] = [
   {
-    label: "Dashboard",
-    href: "/dashboard",
+    label: "Interview-Portal",
+    href: "/interview-portal",
     icon: LayoutDashboard,
   },
   {

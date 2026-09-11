@@ -226,15 +226,6 @@ export default function ProcessingPage({ interviewId }: ProcessingPageProps) {
 
               {/* Linear progress */}
               <div className="mt-8 w-full max-w-xl rounded-2xl border border-black/5 bg-white/65 p-4 shadow-sm dark:border-white/10 dark:bg-white/3">
-                <div className="mb-3 flex items-center justify-between gap-4">
-                  <span className="text-sm font-medium text-zinc-600 dark:text-zinc-300">
-                    Analysis progress
-                  </span>
-
-                  <span className="text-sm font-bold text-zinc-950 dark:text-white">
-                    {Math.round(safeProgress)}%
-                  </span>
-                </div>
 
                 <ProgressBar progress={safeProgress} />
               </div>
