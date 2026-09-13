@@ -153,7 +153,7 @@ export default function RecentActivity({
               return (
                 <div
                   key={item.id}
-                  className="group flex items-center justify-between gap-4 rounded-2xl px-3 py-4 transition-colors duration-200 hover:bg-sky-50/70 dark:hover:bg-white/[0.03]"
+                  className="group flex items-center justify-between gap-4 rounded-2xl px-3 py-4 transition-colors duration-200 hover:bg-sky-50/70 dark:hover:bg-white/3"
                 >
                   <div className="flex min-w-0 items-center gap-3.5">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-black/5 bg-white text-sky-600 shadow-sm transition-colors duration-200 group-hover:border-sky-200 group-hover:bg-sky-50 dark:border-white/10 dark:bg-zinc-800 dark:text-sky-400 dark:group-hover:border-sky-900 dark:group-hover:bg-sky-950/50">

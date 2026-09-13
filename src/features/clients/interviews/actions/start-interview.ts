@@ -88,9 +88,9 @@ export async function startInterview(categoryId: string) {
     }
 
     const selectedQuestions = [
-      ...secureShuffle(easy.data).slice(0, 2),
-      ...secureShuffle(medium.data).slice(0, 1),
-      ...secureShuffle(hard.data).slice(0, 1),
+      ...secureShuffle(easy.data).slice(0, 4),
+      ...secureShuffle(medium.data).slice(0, 4),
+      ...secureShuffle(hard.data).slice(0, 2),
     ];
 
     const finalQuestions = secureShuffle(selectedQuestions);

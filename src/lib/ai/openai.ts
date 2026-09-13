@@ -14,7 +14,7 @@ function createClient() {
   return new OpenAI({
     apiKey,
     baseURL: "https://openrouter.ai/api/v1",
-    timeout: 30_000,
+    timeout: 100_000,
     maxRetries: 2,
     defaultHeaders: {
     "HTTP-Referer":
