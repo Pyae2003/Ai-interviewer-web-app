@@ -127,16 +127,9 @@ export default function InterviewsClientAnswering({
 
       await finishInterview(interview_Id);
 
-      toast.success("Interview completed successfully.");
       router.push(interviewProcessingPath(interview_Id));
     } catch (error) {
       console.error(error);
-
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong. Please try again.",
-      );
     } finally {
       setIsSubmitting(false);
     }

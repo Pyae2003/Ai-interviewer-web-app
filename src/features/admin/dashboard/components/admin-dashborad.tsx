@@ -5,14 +5,11 @@ import {
   Briefcase,
   FileQuestion,
   Mic,
-  Bell,
-  Search,
 } from "lucide-react";
 
 import { motion, useReducedMotion } from "framer-motion";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 
 import { RecentInterview } from "../actions/recent-interviews";
 import { TopCategory } from "../actions/get-top-categories";
@@ -119,22 +116,6 @@ export default function AdminDashboard({
               <p className="text-sm text-muted-foreground">
                 Welcome back, Admin
               </p>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="relative hidden md:block">
-                <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-
-                <Input placeholder="Search..." className="w-72 pl-9" />
-              </div>
-
-              <button
-                type="button"
-                aria-label="View notifications"
-                className="rounded-xl border p-2 transition-colors hover:bg-zinc-100"
-              >
-                <Bell className="h-5 w-5" />
-              </button>
             </div>
           </div>
         </header>

@@ -90,11 +90,6 @@ export function CommentItem({
 
   const replyCount = comment.replies?.length ?? 0;
 
-  /*
-   * ==========================================
-   * MENU POSITION
-   * ==========================================
-   */
   function updateMenuPosition() {
     const button = menuButtonRef.current;
 
@@ -215,11 +210,6 @@ export function CommentItem({
     };
   }, [showMenu]);
 
-  /*
-   * ==========================================
-   * EDIT
-   * ==========================================
-   */
   async function handleSaveEdit() {
     if (
       !isOwner ||
@@ -294,22 +284,12 @@ export function CommentItem({
       );
     }
   }
-
-  /*
-   * ==========================================
-   * CANCEL EDIT
-   * ==========================================
-   */
   function handleCancelEdit() {
     setEditContent(comment.content);
     onStartEdit("");
   }
 
-  /*
-   * ==========================================
-   * OWNER MENU
-   * ==========================================
-   */
+
   const ownerMenu =
     showMenu &&
     menuPosition &&
@@ -364,9 +344,7 @@ export function CommentItem({
   return (
     <>
       <article className="group flex gap-2.5">
-        {/* ==========================================
-         * AVATAR
-         * ========================================== */}
+     
         <div className="shrink-0">
           {comment.user.image ? (
             <img
@@ -385,16 +363,11 @@ export function CommentItem({
           )}
         </div>
 
-        {/* ==========================================
-         * BODY
-         * ========================================== */}
         <div className="min-w-0 flex-1">
           <div className="relative inline-block max-w-[calc(100%-8px)]">
             {isEditing ? (
-              /* ======================================
-               * EDIT MODE
-               * ====================================== */
-              <div className="min-w-[240px] max-w-xl">
+            
+              <div className="min-w-60 max-w-xl">
                 <textarea
                   autoFocus
                   rows={3}
@@ -448,23 +421,19 @@ export function CommentItem({
                 </div>
               </div>
             ) : (
-              /* ======================================
-               * NORMAL COMMENT
-               * ====================================== */
+            
               <div className="rounded-2xl bg-slate-100 px-3 py-2 dark:bg-slate-800">
                 <p className="mb-0.5 text-[13px] font-semibold text-slate-900 dark:text-white">
                   {userName}
                 </p>
 
-                <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-slate-700 dark:text-slate-200">
+                <p className="whitespace-pre-wrap  wrap-break-word text-sm leading-relaxed text-slate-700 dark:text-slate-200">
                   {comment.content}
                 </p>
               </div>
             )}
 
-            {/* ========================================
-             * OWNER MENU BUTTON
-             * ======================================== */}
+        
             {isOwner && !isEditing ? (
               <div className="absolute -right-8 top-1/2 -translate-y-1/2">
                 <button
@@ -487,28 +456,11 @@ export function CommentItem({
             ) : null}
           </div>
 
-          {/* ==========================================
-           * ACTIONS
-           * ========================================== */}
+        
           {!isEditing ? (
             <div className="mt-1 flex items-center gap-4 px-2 text-xs font-semibold text-slate-500 dark:text-slate-400">
-              <button
-                type="button"
-                className="transition-colors hover:text-sky-600 dark:hover:text-sky-400"
-              >
-                Like
-              </button>
 
-              <button
-                type="button"
-                disabled={isDeleting}
-                onClick={() =>
-                  onReply(comment.id)
-                }
-                className="transition-colors hover:text-sky-600 disabled:opacity-50 dark:hover:text-sky-400"
-              >
-                Reply
-              </button>
+              
 
               <span className="font-normal text-slate-400 dark:text-slate-500">
                 {formatCommentTime(
@@ -525,9 +477,7 @@ export function CommentItem({
             </div>
           ) : null}
 
-          {/* ==========================================
-           * REPLY COUNT
-           * ========================================== */}
+         
           {!isEditing &&
           replyCount > 0 ? (
             <button
@@ -547,10 +497,6 @@ export function CommentItem({
           ) : null}
         </div>
       </article>
-
-      {/* ==========================================
-       * PORTAL MENU
-       * ========================================== */}
       {ownerMenu}
     </>
   );

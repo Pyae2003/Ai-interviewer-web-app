@@ -280,23 +280,9 @@ export function CommentSection({
         </div>
       )}
 
-      {/* =========================================
-          ALL COMMENTS
-          ========================================= */}
-
       <div className="mt-5">
         <CommentList
           comments={comments}
-
-          /*
-           * IMPORTANT:
-           *
-           * Guest = undefined
-           * Logged in = currentUser.id
-           *
-           * CommentItem uses this to determine
-           * whether Edit/Delete menu should appear.
-           */
           currentUserId={currentUser?.id}
 
           hasMore={hasMore}

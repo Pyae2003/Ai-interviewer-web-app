@@ -24,11 +24,7 @@ export async function getDashboardStats() {
       totalQuestions,
       totalCategories,
     ] = await Promise.all([
-      prisma.user.count({
-        where: {
-          role: UserRole.user,
-        },
-      }),
+      prisma.user.count(),
 
       prisma.user.count({
         where: {

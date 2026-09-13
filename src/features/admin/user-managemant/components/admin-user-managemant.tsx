@@ -35,6 +35,8 @@ import { UserManagementPageProp } from "../type/user-type";
 import { executeAdminAction } from "../type/userban-unban-type";
 import { banUserByAdmin } from "../actions/user-banned";
 import { unbanUserByAdmin } from "../actions/user-unbanned";
+import React from "react";
+import { userInfo } from "os";
 
 type AnimatedHeadlineProps = {
   text: string;
@@ -57,9 +59,9 @@ function AnimatedHeadline({ text }: AnimatedHeadlineProps) {
               shouldReduceMotion
                 ? false
                 : {
-                  opacity: 0,
-                  y: 8,
-                }
+                    opacity: 0,
+                    y: 8,
+                  }
             }
             animate={{
               opacity: 1,
@@ -68,13 +70,13 @@ function AnimatedHeadline({ text }: AnimatedHeadlineProps) {
             transition={
               shouldReduceMotion
                 ? {
-                  duration: 0,
-                }
+                    duration: 0,
+                  }
                 : {
-                  duration: 0.35,
-                  delay: index * 0.025,
-                  ease: [0.22, 1, 0.36, 1],
-                }
+                    duration: 0.35,
+                    delay: index * 0.025,
+                    ease: [0.22, 1, 0.36, 1],
+                  }
             }
           >
             {character === " " ? "\u00A0" : character}
@@ -100,6 +102,24 @@ export default function UserManagementPage({
 
     router.push(adminUserManagemant);
   };
+
+  const [search, setSearch] = React.useState("");
+
+  const filteredUsers = React.useMemo(() => {
+    const query = search.trim().toLowerCase();
+
+    if (!query) {
+      return usersInfo;
+    }
+
+    return usersInfo.filter(
+      (user) =>
+        user.name.toLowerCase().includes(query) ||
+        user.email.toLowerCase().includes(query) ||
+        user.role!.toLowerCase().includes(query) ||
+        user.status.toLowerCase().includes(query),
+    );
+  }, [usersInfo, search]);
 
   const handleUnban = async (userId: string) => {
     await executeAdminAction(() => unbanUserByAdmin({ userId }), {
@@ -165,9 +185,7 @@ export default function UserManagementPage({
             <div>
               <p className="text-sm text-muted-foreground">Admins</p>
 
-              <h2 className="text-3xl font-bold">
-                {usersStats?.admins || 0}
-              </h2>
+              <h2 className="text-3xl font-bold">{usersStats?.admins || 0}</h2>
             </div>
 
             <div className="rounded-xl bg-violet-100 p-3">
@@ -198,8 +216,12 @@ export default function UserManagementPage({
         <CardContent className="p-5">
           <div className="relative max-w-md">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-
-            <Input placeholder="Search users..." className="pl-9" />
+            <Input
+              placeholder="Search users..."
+              className="pl-9"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />{" "}
           </div>
         </CardContent>
       </Card>
@@ -221,7 +243,7 @@ export default function UserManagementPage({
               </thead>
 
               <tbody>
-                {usersInfo.map((user, index) => (
+                {filteredUsers.map((user, index) => (
                   <motion.tr
                     key={user.id}
                     initial={{
@@ -259,10 +281,11 @@ export default function UserManagementPage({
 
                     <td className="p-4">
                       <span
-                        className={`rounded-full px-3 py-1 text-xs font-medium ${user.role === "admin"
-                          ? "bg-sky-100 text-sky-700"
-                          : "bg-zinc-100 text-zinc-700"
-                          }`}
+                        className={`rounded-full px-3 py-1 text-xs font-medium ${
+                          user.role === "admin"
+                            ? "bg-sky-100 text-sky-700"
+                            : "bg-zinc-100 text-zinc-700"
+                        }`}
                       >
                         {user.role}
                       </span>
@@ -270,10 +293,11 @@ export default function UserManagementPage({
 
                     <td className="p-4">
                       <span
-                        className={`rounded-full px-3 py-1 text-xs font-medium ${user.status === "ACTIVE"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-red-100 text-red-700"
-                          }`}
+                        className={`rounded-full px-3 py-1 text-xs font-medium ${
+                          user.status === "ACTIVE"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
                       >
                         {user.status}
                       </span>
@@ -281,9 +305,7 @@ export default function UserManagementPage({
 
                     <td className="p-4">{user.interviews}</td>
 
-                    <td className="p-4">
-                      {formatLastLogin(user.lastLogin)}
-                    </td>
+                    <td className="p-4">{formatLastLogin(user.joinedAt)}</td>
 
                     <td className="p-4 text-right">
                       <DropdownMenu>
@@ -304,7 +326,6 @@ export default function UserManagementPage({
                               View
                             </Link>
                           </DropdownMenuItem>
-
 
                           {user.banned ? (
                             <DropdownMenuItem
@@ -329,7 +350,7 @@ export default function UserManagementPage({
                   </motion.tr>
                 ))}
 
-                {usersInfo.length === 0 && (
+                {filteredUsers.length === 0 && (
                   <tr>
                     <td
                       colSpan={6}

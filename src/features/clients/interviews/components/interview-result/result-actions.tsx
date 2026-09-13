@@ -40,18 +40,6 @@ export function ResultActions() {
             View History
           </Link>
         </Button>
-
-        <Button
-          asChild
-          variant="secondary"
-          size="lg"
-          className="h-12 rounded-xl font-semibold transition-[background-color,transform] duration-200 hover:-translate-y-0.5"
-        >
-          <Link href="/interview/start">
-            <RotateCcw className="mr-2 size-4" aria-hidden="true" />
-            Retake Interview
-          </Link>
-        </Button>
       </nav>
     </Card>
   );
