@@ -13,10 +13,9 @@ export const interviewWorker = new Worker(
   async (job: Job<InterviewJob>) => {
     const { interviewId } = job.data;
 
-    console.log(`[Worker] Starting interview: ${interviewId}`);
+    console.log(`[Worker] Starting interview: ${interviewId} (Attempt: ${job.attemptsMade + 1})`);
 
     try {
-      // STEP 1: Load Interview
       await job.updateProgress(5);
 
       const interview = await prisma.interview.findUnique({
@@ -36,8 +35,17 @@ export const interviewWorker = new Worker(
 
       if (!interview) throw new Error("Interview not found");
 
-      if (interview.status !== "IN_PROGRESS") {
-        throw new Error("Interview not in PROCESSING state");
+      // 🐛 FIX 1: Allow FAILED status for BullMQ Retries
+      if (interview.status !== "IN_PROGRESS" && interview.status !== "FAILED") {
+        throw new Error(`Interview not in valid state (Current: ${interview.status})`);
+      }
+
+      // Retry လုပ်တဲ့အချိန် FAILED ဖြစ်နေခဲ့ရင် IN_PROGRESS ကို ပြန်ပြောင်းပေးမယ်
+      if (interview.status === "FAILED") {
+        await prisma.interview.update({
+          where: { id: interviewId },
+          data: { status: "IN_PROGRESS" }
+        });
       }
 
       if (interview.answers.length === 0) {
@@ -47,7 +55,6 @@ export const interviewWorker = new Worker(
       await job.log("Interview loaded");
       await job.updateProgress(10);
 
-      // STEP 2: AI Evaluation
       await job.log("Starting AI evaluation");
 
       const results = await evaluateAllAnswers(
@@ -65,9 +72,9 @@ export const interviewWorker = new Worker(
 
       await job.updateProgress(60);
 
-      // STEP 3: Save Results (Transaction)
       await job.log("Saving results");
 
+      // 🐛 FIX 2: Add maxWait and timeout for the transaction
       await prisma.$transaction(
         results.map((result, index) => {
           if (!result) throw new Error("Missing result");
@@ -83,17 +90,19 @@ export const interviewWorker = new Worker(
               isCorrect: result.score >= 60,
             },
           });
-        })
+        }),
+        {
+          maxWait: 5000,   // Wait 5 seconds for a database connection
+          timeout: 20000,  // Give the transaction 20 seconds to complete
+        }
       );
 
       await job.updateProgress(80);
 
-      // STEP 4: Summary
       const summary = await generateSummary(results);
 
       await job.updateProgress(90);
 
-      // STEP 5: Final Update
       await prisma.interview.update({
         where: { id: interviewId },
         data: {   
@@ -116,8 +125,6 @@ export const interviewWorker = new Worker(
         where: { id: interviewId },
         data: {
           status: "FAILED",
-          // errorMessage: error?.message ?? "Unknown error",
-          // failedAt: new Date(),
         },
       });
 
@@ -125,16 +132,14 @@ export const interviewWorker = new Worker(
     }
   },
   {
-    connection: redisConnection as any ,
-    concurrency: 3,
+    connection: redisConnection as any,
+    concurrency: 3, // 💡 Note: If DB connection limit is low, reduce this to 1 or 2.
   }
 );
 
 const shutdown = async () => {
   console.log("Closing worker...");
-
   await interviewWorker.close();
-
   process.exit(0);
 };
 
