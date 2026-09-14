@@ -32,6 +32,8 @@ export default async function Page({ params }: Props) {
           name: session.user.name ?? "User",
           email: session.user.email ?? "",
           image: session.user.image ?? "",
+                    role:session.user.role??"",
+
         }}
       />
 

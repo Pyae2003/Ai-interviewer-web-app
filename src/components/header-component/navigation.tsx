@@ -4,14 +4,17 @@ import {
   BookOpen,
   House,
   LayoutDashboard,
+  User as UserIcon, // Prisma User နဲ့ နာမည်မထပ်အောင် UserIcon လို့ ပြောင်းထားပါတယ်
+  ShieldCheck, // Admin အတွက် Icon အသစ်
   LucideIcon,
-  User,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { isActiveRoute } from "./animatedHeadline";
+import { HeaderUser } from "../header";
 
 type NavigationProps = {
+  user: HeaderUser;
   pathname: string;
   mobile?: boolean;
   onNavigate?: () => void;
@@ -23,7 +26,8 @@ type NavigationItem = {
   icon: LucideIcon;
 };
 
-const NAVIGATION_ITEMS: readonly NavigationItem[] = [
+// Base items (လူတိုင်းမြင်ရမယ့် Routes များ)
+const BASE_NAVIGATION_ITEMS: readonly NavigationItem[] = [
   {
     label: "Interview-Portal",
     href: "/interview-portal",
@@ -37,20 +41,27 @@ const NAVIGATION_ITEMS: readonly NavigationItem[] = [
   {
     label: "Profile",
     href: "/profile",
-    icon: User,
+    icon: UserIcon, 
   },
   {
-    label : "Blog",
-    href :"/blog",
-    icon : House
-  }
-]
+    label: "Blog",
+    href: "/blog",
+    icon: House,
+  },
+];
 
 export function Navigation({
+  user,
   pathname,
   mobile = false,
   onNavigate,
 }: NavigationProps) {
+  
+ 
+  const navItems = user?.role === "admin" 
+    ? [...BASE_NAVIGATION_ITEMS, { label: "Admin", href: "/admin/dashboard", icon: ShieldCheck }]
+    : BASE_NAVIGATION_ITEMS;
+
   return (
     <nav
       aria-label={mobile ? "Mobile navigation" : "Main navigation"}
@@ -60,7 +71,7 @@ export function Navigation({
           : "hidden items-center gap-1 rounded-xl border border-border/70 bg-muted/40 p-1.5 md:flex",
       )}
     >
-      {NAVIGATION_ITEMS.map((item) => {
+      {navItems.map((item) => {
         const Icon = item.icon;
         const active = isActiveRoute(pathname, item.href);
 

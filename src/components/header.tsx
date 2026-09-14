@@ -14,6 +14,7 @@ export type HeaderUser = {
   email: string;
   name: string;
   image?: string;
+  role?:string
 };
 
 export interface ClientHeaderProp {
@@ -38,7 +39,7 @@ export default function Header({
       <div className="mx-auto grid h-16 max-w-7xl grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
         <Brand />
 
-        <Navigation pathname={pathname} />
+        <Navigation pathname={pathname} user={user!} />
 
         <div className="flex items-center justify-self-end gap-2">
           <ThemeToggle />

@@ -71,7 +71,7 @@ export function MobileMenu({
           </div>
         )}
 
-        <Navigation pathname={pathname} mobile onNavigate={closeMenu} />
+        <Navigation pathname={pathname} user={user!} mobile onNavigate={closeMenu} />
 
         <div className="mt-6 rounded-2xl border border-border/70 bg-muted/40 p-4">
           {!user ? (
