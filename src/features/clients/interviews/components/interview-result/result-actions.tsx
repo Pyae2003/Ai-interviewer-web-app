@@ -7,6 +7,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { dashboardPath } from "@/constants/route";
 
 export function ResultActions() {
   return (
@@ -20,12 +21,12 @@ export function ResultActions() {
           size="lg"
           className="h-12 rounded-xl bg-sky-600 font-semibold text-white shadow-sm transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:bg-sky-700 hover:shadow-md dark:bg-sky-500 dark:hover:bg-sky-600"
         >
-          <Link href="/dashboard">
+          <Link href={dashboardPath}>
             <LayoutDashboard
               className="mr-2 size-4"
               aria-hidden="true"
             />
-            Dashboard
+            Interview Portal
           </Link>
         </Button>
 

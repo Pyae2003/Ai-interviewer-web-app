@@ -16,7 +16,8 @@ export const redisConnection =
     maxRetriesPerRequest: null,
     enableReadyCheck: true,
     lazyConnect: true,
-
+    keepAlive: 10000,
+    family: 4,
     retryStrategy(times) {
       return Math.min(times * 50, 2000);
     },
