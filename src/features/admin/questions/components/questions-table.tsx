@@ -21,14 +21,18 @@ import { deleteQuestion } from "../actions/delete-question";
 import { editQuestionPath, viewDetailQuestionPath } from "@/constants/route";
 import { getDifficultyClasses } from "@/lib/get-difficulty-classes";
 import { formatLabel } from "@/lib/format-label";
+import { useRouter } from "next/navigation";
 
 
 type QuestionsTableProp = {
   filteredQuestions: QuestionDashboardItem[];
 };
 const QuestionsTable = ({ filteredQuestions }: QuestionsTableProp) => {
+  const router = useRouter(); // ၂. router ကို ကြေညာပါ
+
   const handleDelete = async (id: string) => {
     await deleteQuestion(id);
+    router.refresh(); // ၃. ဖျက်ပြီးတာနဲ့ Table ကို Update ဖြစ်အောင် refresh လုပ်ပါ
   };
   const shouldReduceMotion = useReducedMotion();
 
@@ -164,7 +168,9 @@ const QuestionsTable = ({ filteredQuestions }: QuestionsTableProp) => {
                         </Link>
                       </DropdownMenuItem>
 
-                      <DropdownMenuItem>
+                      <DropdownMenuItem 
+                        onSelect={(e) => e.preventDefault()}
+                      >
                         <DeleteButton
                           id={question.id}
                           onDelete={handleDelete}
